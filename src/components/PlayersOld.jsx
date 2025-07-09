@@ -154,7 +154,7 @@ const Players = () => {
                         </>
                       ) : (
                         <div className="col-span-2">
-                          <span className="text-muted-foreground">Defesas:</span>
+                          <span className="text-muted-foreground">Clean Sheets:</span>
                           <span className="ml-1 font-medium">{player.stats.cleanSheets}</span>
                         </div>
                       )}

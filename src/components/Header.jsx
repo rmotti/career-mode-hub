@@ -3,8 +3,8 @@ import fcPortoLogo from '../assets/fc-porto-logo.png';
 
 const Header = ({ activeTab, setActiveTab }) => {
   const tabs = [
-    { id: 'dashboard', label: 'Dashboard', icon: Trophy },
-    { id: 'players', label: 'Jogadores', icon: Users },
+    { id: 'dashboard', label: 'Visão Geral', icon: Trophy },
+    { id: 'players', label: 'Elenco', icon: Users },
     { id: 'stats', label: 'Estatísticas', icon: TrendingUp },
     { id: 'transfers', label: 'Transferências', icon: ArrowLeftRight }
   ];

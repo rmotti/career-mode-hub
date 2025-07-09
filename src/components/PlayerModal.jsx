@@ -310,7 +310,7 @@ const PlayerModal = ({ isOpen, onClose, onSave, player = null }) => {
               </div>
 
               <div>
-                <Label htmlFor="cleanSheets">Defesas/Clean Sheets</Label>
+                <Label htmlFor="cleanSheets">Clean Sheets</Label>
                 <Input
                   id="cleanSheets"
                   type="number"

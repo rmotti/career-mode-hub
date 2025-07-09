@@ -54,7 +54,7 @@ const Players = () => {
     return colors[position] || 'bg-gray-100 text-gray-800';
   };
 
-  const getPotentialIndicator = ( potential) => {
+  const getPotentialIndicator = (potential) => {
     if (potential >= 90) return { color: 'text-green-600', icon: '⭐⭐⭐⭐⭐' };
     if (potential >= 85) return { color: 'text-yellow-600', icon: '⭐⭐⭐⭐' };
     if (potential >= 80) return { color: 'text-blue-600', icon: '⭐⭐⭐' };
@@ -137,7 +137,7 @@ const Players = () => {
       {/* Lista de Jogadores - Cards Menores */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
         {filteredAndSortedPlayers.map((player) => {
-          const potentialIndicator = getPotentialIndicator(player.overall, player.potential);
+          const potentialIndicator = getPotentialIndicator(player.potential);
           
           return (
             <Card key={player.id} className="hover:shadow-md transition-shadow">
@@ -151,6 +151,11 @@ const Players = () => {
                       </Badge>
                       <span className="text-xs text-muted-foreground truncate">
                         {player.age}a • {player.nationality}
+                      </span>
+                    </div>
+                    <div className="mt-1">
+                      <span className="text-xs font-medium text-blue-600">
+                        {player.function}
                       </span>
                     </div>
                   </div>
@@ -182,7 +187,7 @@ const Players = () => {
                         <div className="font-medium">{player.stats.appearances}</div>
                         <div className="text-muted-foreground">Jogos</div>
                       </div>
-                      {player.position !== 'GK' ? (
+                      {player.position !== 'GK' && !['CB', 'RB', 'LB'].includes(player.position) ? (
                         <>
                           <div className="text-center">
                             <div className="font-medium">{player.stats.goals}</div>
@@ -197,7 +202,7 @@ const Players = () => {
                         <>
                           <div className="text-center">
                             <div className="font-medium">{player.stats.cleanSheets}</div>
-                            <div className="text-muted-foreground">Defesas</div>
+                            <div className="text-muted-foreground">Clean Sheets</div>
                           </div>
                           <div className="text-center">
                             <div className="font-medium">{player.stats.rating}</div>
@@ -325,8 +330,8 @@ const Players = () => {
                   <div>Nota: <span className="font-medium">{selectedPlayer.stats.rating}</span></div>
                   <div>Gols: <span className="font-medium">{selectedPlayer.stats.goals}</span></div>
                   <div>Assistências: <span className="font-medium">{selectedPlayer.stats.assists}</span></div>
-                  {selectedPlayer.position === 'GK' && (
-                    <div className="col-span-2">Defesas: <span className="font-medium">{selectedPlayer.stats.cleanSheets}</span></div>
+                  {(selectedPlayer.position === 'GK' || ['CB', 'RB', 'LB'].includes(selectedPlayer.position)) && (
+                    <div className="col-span-2">Clean Sheets: <span className="font-medium">{selectedPlayer.stats.cleanSheets}</span></div>
                   )}
                 </div>
               </div>
