@@ -445,36 +445,36 @@ export const transferHistory = [
 export const seasonStats = [
   {
     season: "2024/25",
-    matches: 32,
+    matches: 34,
     wins: 22,
-    draws: 6,
-    losses: 4,
-    goalsFor: 68,
-    goalsAgainst: 28,
-    points: 72,
-    position: 2
+    draws: 5,
+    losses: 7,
+    goalsFor: 65,
+    goalsAgainst: 30,
+    points: 71,
+    position: 3
   },
   {
     season: "2023/24",
     matches: 34,
-    wins: 27,
-    draws: 5,
-    losses: 2,
-    goalsFor: 91,
-    goalsAgainst: 23,
-    points: 86,
-    position: 1
+    wins: 22,
+    draws: 6,
+    losses: 6,
+    goalsFor: 63,
+    goalsAgainst: 27,
+    points: 72,
+    position: 3
   },
   {
     season: "2022/23",
     matches: 34,
-    wins: 25,
-    draws: 6,
+    wins: 27,
+    draws: 4,
     losses: 3,
-    goalsFor: 78,
-    goalsAgainst: 31,
-    points: 81,
-    position: 1
+    goalsFor: 73,
+    goalsAgainst: 22,
+    points: 85,
+    position: 2
   }
 ];
 
