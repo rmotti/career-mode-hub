@@ -1,64 +1,116 @@
 // Dados mock do FC Porto para demonstração
 export const fcPortoPlayers = [
+  // GOLEIROS
   {
     id: 1,
+    name: "Cláudio Ramos",
+    position: "GK",
+    age: 33,
+    nationality: "Portugal",
+    overall: 73,
+    potential: 73,
+    salary: "€10,000",
+    marketValue: "€1M",
+    contract: "2026",
+    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+  },
+  {
+    id: 2,
     name: "Diogo Costa",
     position: "GK",
-    age: 24,
+    age: 25,
     nationality: "Portugal",
     overall: 84,
     potential: 89,
     salary: "€45,000",
-    marketValue: "€35M",
+    marketValue: "€52M",
     contract: "2027",
-    stats: {
-      appearances: 28,
-      goals: 0,
-      assists: 2,
-      cleanSheets: 15,
-      rating: 7.8
-    }
-  },
-  {
-    id: 2,
-    name: "Pepê",
-    position: "RW",
-    age: 27,
-    nationality: "Brasil",
-    overall: 82,
-    potential: 84,
-    salary: "€38,000",
-    marketValue: "€28M",
-    contract: "2026",
-    stats: {
-      appearances: 32,
-      goals: 8,
-      assists: 12,
-      cleanSheets: 0,
-      rating: 7.6
-    }
+    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
   },
   {
     id: 3,
-    name: "Galeno",
-    position: "LW",
-    age: 26,
+    name: "Samuel Portugal",
+    position: "GK",
+    age: 31,
     nationality: "Brasil",
-    overall: 80,
-    potential: 83,
-    salary: "€35,000",
-    marketValue: "€25M",
-    contract: "2027",
-    stats: {
-      appearances: 30,
-      goals: 11,
-      assists: 7,
-      cleanSheets: 0,
-      rating: 7.4
-    }
+    overall: 71,
+    potential: 71,
+    salary: "€10,000",
+    marketValue: "€1M",
+    contract: "2026",
+    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
   },
+
+  // ZAGUEIROS
   {
     id: 4,
+    name: "Iván Marcano",
+    position: "CB",
+    age: 37,
+    nationality: "Espanha",
+    overall: 74,
+    potential: 74,
+    salary: "€5,000",
+    marketValue: "€0.8M",
+    contract: "2025",
+    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+  },
+  {
+    id: 5,
+    name: "Nehuén Pérez",
+    position: "CB",
+    age: 24,
+    nationality: "Argentina",
+    overall: 76,
+    potential: 78,
+    salary: "€15,000",
+    marketValue: "€10M",
+    contract: "2025",
+    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+  },
+  {
+    id: 6,
+    name: "Otávio",
+    position: "CB",
+    age: 23,
+    nationality: "Brasil",
+    overall: 76,
+    potential: 80,
+    salary: "€18,000",
+    marketValue: "€15.5M",
+    contract: "2026",
+    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+  },
+  {
+    id: 7,
+    name: "Tiago Djaló",
+    position: "CB",
+    age: 25,
+    nationality: "Portugal",
+    overall: 76,
+    potential: 79,
+    salary: "€18,000",
+    marketValue: "€10M",
+    contract: "2025",
+    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+  },
+  {
+    id: 8,
+    name: "Zé Pedro",
+    position: "CB",
+    age: 27,
+    nationality: "Portugal",
+    overall: 74,
+    potential: 76,
+    salary: "€12,000",
+    marketValue: "€4.5M",
+    contract: "2026",
+    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+  },
+
+  // VOLANTES E MEIAS
+  {
+    id: 9,
     name: "Alan Varela",
     position: "CDM",
     age: 23,
@@ -66,131 +118,250 @@ export const fcPortoPlayers = [
     overall: 77,
     potential: 85,
     salary: "€25,000",
-    marketValue: "€18M",
-    contract: "2029",
-    stats: {
-      appearances: 25,
-      goals: 2,
-      assists: 4,
-      cleanSheets: 0,
-      rating: 7.2
-    }
+    marketValue: "€25.5M",
+    contract: "2027",
+    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
   },
   {
-    id: 5,
-    name: "João Mário",
-    position: "RB",
-    age: 31,
+    id: 10,
+    name: "Tomás Pérez",
+    position: "CDM",
+    age: 19,
+    nationality: "Argentina",
+    overall: 62,
+    potential: 78,
+    salary: "€5,000",
+    marketValue: "€0.975M",
+    contract: "2028",
+    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+  },
+  {
+    id: 11,
+    name: "Fábio Vieira",
+    position: "CM",
+    age: 24,
     nationality: "Portugal",
     overall: 77,
-    potential: 77,
-    salary: "€30,000",
-    marketValue: "€8M",
+    potential: 80,
+    salary: "€22,000",
+    marketValue: "€14.5M",
     contract: "2025",
-    stats: {
-      appearances: 29,
-      goals: 1,
-      assists: 5,
-      cleanSheets: 0,
-      rating: 7.1
-    }
+    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
   },
   {
-    id: 6,
-    name: "Samu",
-    position: "ST",
-    age: 20,
-    nationality: "Espanha",
-    overall: 78,
-    potential: 87,
-    salary: "€15,000",
-    marketValue: "€22M",
-    contract: "2029",
-    stats: {
-      appearances: 26,
-      goals: 14,
-      assists: 3,
-      cleanSheets: 0,
-      rating: 7.5
-    }
+    id: 12,
+    name: "Marko Grujić",
+    position: "CM",
+    age: 29,
+    nationality: "Sérvia",
+    overall: 74,
+    potential: 74,
+    salary: "€18,000",
+    marketValue: "€4.1M",
+    contract: "2026",
+    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
   },
   {
-    id: 7,
-    name: "Nico González",
-    position: "CAM",
-    age: 22,
-    nationality: "Espanha",
-    overall: 78,
-    potential: 86,
-    salary: "€20,000",
-    marketValue: "€20M",
-    contract: "2028",
-    stats: {
-      appearances: 24,
-      goals: 6,
-      assists: 8,
-      cleanSheets: 0,
-      rating: 7.3
-    }
+    id: 13,
+    name: "Romário Baró",
+    position: "CM",
+    age: 25,
+    nationality: "Portugal",
+    overall: 70,
+    potential: 73,
+    salary: "€10,000",
+    marketValue: "€2.3M",
+    contract: "2026",
+    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
   },
   {
-    id: 8,
+    id: 14,
     name: "Stephen Eustáquio",
     position: "CM",
-    age: 27,
+    age: 28,
     nationality: "Canadá",
     overall: 77,
     potential: 79,
     salary: "€28,000",
-    marketValue: "€15M",
+    marketValue: "€10M",
     contract: "2026",
-    stats: {
-      appearances: 22,
-      goals: 3,
-      assists: 6,
-      cleanSheets: 0,
-      rating: 7.0
-    }
+    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
   },
   {
-    id: 9,
-    name: "Otávio",
-    position: "CM",
-    age: 29,
-    nationality: "Brasil",
-    overall: 79,
-    potential: 79,
-    salary: "€32,000",
-    marketValue: "€12M",
-    contract: "2025",
-    stats: {
-      appearances: 27,
-      goals: 4,
-      assists: 9,
-      cleanSheets: 0,
-      rating: 7.2
-    }
-  },
-  {
-    id: 10,
-    name: "Pepe",
-    position: "CB",
-    age: 41,
+    id: 15,
+    name: "Rodrigo Mora",
+    position: "CAM",
+    age: 18,
     nationality: "Portugal",
-    overall: 78,
+    overall: 72,
+    potential: 88,
+    salary: "€5,000",
+    marketValue: "€6M",
+    contract: "2031",
+    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+  },
+  {
+    id: 16,
+    name: "Vasco Sousa",
+    position: "CAM",
+    age: 22,
+    nationality: "Portugal",
+    overall: 69,
+    potential: 74,
+    salary: "€8,000",
+    marketValue: "€3.1M",
+    contract: "2027",
+    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+  },
+
+  // PONTAS
+  {
+    id: 17,
+    name: "Iván Jaime",
+    position: "LW",
+    age: 24,
+    nationality: "Espanha",
+    overall: 74,
     potential: 78,
-    salary: "€25,000",
-    marketValue: "€2M",
-    contract: "2025",
-    stats: {
-      appearances: 20,
-      goals: 2,
-      assists: 1,
-      cleanSheets: 0,
-      rating: 7.4
-    }
+    salary: "€12,000",
+    marketValue: "€6.5M",
+    contract: "2027",
+    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+  },
+  {
+    id: 18,
+    name: "William Gomes",
+    position: "LW",
+    age: 19,
+    nationality: "Brasil",
+    overall: 69,
+    potential: 82,
+    salary: "€6,000",
+    marketValue: "€2.4M",
+    contract: "2029",
+    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+  },
+  {
+    id: 19,
+    name: "André Franco",
+    position: "RW",
+    age: 27,
+    nationality: "Portugal",
+    overall: 73,
+    potential: 73,
+    salary: "€10,000",
+    marketValue: "€3.2M",
+    contract: "2027",
+    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+  },
+  {
+    id: 20,
+    name: "Francisco Conceição",
+    position: "RW",
+    age: 22,
+    nationality: "Portugal",
+    overall: 79,
+    potential: 85,
+    salary: "€22,000",
+    marketValue: "€35.5M",
+    contract: "2029",
+    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+  },
+  {
+    id: 21,
+    name: "Gonçalo Borges",
+    position: "RW",
+    age: 24,
+    nationality: "Portugal",
+    overall: 72,
+    potential: 74,
+    salary: "€8,000",
+    marketValue: "€3.5M",
+    contract: "2027",
+    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+  },
+  {
+    id: 22,
+    name: "Pepê",
+    position: "RW",
+    age: 28,
+    nationality: "Brasil",
+    overall: 82,
+    potential: 84,
+    salary: "€38,000",
+    marketValue: "€21M",
+    contract: "2026",
+    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+  },
+
+  // ATACANTES
+  {
+    id: 23,
+    name: "Danny Namaso",
+    position: "ST",
+    age: 24,
+    nationality: "Camarões",
+    overall: 73,
+    potential: 76,
+    salary: "€12,000",
+    marketValue: "€4.9M",
+    contract: "2028",
+    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+  },
+  {
+    id: 24,
+    name: "Deniz Gul",
+    position: "ST",
+    age: 20,
+    nationality: "Turquia",
+    overall: 66,
+    potential: 80,
+    salary: "€5,000",
+    marketValue: "€2.1M",
+    contract: "2029",
+    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+  },
+  {
+    id: 25,
+    name: "Fran Navarro",
+    position: "ST",
+    age: 27,
+    nationality: "Espanha",
+    overall: 75,
+    potential: 77,
+    salary: "€14,000",
+    marketValue: "€6M",
+    contract: "2028",
+    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+  },
+  {
+    id: 26,
+    name: "Samu",
+    position: "ST",
+    age: 21,
+    nationality: "Espanha",
+    overall: 78,
+    potential: 87,
+    salary: "€18,000",
+    marketValue: "€32M",
+    contract: "2029",
+    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+  },
+  {
+    id: 27,
+    name: "Wendel Silva",
+    position: "ST",
+    age: 24,
+    nationality: "Brasil",
+    overall: 67,
+    potential: 70,
+    salary: "€6,000",
+    marketValue: "€1.6M",
+    contract: "2026",
+    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
   }
 ];
+
 
 export const transferHistory = [
   {
