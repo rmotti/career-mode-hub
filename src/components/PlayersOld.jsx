@@ -36,13 +36,15 @@ const Players = () => {
     return colors[position] || 'bg-gray-100 text-gray-800';
   };
 
-  const getPotentialIndicator = (current, potential) => {
-    const diff = potential - current;
-    if (diff >= 7) return { color: 'text-green-600', icon: '⭐⭐⭐' };
-    if (diff >= 4) return { color: 'text-yellow-600', icon: '⭐⭐' };
-    if (diff >= 2) return { color: 'text-blue-600', icon: '⭐' };
+  const getPotentialIndicator = ( potential) => {
+    if (potential >= 90) return { color: 'text-green-600', icon: '⭐⭐⭐⭐⭐' };
+    if (potential >= 85) return { color: 'text-yellow-600', icon: '⭐⭐⭐⭐' };
+    if (potential >= 80) return { color: 'text-blue-600', icon: '⭐⭐⭐' };
+    if (potential >= 75) return { color: 'text-blue-600', icon: '⭐⭐' };
+    if (potential >= 70) return { color: 'text-blue-600', icon: '⭐' };
     return { color: 'text-gray-600', icon: '' };
   };
+
 
   return (
     <div className="space-y-6">

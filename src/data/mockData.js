@@ -9,10 +9,10 @@ export const fcPortoPlayers = [
     nationality: "Portugal",
     overall: 73,
     potential: 73,
-    salary: "€10,000",
+    salary: "€8,400",
     marketValue: "€1M",
     contract: "2026",
-    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+    stats: { appearances: 2, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
   },
   {
     id: 2,
@@ -22,10 +22,10 @@ export const fcPortoPlayers = [
     nationality: "Portugal",
     overall: 84,
     potential: 89,
-    salary: "€45,000",
+    salary: "€20,000",
     marketValue: "€52M",
     contract: "2027",
-    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+    stats: { appearances: 47, goals: 0, assists: 0, cleanSheets: 21, rating: 0 }
   },
   {
     id: 3,

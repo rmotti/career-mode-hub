@@ -1,15 +1,27 @@
 import { useState, useEffect } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter
+} from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select';
 
 const PlayerModal = ({ isOpen, onClose, onSave, player = null }) => {
   const [formData, setFormData] = useState({
     name: '',
     position: '',
+    function: '',
     age: '',
     nationality: '',
     overall: '',
@@ -27,6 +39,7 @@ const PlayerModal = ({ isOpen, onClose, onSave, player = null }) => {
   });
 
   const positions = ['GK', 'CB', 'LB', 'RB', 'CDM', 'CM', 'CAM', 'LW', 'RW', 'ST'];
+  const functions = ['Crucial', 'Importante', 'Rodizio', 'Esporadico', 'Promessa'];
   const isEditing = !!player;
 
   useEffect(() => {
@@ -34,6 +47,7 @@ const PlayerModal = ({ isOpen, onClose, onSave, player = null }) => {
       setFormData({
         name: player.name || '',
         position: player.position || '',
+        function: player.function || '',
         age: player.age?.toString() || '',
         nationality: player.nationality || '',
         overall: player.overall?.toString() || '',
@@ -50,10 +64,10 @@ const PlayerModal = ({ isOpen, onClose, onSave, player = null }) => {
         }
       });
     } else {
-      // Reset form for new player
       setFormData({
         name: '',
         position: '',
+        function: '',
         age: '',
         nationality: '',
         overall: '',
@@ -91,8 +105,7 @@ const PlayerModal = ({ isOpen, onClose, onSave, player = null }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    // Validate required fields
+
     if (!formData.name || !formData.position || !formData.age) {
       alert('Por favor, preencha os campos obrigatórios: Nome, Posição e Idade');
       return;
@@ -130,7 +143,6 @@ const PlayerModal = ({ isOpen, onClose, onSave, player = null }) => {
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Dados Básicos */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="name">Nome *</Label>
@@ -145,13 +157,33 @@ const PlayerModal = ({ isOpen, onClose, onSave, player = null }) => {
 
             <div>
               <Label htmlFor="position">Posição *</Label>
-              <Select value={formData.position} onValueChange={(value) => handleInputChange('position', value)}>
+              <Select
+                value={formData.position}
+                onValueChange={(value) => handleInputChange('position', value)}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Selecione a posição" />
                 </SelectTrigger>
                 <SelectContent>
                   {positions.map(pos => (
                     <SelectItem key={pos} value={pos}>{pos}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <Label htmlFor="function">Função no Elenco</Label>
+              <Select
+                value={formData.function}
+                onValueChange={(value) => handleInputChange('function', value)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Selecione a função" />
+                </SelectTrigger>
+                <SelectContent>
+                  {functions.map(fn => (
+                    <SelectItem key={fn} value={fn}>{fn}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -238,7 +270,6 @@ const PlayerModal = ({ isOpen, onClose, onSave, player = null }) => {
             </div>
           </div>
 
-          {/* Estatísticas da Temporada */}
           <div className="border-t pt-4">
             <h3 className="text-lg font-semibold mb-3">Estatísticas da Temporada</h3>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -321,4 +352,3 @@ const PlayerModal = ({ isOpen, onClose, onSave, player = null }) => {
 };
 
 export default PlayerModal;
-

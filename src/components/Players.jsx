@@ -21,7 +21,7 @@ const Players = () => {
   const positions = ['all', 'GK', 'CB', 'LB', 'RB', 'CDM', 'CM', 'CAM', 'LW', 'RW', 'ST'];
 
   // Ordenação por posição e filtros
-  const positionOrder = { 'GK': 1, 'CB': 2, 'LB': 3, 'RB': 4, 'CDM': 5, 'CM': 6, 'CAM': 7, 'LW': 8, 'RW': 9, 'ST': 10 };
+  const positionOrder = { 'GK': 1, 'RB': 2, 'CB': 3, 'LB': 4, 'CDM': 5, 'CM': 6, 'CAM': 7, 'LW': 8, 'RW': 9, 'ST': 10 };
 
   const filteredAndSortedPlayers = useMemo(() => {
     return players
@@ -54,11 +54,12 @@ const Players = () => {
     return colors[position] || 'bg-gray-100 text-gray-800';
   };
 
-  const getPotentialIndicator = (current, potential) => {
-    const diff = potential - current;
-    if (diff >= 7) return { color: 'text-green-600', icon: '⭐⭐⭐' };
-    if (diff >= 4) return { color: 'text-yellow-600', icon: '⭐⭐' };
-    if (diff >= 2) return { color: 'text-blue-600', icon: '⭐' };
+  const getPotentialIndicator = ( potential) => {
+    if (potential >= 90) return { color: 'text-green-600', icon: '⭐⭐⭐⭐⭐' };
+    if (potential >= 85) return { color: 'text-yellow-600', icon: '⭐⭐⭐⭐' };
+    if (potential >= 80) return { color: 'text-blue-600', icon: '⭐⭐⭐' };
+    if (potential >= 75) return { color: 'text-blue-600', icon: '⭐⭐' };
+    if (potential >= 70) return { color: 'text-blue-600', icon: '⭐' };
     return { color: 'text-gray-600', icon: '' };
   };
 
