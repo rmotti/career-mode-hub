@@ -13,7 +13,7 @@ export const fcPortoPlayers = [
     salary: "€8,400",
     marketValue: "€1M",
     contract: "2026",
-    stats: { appearances: 2, goals: 0, assists: 0, cleanSheets: 0, rating: 6 }
+    stats: { appearances: 1, goals: 0, assists: 0, cleanSheets: 0, rating: 6.2 }
   },
   {
     id: 2,
@@ -27,7 +27,7 @@ export const fcPortoPlayers = [
     salary: "€20,000",
     marketValue: "€52M",
     contract: "2027",
-    stats: { appearances: 47, goals: 0, assists: 0, cleanSheets: 21, rating: 7.6 }
+    stats: { appearances: 12, goals: 0, assists: 0, cleanSheets: 7, rating: 7.8 }
   },
   {
     id: 3,
@@ -214,7 +214,7 @@ export const fcPortoPlayers = [
     salary: "€15,000",
     marketValue: "€14.5M",
     contract: "2025",
-    stats: { appearances: 40, goals: 8, assists: 7, cleanSheets: 16, rating: 7.15 }
+    stats: { appearances: 11, goals: 3, assists: 4, cleanSheets: 5, rating: 7.3 }
   },
   {
     id: 16,
@@ -270,7 +270,7 @@ export const fcPortoPlayers = [
     salary: "€10,000",
     marketValue: "€6M",
     contract: "2031",
-    stats: { appearances: 32, goals: 10, assists: 6, cleanSheets: 10, rating: 7.33 }
+    stats: { appearances: 10, goals: 4, assists: 3, cleanSheets: 3, rating: 7.5 }
   },
   {
     id: 20,
@@ -428,7 +428,7 @@ export const fcPortoPlayers = [
     salary: "€15,000",
     marketValue: "€32M",
     contract: "2029",
-    stats: { appearances: 44, goals: 26, assists: 3, cleanSheets: 21, rating: 7.78 }
+    stats: { appearances: 12, goals: 8, assists: 2, cleanSheets: 6, rating: 8.1 }
   },
   {
     id: 31,
@@ -449,6 +449,26 @@ export const fcPortoPlayers = [
 export const transferHistory = [
   {
     id: 1,
+    playerName: "Galeno",
+    type: "Saída",
+    fromClub: "FC Porto",
+    toClub: "Al-Ittihad",
+    fee: "€50M",
+    date: "2025-07-20",
+    season: "2025/26"
+  },
+  {
+    id: 2,
+    playerName: "Nico González",
+    type: "Entrada",
+    fromClub: "Barcelona",
+    toClub: "FC Porto",
+    fee: "€25M",
+    date: "2025-08-10",
+    season: "2025/26"
+  },
+  {
+    id: 3,
     playerName: "João Mário",
     type: "Entrada",
     fromClub: "Benfica",
@@ -458,7 +478,7 @@ export const transferHistory = [
     season: "2024/25"
   },
   {
-    id: 2,
+    id: 4,
     playerName: "Galeno",
     type: "Renovação",
     fromClub: null,
@@ -468,7 +488,7 @@ export const transferHistory = [
     season: "2024/25"
   },
   {
-    id: 3,
+    id: 5,
     playerName: "Mehdi Taremi",
     type: "Saída",
     fromClub: "FC Porto",
@@ -478,7 +498,7 @@ export const transferHistory = [
     season: "2024/25"
   },
   {
-    id: 4,
+    id: 6,
     playerName: "Evanilson",
     type: "Saída",
     fromClub: "FC Porto",
@@ -488,7 +508,7 @@ export const transferHistory = [
     season: "2024/25"
   },
   {
-    id: 5,
+    id: 7,
     playerName: "Nico González",
     type: "Empréstimo (Entrada)",
     fromClub: "Barcelona",
@@ -502,35 +522,13 @@ export const transferHistory = [
 export const seasonStats = [
   {
     season: "2024/25",
-    matches: 34,
-    wins: 22,
-    draws: 5,
-    losses: 7,
-    goalsFor: 65,
-    goalsAgainst: 30,
-    points: 71,
-    position: 3
-  },
-  {
-    season: "2023/24",
-    matches: 34,
-    wins: 22,
-    draws: 6,
-    losses: 6,
-    goalsFor: 63,
-    goalsAgainst: 27,
-    points: 72,
-    position: 3
-  },
-  {
-    season: "2022/23",
-    matches: 34,
-    wins: 27,
-    draws: 4,
-    losses: 3,
-    goalsFor: 73,
-    goalsAgainst: 22,
-    points: 85,
+    matches: 18,
+    wins: 14,
+    draws: 3,
+    losses: 1,
+    goalsFor: 42,
+    goalsAgainst: 12,
+    points: 45,
     position: 2
   }
 ];

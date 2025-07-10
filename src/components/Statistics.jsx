@@ -1,27 +1,13 @@
-import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
-import { TrendingUp, Trophy, Target, Shield, Plus, Edit, Trash2 } from 'lucide-react';
-import { useLocalStorage } from '../hooks/useLocalStorage';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { TrendingUp, Trophy, Target, Shield, Eye } from 'lucide-react';
 import { seasonStats, fcPortoPlayers } from '../data/mockData';
-import SeasonModal from './SeasonModal';
 
 const Statistics = () => {
-  const [seasons, setSeasons] = useLocalStorage('fc-porto-seasons', seasonStats);
-  const [players] = useLocalStorage('fc-porto-players', fcPortoPlayers);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingSeason, setEditingSeason] = useState(null);
-
-  // Dados para gráfico de evolução por temporada
-  const seasonEvolution = seasons.map(season => ({
-    season: season.season,
-    points: season.points,
-    goals: season.goalsFor,
-    position: season.position
-  })).reverse();
+  const currentSeason = seasonStats[0]; // Apenas temporada atual
+  const players = fcPortoPlayers;
 
   // Estatísticas por posição
   const positionStats = players.reduce((acc, player) => {
@@ -59,52 +45,28 @@ const Statistics = () => {
     .slice(0, 5);
 
   const bestRated = players
+    .filter(p => p.stats.rating > 0)
     .sort((a, b) => b.stats.rating - a.stats.rating)
     .slice(0, 5);
 
-  // Calcular estatísticas gerais
-  const currentSeason = seasons[0];
-  const totalTitles = seasons.filter(s => s.position === 1).length;
+  // Calcular estatísticas gerais da temporada atual
   const avgGoalsPerGame = currentSeason ? (currentSeason.goalsFor / currentSeason.matches).toFixed(1) : 0;
   const avgGoalsAgainstPerGame = currentSeason ? (currentSeason.goalsAgainst / currentSeason.matches).toFixed(1) : 0;
-  const pointsImprovement = seasons.length > 1 ? seasons[0].points - seasons[1].points : 0;
-
-  const handleAddSeason = () => {
-    setEditingSeason(null);
-    setIsModalOpen(true);
-  };
-
-  const handleEditSeason = (season) => {
-    setEditingSeason(season);
-    setIsModalOpen(true);
-  };
-
-  const handleSaveSeason = (seasonData) => {
-    if (editingSeason) {
-      // Editar temporada existente
-      setSeasons(prev => prev.map(s => s.season === editingSeason.season ? seasonData : s));
-    } else {
-      // Adicionar nova temporada
-      setSeasons(prev => [seasonData, ...prev]);
-    }
-  };
-
-  const handleDeleteSeason = (seasonToDelete) => {
-    setSeasons(prev => prev.filter(s => s.season !== seasonToDelete));
-  };
+  const winPercentage = currentSeason ? ((currentSeason.wins / currentSeason.matches) * 100).toFixed(1) : 0;
+  const cleanSheets = players.reduce((sum, p) => sum + (p.stats.cleanSheets || 0), 0);
 
   return (
     <div className="space-y-6">
-      {/* Resumo Geral */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      {/* Resumo da Temporada Atual */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Títulos Conquistados</CardTitle>
+            <CardTitle className="text-sm font-medium">% de Vitórias</CardTitle>
             <Trophy className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{totalTitles}</div>
-            <p className="text-xs text-muted-foreground">últimas {seasons.length} temporadas</p>
+            <div className="text-2xl font-bold">{winPercentage}%</div>
+            <p className="text-xs text-muted-foreground">{currentSeason.wins} vitórias em {currentSeason.matches} jogos</p>
           </CardContent>
         </Card>
 
@@ -121,91 +83,65 @@ const Statistics = () => {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Defesa Sólida</CardTitle>
+            <CardTitle className="text-sm font-medium">Gols Sofridos</CardTitle>
             <Shield className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{avgGoalsAgainstPerGame}</div>
-            <p className="text-xs text-muted-foreground">gols sofridos por jogo</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Evolução</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className={`text-2xl font-bold ${pointsImprovement >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-              {pointsImprovement >= 0 ? '+' : ''}{pointsImprovement}
-            </div>
-            <p className="text-xs text-muted-foreground">pontos vs temporada passada</p>
+            <div className="text-2xl font-bold">{currentSeason.goalsAgainst}</div>
+            <p className="text-xs text-muted-foreground">total na temporada</p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Gráficos de Evolução */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Evolução por Temporada</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={seasonEvolution}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="season" />
-                <YAxis />
-                <Tooltip />
-                <Line 
-                  type="monotone" 
-                  dataKey="points" 
-                  stroke="#003366" 
-                  strokeWidth={2}
-                  name="Pontos"
-                />
-                <Line 
-                  type="monotone" 
-                  dataKey="goals" 
-                  stroke="#FFD700" 
-                  strokeWidth={2}
-                  name="Gols Marcados"
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Distribuição por Posição</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={positionData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="position" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="count" fill="#003366" name="Quantidade" />
-              </BarChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Rankings de Performance */}
+      {/* Rankings de Performance da Temporada */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <Target className="h-5 w-5" />
-              <span>Top Artilheiros</span>
-            </CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle className="flex items-center space-x-2">
+                <Target className="h-5 w-5" />
+                <span>Top Artilheiros</span>
+              </CardTitle>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="outline" size="sm">
+                    <Eye className="h-4 w-4 mr-2" />
+                    Ver todos
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle>Todos os Artilheiros da Temporada</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-3">
+                    {fcPortoPlayers
+                      .filter(player => player.stats.goals > 0)
+                      .sort((a, b) => b.stats.goals - a.stats.goals)
+                      .map((player, index) => (
+                        <div key={player.id} className="flex items-center justify-between p-3 border rounded-lg">
+                          <div className="flex items-center space-x-3">
+                            <Badge variant={index === 0 ? "default" : "secondary"}>
+                              {index + 1}
+                            </Badge>
+                            <div>
+                              <div className="font-medium">{player.name}</div>
+                              <div className="text-sm text-muted-foreground">{player.position} • {player.function}</div>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <div className="font-bold">{player.stats.goals} gols</div>
+                            <div className="text-sm text-muted-foreground">{player.stats.assists} assists</div>
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </div>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {topScorers.map((player, index) => (
+              {topScorers.slice(0, 3).map((player, index) => (
                 <div key={player.id} className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
                     <Badge variant={index === 0 ? "default" : "secondary"}>
@@ -225,14 +161,51 @@ const Statistics = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <TrendingUp className="h-5 w-5" />
-              <span>Top Assistências</span>
-            </CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle className="flex items-center space-x-2">
+                <TrendingUp className="h-5 w-5" />
+                <span>Top Assistências</span>
+              </CardTitle>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="outline" size="sm">
+                    <Eye className="h-4 w-4 mr-2" />
+                    Ver todos
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle>Todos os Assistentes da Temporada</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-3">
+                    {fcPortoPlayers
+                      .filter(player => player.stats.assists > 0)
+                      .sort((a, b) => b.stats.assists - a.stats.assists)
+                      .map((player, index) => (
+                        <div key={player.id} className="flex items-center justify-between p-3 border rounded-lg">
+                          <div className="flex items-center space-x-3">
+                            <Badge variant={index === 0 ? "default" : "secondary"}>
+                              {index + 1}
+                            </Badge>
+                            <div>
+                              <div className="font-medium">{player.name}</div>
+                              <div className="text-sm text-muted-foreground">{player.position} • {player.function}</div>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <div className="font-bold">{player.stats.assists} assists</div>
+                            <div className="text-sm text-muted-foreground">{player.stats.goals} gols</div>
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </div>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {topAssists.map((player, index) => (
+              {topAssists.slice(0, 3).map((player, index) => (
                 <div key={player.id} className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
                     <Badge variant={index === 0 ? "default" : "secondary"}>
@@ -252,14 +225,51 @@ const Statistics = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <Trophy className="h-5 w-5" />
-              <span>Melhores Notas</span>
-            </CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle className="flex items-center space-x-2">
+                <Trophy className="h-5 w-5" />
+                <span>Melhores Notas</span>
+              </CardTitle>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="outline" size="sm">
+                    <Eye className="h-4 w-4 mr-2" />
+                    Ver todos
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle>Melhores Notas da Temporada</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-3">
+                    {fcPortoPlayers
+                      .filter(player => player.stats.rating > 0)
+                      .sort((a, b) => b.stats.rating - a.stats.rating)
+                      .map((player, index) => (
+                        <div key={player.id} className="flex items-center justify-between p-3 border rounded-lg">
+                          <div className="flex items-center space-x-3">
+                            <Badge variant={index === 0 ? "default" : "secondary"}>
+                              {index + 1}
+                            </Badge>
+                            <div>
+                              <div className="font-medium">{player.name}</div>
+                              <div className="text-sm text-muted-foreground">{player.position} • {player.function}</div>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <div className="font-bold">{player.stats.rating}</div>
+                            <div className="text-sm text-muted-foreground">{player.stats.goals}G {player.stats.assists}A</div>
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </div>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {bestRated.map((player, index) => (
+              {bestRated.slice(0, 3).map((player, index) => (
                 <div key={player.id} className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
                     <Badge variant={index === 0 ? "default" : "secondary"}>
@@ -278,95 +288,43 @@ const Statistics = () => {
         </Card>
       </div>
 
-      {/* Histórico de Temporadas */}
+      {/* Resumo da Temporada Atual */}
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle>Histórico de Temporadas</CardTitle>
-            <Button onClick={handleAddSeason} className="flex items-center space-x-2">
-              <Plus className="h-4 w-4" />
-              <span>Adicionar Temporada</span>
-            </Button>
-          </div>
+          <CardTitle className="flex items-center space-x-2">
+            <Trophy className="h-5 w-5" />
+            <span>Temporada {currentSeason.season}</span>
+          </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b">
-                  <th className="text-left py-2">Temporada</th>
-                  <th className="text-center py-2">Posição</th>
-                  <th className="text-center py-2">Jogos</th>
-                  <th className="text-center py-2">V-E-D</th>
-                  <th className="text-center py-2">Gols</th>
-                  <th className="text-center py-2">Pontos</th>
-                  <th className="text-center py-2">Ações</th>
-                </tr>
-              </thead>
-              <tbody>
-                {seasons.map((season) => (
-                  <tr key={season.season} className="border-b">
-                    <td className="py-2 font-medium">{season.season}</td>
-                    <td className="text-center py-2">
-                      <Badge variant={season.position === 1 ? "default" : "secondary"}>
-                        {season.position}º
-                      </Badge>
-                    </td>
-                    <td className="text-center py-2">{season.matches}</td>
-                    <td className="text-center py-2 text-sm">
-                      <span className="text-green-600">{season.wins}</span>-
-                      <span className="text-yellow-600">{season.draws}</span>-
-                      <span className="text-red-600">{season.losses}</span>
-                    </td>
-                    <td className="text-center py-2">{season.goalsFor}:{season.goalsAgainst}</td>
-                    <td className="text-center py-2 font-bold">{season.points}</td>
-                    <td className="text-center py-2">
-                      <div className="flex justify-center space-x-1">
-                        <Button 
-                          variant="outline" 
-                          size="sm"
-                          onClick={() => handleEditSeason(season)}
-                        >
-                          <Edit className="h-3 w-3" />
-                        </Button>
-                        <AlertDialog>
-                          <AlertDialogTrigger asChild>
-                            <Button variant="outline" size="sm">
-                              <Trash2 className="h-3 w-3" />
-                            </Button>
-                          </AlertDialogTrigger>
-                          <AlertDialogContent>
-                            <AlertDialogHeader>
-                              <AlertDialogTitle>Confirmar Exclusão</AlertDialogTitle>
-                              <AlertDialogDescription>
-                                Tem certeza que deseja excluir a temporada {season.season}? Esta ação não pode ser desfeita.
-                              </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                              <AlertDialogAction onClick={() => handleDeleteSeason(season.season)}>
-                                Excluir
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialog>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
+            <div className="text-center">
+              <div className="text-2xl font-bold">{currentSeason.position}º</div>
+              <div className="text-sm text-muted-foreground">Posição</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-green-600">{currentSeason.wins}</div>
+              <div className="text-sm text-muted-foreground">Vitórias</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-yellow-600">{currentSeason.draws}</div>
+              <div className="text-sm text-muted-foreground">Empates</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-red-600">{currentSeason.losses}</div>
+              <div className="text-sm text-muted-foreground">Derrotas</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold">{currentSeason.goalsFor}</div>
+              <div className="text-sm text-muted-foreground">Gols Marcados</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold">{currentSeason.goalsAgainst}</div>
+              <div className="text-sm text-muted-foreground">Gols Sofridos</div>
+            </div>
           </div>
         </CardContent>
       </Card>
-
-      {/* Modal de Adicionar/Editar Temporada */}
-      <SeasonModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSave={handleSaveSeason}
-        season={editingSeason}
-      />
     </div>
   );
 };

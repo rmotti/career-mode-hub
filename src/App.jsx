@@ -3,6 +3,8 @@ import Header from './components/Header';
 import Dashboard from './components/Dashboard';
 import Players from './components/Players';
 import Statistics from './components/Statistics';
+import History from './components/History';
+import Financial from './components/Financial';
 import Transfers from './components/Transfers';
 import './App.css';
 
@@ -17,6 +19,10 @@ function App() {
         return <Players />;
       case 'stats':
         return <Statistics />;
+      case 'history':
+        return <History />;
+      case 'financial':
+        return <Financial />;
       case 'transfers':
         return <Transfers />;
       default:

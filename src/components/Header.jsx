@@ -1,4 +1,4 @@
-import { Trophy, Users, TrendingUp, ArrowLeftRight } from 'lucide-react';
+import { Trophy, Users, TrendingUp, History, DollarSign, ArrowLeftRight } from 'lucide-react';
 import fcPortoLogo from '../assets/fc-porto-logo.png';
 
 const Header = ({ activeTab, setActiveTab }) => {
@@ -6,7 +6,9 @@ const Header = ({ activeTab, setActiveTab }) => {
     { id: 'dashboard', label: 'Visão Geral', icon: Trophy },
     { id: 'players', label: 'Elenco', icon: Users },
     { id: 'stats', label: 'Estatísticas', icon: TrendingUp },
-    { id: 'transfers', label: 'Transferências', icon: ArrowLeftRight }
+    { id: 'financial', label: 'Financeiro', icon: DollarSign },
+    { id: 'transfers', label: 'Transferências', icon: ArrowLeftRight },
+    { id: 'history', label: 'História', icon: History }
   ];
 
   return (
@@ -22,7 +24,7 @@ const Header = ({ activeTab, setActiveTab }) => {
             />
             <div>
               <h1 className="text-2xl font-bold">FC Porto Career Hub</h1>
-              <p className="text-sm opacity-90">Temporada 2024/25</p>
+              <p className="text-sm opacity-90">Temporada 2025/26</p>
             </div>
           </div>
 
