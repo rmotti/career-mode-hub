@@ -315,5 +315,257 @@ export const transferHistory = [
     fee: "Aposentadoria",
     date: "2024-06-30",
     season: "2024/25"
+  },
+  // TEMPORADA 2025/26
+  {
+    id: 30,
+    playerName: "Iván Marcano",
+    type: "Saída",
+    fromClub: "FC Porto",
+    toClub: null,
+    fee: "Aposentadoria",
+    date: "2025-06-30",
+    season: "2025/26"
+  },
+   {
+    id: 31,
+    playerName: "Nehuén Pérez",
+    type: "Saída",
+    fromClub: "FC Porto",
+    toClub: "Udinese",
+    fee: "Fim de Empréstimo",
+    date: "2025-06-30",
+    season: "2025/26"
+  },
+   {
+    id: 32,
+    playerName: "Tiago Djaló",
+    type: "Saída",
+    fromClub: "FC Porto",
+    toClub: "Juventus",
+    fee: "Fim de Empréstimo",
+    date: "2025-06-30",
+    season: "2025/26"
+  },
+  {
+    id: 33,
+    playerName: "Romário Baró",
+    type: "Retorno de empréstimo",
+    fromClub: "FC Basel",
+    toClub: "FC Porto",
+    fee: "Fim de Empréstimo",
+    date: "2025-06-30",
+    season: "2025/26"
+  },
+    {
+    id: 34,
+    playerName: "Francisco Conceição",
+    type: "Retorno de empréstimo",
+    fromClub: "Juventus",
+    toClub: "FC Porto",
+    fee: "Fim de Empréstimo",
+    date: "2025-06-30",
+    season: "2025/26"
+  },
+  {
+    id: 35,
+    playerName: "Wendel Silva",
+    type: "Retorno de empréstimo",
+    fromClub: "Santa Clara",
+    toClub: "FC Porto",
+    fee: "Fim de Empréstimo",
+    date: "2025-06-30",
+    season: "2025/26"
+  },
+  {
+    id: 36,
+    playerName: "Iván Jaime",
+    type: "Retorno de empréstimo",
+    fromClub: "Valencia",
+    toClub: "FC Porto",
+    fee: "Fim de Empréstimo",
+    date: "2025-06-30",
+    season: "2025/26"
+  },
+  {
+    id: 37,
+    playerName: "Fran Navarro",
+    type: "Retorno de empréstimo",
+    fromClub: "Braga",
+    toClub: "FC Porto",
+    fee: "Fim de Empréstimo",
+    date: "2025-06-30",
+    season: "2025/26"
+  },
+  {
+    id: 38,
+    playerName: "Fábio Vieira",
+    type: "Saída",
+    fromClub: "FC Porto",
+    toClub: "Arsenal",
+    fee: "Fim de Empréstimo",
+    date: "2025-06-30",
+    season: "2025/26"
+  },
+  {
+    id: 39,
+    playerName: "Zaidu Sanusi",
+    type: "Saída",
+    fromClub: "FC Porto",
+    toClub: "Udinese",
+    fee: "4M",
+    date: "2025-07-09",
+    season: "2025/26"
+  },
+  {
+    id: 40,
+    playerName: "Nehuén Pérez",
+    type: "Entrada",
+    fromClub: "Udinese",
+    toClub: "FC Porto",
+    fee: "10M",
+    date: "2025-07-09",
+    season: "2025/26"
+  },
+    {
+    id: 41,
+    playerName: "Gabri Veiga",
+    type: "Entrada",
+    fromClub: "Al Ahli",
+    toClub: "FC Porto",
+    fee: "21.2M",
+    date: "2025-07-27",
+    season: "2025/26"
+  },
+    {
+    id: 42,
+    playerName: "Borja Sainz",
+    type: "Entrada",
+    fromClub: "Norwich City",
+    toClub: "FC Porto",
+    fee: "15M",
+    date: "2025-08-08",
+    season: "2025/26"
+  },
+    {
+    id: 43,
+    playerName: "Renan Lodi",
+    type: "Entrada",
+    fromClub: "Al Hilal",
+    toClub: "FC Porto",
+    fee: "17M",
+    date: "2025-08-17",
+    season: "2025/26"
+  },
+    {
+    id: 44,
+    playerName: "Valentín Gómez",
+    type: "Entrada",
+    fromClub: "Vélez Sarsfield",
+    toClub: "FC Porto",
+    fee: "16.6M",
+    date: "2025-08-19",
+    season: "2025/26"
+  },
+    {
+    id: 45,
+    playerName: "Adriano Firmino",
+    type: "Entrada",
+    fromClub: "Santa Clara",
+    toClub: "FC Porto",
+    fee: "2M",
+    date: "2025-08-19",
+    season: "2025/26"
+  },
+    {
+    id: 46,
+    playerName: "Lucas França",
+    type: "Entrada",
+    fromClub: "Nacional",
+    toClub: "FC Porto",
+    fee: "3M",
+    date: "2025-08-19",
+    season: "2025/26"
+  },
+    {
+    id: 47,
+    playerName: "Samuel Portugal",
+    type: "Saída",
+    fromClub: "FC Porto",
+    toClub: "Palermo",
+    fee: "1M",
+    date: "2025-07-20",
+    season: "2025/26"
+  },
+    {
+    id: 48,
+    playerName: "Wendel Silva",
+    type: "Saída",
+    fromClub: "FC Porto",
+    toClub: "FC Copenhagen",
+    fee: "2M",
+    date: "2025-07-23",
+    season: "2025/26"
+  },
+    {
+    id: 49,
+    playerName: "Marko Grujić",
+    type: "Saída",
+    fromClub: "FC Porto",
+    toClub: "Braga",
+    fee: "4.6M",
+    date: "2025-07-24",
+    season: "2025/26"
+  },
+    {
+    id: 50,
+    playerName: "Romario Baró",
+    type: "Saída",
+    fromClub: "FC Porto",
+    toClub: "Swansea City",
+    fee: "3.7M",
+    date: "2025-07-30",
+    season: "2025/26"
+  },
+    {
+    id: 51,
+    playerName: "André Franco",
+    type: "Saída",
+    fromClub: "FC Porto",
+    toClub: "Leeds United",
+    fee: "3.7M",
+    date: "2025-07-31",
+    season: "2025/26"
+  },
+    {
+    id: 52,
+    playerName: "Gonçalo Borges",
+    type: "Saída",
+    fromClub: "FC Porto",
+    toClub: "GENK",
+    fee: "3.7M",
+    date: "2025-08-02",
+    season: "2025/26"
+  },
+    {
+    id: 53,
+    playerName: "Fran Navarro",
+    type: "Saída",
+    fromClub: "FC Porto",
+    toClub: "Stade Rennais",
+    fee: "9.2M",
+    date: "2025-08-18",
+    season: "2025/26"
+  },
+    {
+    id: 54,
+    playerName: "Francisco Conceição",
+    type: "Saída",
+    fromClub: "FC Porto",
+    toClub: "Manchester United",
+    fee: "70M",
+    date: "2025-08-18",
+    season: "2025/26"
   }
+  
 ];

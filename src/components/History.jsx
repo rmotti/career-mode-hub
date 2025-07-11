@@ -244,11 +244,12 @@ const History = () => {
           <CardContent>
             <div className="space-y-3">
               {[
+                { name: "Gabri Veiga", value: "€21.30M", season: "25/26", from: "Al-Ahli" },
                 { name: "Nico González", value: "€21.20M", season: "23/24", from: "Barcelona" },
                 { name: "David Carmo", value: "€20.28M", season: "22/23", from: "Braga" },
                 { name: "Samu Aghehowa", value: "€20.00M", season: "24/25", from: "Atlético Madrid" },
-                { name: "Óliver Torres", value: "€20.00M", season: "17/18", from: "Atlético Madrid" },
-                { name: "Giannelli Imbula", value: "€20.00M", season: "15/16", from: "Marseille" }
+                { name: "Óliver Torres", value: "€20.00M", season: "17/18", from: "Atlético Madrid" }
+                
               ].map((player, index) => (
                 <div key={index} className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">

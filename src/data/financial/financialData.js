@@ -1,3 +1,13 @@
+import { transferHistory } from '../transfers/transferHistory';
+import { fcPortoPlayers2025_26} from '../players/squad2025-26';
+import { fcPortoPlayers2024_25} from '../players/squad2024-25';
+
+// Mapeamento das squads por temporada
+const squads = {
+  '2024/25': fcPortoPlayers2024_25,
+  '2025/26': fcPortoPlayers2025_26
+};
+
 /**
  * DADOS FINANCEIROS FC PORTO
  * 
@@ -11,53 +21,88 @@
  * BALANÇO FINANCEIRO DA TEMPORADA ATUAL
  * Valores em euros (€)
  */
-export const currentSeasonBalance = {
-  receitas: 171400000,      // €171.4M em vendas
-  gastos: 41500000,        // €41.5M em compras
-  saldoLiquido: 129900000,  // €129.9M positivo
-  folhaSalarial: 109200000 // €2.1M/semana * 52 semanas
+// Função utilitária para calcular folha salarial anual de um squad
+function getAnnualWage(squad) {
+  // Assume que cada jogador tem uma propriedade 'salary' em euros por semana
+  return squad.reduce((sum, player) => sum + (player.salary || 0), 0) * 52;
+}
+
+// Busca receitas e gastos das temporadas em transferHistory
+const transfer2024_25 = transferHistory.find(t => t.season === '2024/25');
+const transfer2025_26 = transferHistory.find(t => t.season === '2025/26');
+const squad2024_25 = squads['2024/25'] || [];
+const squad2025_26 = squads['2025/26'] || [];
+
+export const seasonBalance2024_25 = {
+  receitas: transfer2024_25?.receitas || 0,
+  gastos: transfer2024_25?.gastos || 0,
+  saldoLiquido: (transfer2024_25?.receitas || 0) - (transfer2024_25?.gastos || 0),
+  folhaSalarial: getAnnualWage(squad2024_25)
 };
+
+export const seasonBalance2025_26 = {
+  receitas: transfer2025_26?.receitas || 0,
+  gastos: transfer2025_26?.gastos || 0,
+  saldoLiquido: (transfer2025_26?.receitas || 0) - (transfer2025_26?.gastos || 0),
+  folhaSalarial: getAnnualWage(squad2025_26)
+};
+
+// Para manter compatibilidade com código existente
+export const previousSeasonBalance = seasonBalance2024_25;
+export const currentSeasonBalance = seasonBalance2025_26;
 
 /**
  * DADOS DE TRANSFERÊNCIAS POR TEMPORADA
  * Para gráficos de movimentação financeira
  * Valores em milhões de euros
  */
+/**
+ * Gera dinamicamente os dados de transferências por temporada
+ * usando o balanço financeiro da temporada atual.
+ */
 export const transfersBySeasonData = [
-  { 
+  {
     season: '2024/25',
-    compras: 41.5,    // €41.5M gastos em compras
-    vendas: 171.4,     // €171.4M recebidos em vendas
-    saldo: 171.4 - 41.5 // €129.9M saldo positivo
+    compras: previousSeasonBalance.gastos / 1e6, // milhões
+    vendas: previousSeasonBalance.receitas / 1e6, // milhões
+    saldo: (previousSeasonBalance.receitas - previousSeasonBalance.gastos) / 1e6 // milhões
+  },
+    {
+    season: '2025/26',
+    compras: currentSeasonBalance.gastos / 1e6, // milhões
+    vendas: currentSeasonBalance.receitas / 1e6, // milhões
+    saldo: (currentSeasonBalance.receitas - currentSeasonBalance.gastos) / 1e6 // milhões
   }
-  // Adicione novas temporadas aqui seguindo o mesmo formato
-  // Exemplo:
-  // { 
-  //   season: '2025/26', 
-  //   compras: 25, 
-  //   vendas: 50, 
-  //   saldo: 25 
-  // }
+  // Adicione novas temporadas aqui seguindo o mesmo formato, se necessário
 ];
 
 /**
- * GASTOS SEMANAIS DA FOLHA SALARIAL POR TEMPORADA
- * Para gráfico de evolução dos gastos com salários
- * Valores em milhões de euros por semana
+ * Gera dinamicamente os gastos semanais da folha salarial por temporada
+ * usando o balanço financeiro da temporada atual.
  */
 export const weeklyWagesBySeasonData = [
-  { 
-    season: '2024/25', 
-    gastoSemanal: 2.1  // €2.1M por semana
+  {
+    season: '2024/25',
+    gastoSemanal: currentSeasonBalance.folhaSalarial / 52 / 1e6 // milhões por semana
+  },
+    {
+    season: '2025/26',
+    gastoSemanal: currentSeasonBalance.folhaSalarial / 52 / 1e6 // milhões por semana
   }
-  // Adicione novas temporadas aqui seguindo o mesmo formato
-  // Exemplo:
-  // { 
-  //   season: '2025/26', 
-  //   gastoSemanal: 2.3 
-  // }
+  // Adicione novas temporadas aqui seguindo o mesmo formato, se necessário
 ];
-
+/**
+ * MAIORES VALORES DE MERCADO ATUAIS
+ * Lista dos jogadores com maior valor de mercado no elenco atual
+ * Valores em milhões de euros
+ */
+export const highestMarketValues = [
+  { name: "Diogo Costa", value: "€52M", position: "GK", age: 25 },
+  { name: "Francisco Conceição", value: "€35.5M", position: "RW", age: 22 },
+  { name: "Samu", value: "€32M", position: "ST", age: 21 },
+  { name: "Galeno", value: "€28M", position: "LW", age: 27 },
+  { name: "Alan Varela", value: "€25.5M", position: "CDM", age: 23 }
+];
 /**
  * MAIORES COMPRAS DA HISTÓRIA
  * Lista das maiores aquisições do clube
@@ -84,16 +129,5 @@ export const biggestSales = [
   { name: "Galeno", value: "€50M", season: "24/25", to: "Al-Ahli" }
 ];
 
-/**
- * MAIORES VALORES DE MERCADO ATUAIS
- * Lista dos jogadores com maior valor de mercado no elenco atual
- * Valores em milhões de euros
- */
-export const highestMarketValues = [
-  { name: "Diogo Costa", value: "€52M", position: "GK", age: 25 },
-  { name: "Francisco Conceição", value: "€35.5M", position: "RW", age: 22 },
-  { name: "Samu", value: "€32M", position: "ST", age: 21 },
-  { name: "Galeno", value: "€28M", position: "LW", age: 27 },
-  { name: "Alan Varela", value: "€25.5M", position: "CDM", age: 23 }
-];
+
 

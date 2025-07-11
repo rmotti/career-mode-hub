@@ -1,23 +1,57 @@
 import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from 'recharts';
-import { DollarSign, TrendingUp, TrendingDown, Calculator, Calendar, Eye } from 'lucide-react';
-import { fcPortoPlayers, transfersBySeasonData, weeklyWagesBySeasonData, currentSeasonBalance } from '../data/index.js';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import {
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+} from 'recharts';
+import {
+  DollarSign,
+  TrendingUp,
+  TrendingDown,
+  Calculator,
+  Eye,
+} from 'lucide-react';
+import {
+  fcPortoPlayers,
+  transfersBySeasonData,
+  weeklyWagesBySeasonData,
+} from '../data/index.js';
 
 const Financial = () => {
-  const [salaryView, setSalaryView] = useState('weekly'); // weekly, monthly, annual
+  const [salaryView, setSalaryView] = useState('weekly');
+  const [selectedSeason, setSelectedSeason] = useState(
+    transfersBySeasonData[transfersBySeasonData.length - 1].season
+  );
 
-  // Calcular folha salarial
   const calculateSalary = (weeklySalary, view) => {
     const weekly = parseFloat(weeklySalary.replace('€', '').replace(',', ''));
     switch (view) {
       case 'monthly':
-        return weekly * 4.33; // 4.33 semanas por mês
+        return weekly * 4.33;
       case 'annual':
-        return weekly * 52; // 52 semanas por ano
+        return weekly * 52;
       default:
         return weekly;
     }
@@ -43,11 +77,10 @@ const Financial = () => {
     return `€${value.toFixed(0)}`;
   };
 
-  // Dados da folha salarial por função
   const salaryByFunction = fcPortoPlayers.reduce((acc, player) => {
     const func = player.function;
     const salary = calculateSalary(player.salary, salaryView);
-    
+
     if (!acc[func]) {
       acc[func] = { function: func, total: 0, count: 0 };
     }
@@ -56,33 +89,70 @@ const Financial = () => {
     return acc;
   }, {});
 
-  const salaryFunctionData = Object.values(salaryByFunction).map(func => ({
-    function: func.function,
-    total: func.total,
-    average: func.total / func.count,
-    count: func.count
-  })).sort((a, b) => b.total - a.total);
+  const salaryFunctionData = Object.values(salaryByFunction)
+    .map((func) => ({
+      function: func.function,
+      total: func.total,
+      average: func.total / func.count,
+      count: func.count,
+    }))
+    .sort((a, b) => b.total - a.total);
 
-  // Top 10 maiores salários
   const topSalaries = fcPortoPlayers
-    .map(player => ({
+    .map((player) => ({
       ...player,
-      calculatedSalary: calculateSalary(player.salary, salaryView)
+      calculatedSalary: calculateSalary(player.salary, salaryView),
     }))
     .sort((a, b) => b.calculatedSalary - a.calculatedSalary)
     .slice(0, 10);
 
-  // Cores para os gráficos
-  const COLORS = ['#003366', '#FFD700', '#0066CC', '#FF6B35', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#98D8C8'];
+  const COLORS = [
+    '#003366',
+    '#FFD700',
+    '#0066CC',
+    '#FF6B35',
+    '#4ECDC4',
+    '#45B7D1',
+    '#96CEB4',
+    '#FFEAA7',
+    '#DDA0DD',
+    '#98D8C8',
+  ];
 
-  // Total da folha salarial
-  const totalSalary = fcPortoPlayers.reduce((sum, player) => 
-    sum + calculateSalary(player.salary, salaryView), 0
+  const totalSalary = fcPortoPlayers.reduce(
+    (sum, player) => sum + calculateSalary(player.salary, salaryView),
+    0
+  );
+
+  const selectedSeasonData = transfersBySeasonData.find(
+    (data) => data.season === selectedSeason
   );
 
   return (
     <div className="space-y-6">
-      {/* Resumo Financeiro */}
+      {/* Seletor de Temporada */}
+      <div className="flex items-center justify-between">
+        <h2 className="text-lg font-semibold">Resumo Financeiro</h2>
+        <div>
+          <label htmlFor="season-select" className="mr-2 text-sm text-muted-foreground">
+            Temporada:
+          </label>
+          <select
+            id="season-select"
+            value={selectedSeason}
+            onChange={(e) => setSelectedSeason(e.target.value)}
+            className="border rounded px-2 py-1 text-sm"
+          >
+            {transfersBySeasonData.map((data) => (
+              <option key={data.season} value={data.season}>
+                {data.season}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      {/* Cards do Resumo Financeiro */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -90,8 +160,8 @@ const Financial = () => {
             <TrendingUp className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">€171.4M</div>
-            <p className="text-xs text-muted-foreground">temporada 2024/25</p>
+            <div className="text-2xl font-bold text-green-600">€{selectedSeasonData.vendas}M</div>
+            <p className="text-xs text-muted-foreground">temporada {selectedSeason}</p>
           </CardContent>
         </Card>
 
@@ -101,8 +171,8 @@ const Financial = () => {
             <TrendingDown className="h-4 w-4 text-red-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-600">€41.5M</div>
-            <p className="text-xs text-muted-foreground">temporada 2024/25</p>
+            <div className="text-2xl font-bold text-red-600">€{selectedSeasonData.compras}M</div>
+            <p className="text-xs text-muted-foreground">temporada {selectedSeason}</p>
           </CardContent>
         </Card>
 
@@ -112,7 +182,16 @@ const Financial = () => {
             <DollarSign className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">+€129.9M</div>
+            <div
+              className={`text-2xl font-bold ${
+                selectedSeasonData.vendas - selectedSeasonData.compras >= 0
+                  ? 'text-green-600'
+                  : 'text-red-600'
+              }`}
+            >
+              {selectedSeasonData.vendas - selectedSeasonData.compras >= 0 ? '+' : '-'}€
+              {Math.abs(selectedSeasonData.vendas - selectedSeasonData.compras)}M
+            </div>
             <p className="text-xs text-muted-foreground">lucro na temporada</p>
           </CardContent>
         </Card>
@@ -123,8 +202,10 @@ const Financial = () => {
             <Calculator className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">€2.1M</div>
-            <p className="text-xs text-muted-foreground">por semana</p>
+            <div className="text-2xl font-bold">{formatCurrency(totalSalary, salaryView)}</div>
+            <p className="text-xs text-muted-foreground">
+              por {getSalaryLabel(salaryView).toLowerCase()}
+            </p>
           </CardContent>
         </Card>
       </div>
@@ -141,7 +222,9 @@ const Financial = () => {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="season" />
                 <YAxis />
-                <Tooltip formatter={(value, name, props) => [`€${value}M`, name === 'Vendas' ? 'Vendas' : 'Compras']} />
+                <Tooltip
+                  formatter={(value, name) => [`€${value}M`, name === 'vendas' ? 'Vendas' : 'Compras']}
+                />
                 <Bar dataKey="compras" fill="#FF6B35" name="Compras" />
                 <Bar dataKey="vendas" fill="#4ECDC4" name="Vendas" />
               </BarChart>
@@ -177,22 +260,22 @@ const Financial = () => {
             </CardTitle>
             <div className="flex items-center space-x-2">
               <div className="flex space-x-2">
-                <Button 
-                  variant={salaryView === 'weekly' ? 'default' : 'outline'} 
+                <Button
+                  variant={salaryView === 'weekly' ? 'default' : 'outline'}
                   size="sm"
                   onClick={() => setSalaryView('weekly')}
                 >
                   Semanal
                 </Button>
-                <Button 
-                  variant={salaryView === 'monthly' ? 'default' : 'outline'} 
+                <Button
+                  variant={salaryView === 'monthly' ? 'default' : 'outline'}
                   size="sm"
                   onClick={() => setSalaryView('monthly')}
                 >
                   Mensal
                 </Button>
-                <Button 
-                  variant={salaryView === 'annual' ? 'default' : 'outline'} 
+                <Button
+                  variant={salaryView === 'annual' ? 'default' : 'outline'}
                   size="sm"
                   onClick={() => setSalaryView('annual')}
                 >
@@ -212,15 +295,18 @@ const Financial = () => {
                   </DialogHeader>
                   <div className="space-y-3">
                     {fcPortoPlayers
-                      .map(player => ({
+                      .map((player) => ({
                         ...player,
-                        calculatedSalary: calculateSalary(player.salary, salaryView)
+                        calculatedSalary: calculateSalary(player.salary, salaryView),
                       }))
                       .sort((a, b) => b.calculatedSalary - a.calculatedSalary)
                       .map((player, index) => (
-                        <div key={player.id} className="flex items-center justify-between p-3 border rounded-lg">
+                        <div
+                          key={player.id}
+                          className="flex items-center justify-between p-3 border rounded-lg"
+                        >
                           <div className="flex items-center space-x-3">
-                            <Badge variant={index < 3 ? "default" : "secondary"}>
+                            <Badge variant={index < 3 ? 'default' : 'secondary'}>
                               {index + 1}
                             </Badge>
                             <div>
@@ -249,11 +335,12 @@ const Financial = () => {
         <CardContent>
           <div className="space-y-3">
             {topSalaries.map((player, index) => (
-              <div key={player.id} className="flex items-center justify-between p-3 border rounded-lg">
+              <div
+                key={player.id}
+                className="flex items-center justify-between p-3 border rounded-lg"
+              >
                 <div className="flex items-center space-x-3">
-                  <Badge variant={index < 3 ? "default" : "secondary"}>
-                    {index + 1}
-                  </Badge>
+                  <Badge variant={index < 3 ? 'default' : 'secondary'}>{index + 1}</Badge>
                   <div>
                     <div className="font-medium">{player.name}</div>
                     <div className="text-sm text-muted-foreground">
@@ -275,7 +362,7 @@ const Financial = () => {
         </CardContent>
       </Card>
 
-      {/* Distribuição de Salários por Função (Gráfico de Pizza) */}
+      {/* Gráfico de Salários por Função */}
       <Card>
         <CardHeader>
           <CardTitle>Distribuição de Salários por Função</CardTitle>
@@ -288,7 +375,9 @@ const Financial = () => {
                 cx="50%"
                 cy="50%"
                 labelLine={false}
-                label={({ function: func, total }) => `${func}: ${formatCurrency(total, salaryView)}`}
+                label={({ function: func, total }) =>
+                  `${func}: ${formatCurrency(total, salaryView)}`
+                }
                 outerRadius={120}
                 fill="#8884d8"
                 dataKey="total"
@@ -297,7 +386,9 @@ const Financial = () => {
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
-              <Tooltip formatter={(value) => [formatCurrency(value, salaryView), 'Total']} />
+              <Tooltip
+                formatter={(value) => [formatCurrency(value, salaryView), 'Total']}
+              />
             </PieChart>
           </ResponsiveContainer>
         </CardContent>
@@ -307,4 +398,3 @@ const Financial = () => {
 };
 
 export default Financial;
-

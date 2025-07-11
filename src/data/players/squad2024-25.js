@@ -252,20 +252,6 @@ export const fcPortoPlayers2024_25 = [
     stats: { appearances: 40, goals: 8, assists: 7, cleanSheets: 16, rating: 6.99 }
   },
   {
-    id: 17,
-    name: "Romário Baró",
-    position: "CM",
-    function: "Esporadico",
-    age: 24,
-    nationality: "Portugal",
-    overall: 70,
-    potential: 75,
-    salary: "€9,800",
-    marketValue: "€2,3M",
-    contract: "2026",
-    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
-  },
-  {
     id: 18,
     name: "Marko Grujić",
     position: "CM",
@@ -309,20 +295,6 @@ export const fcPortoPlayers2024_25 = [
   },
 
   // ==================== EXTREMOS ====================
-  {
-    id: 21,
-    name: "Ivan Jaime",
-    position: "LW",
-    function: "Rodízio",
-    age: 19,
-    nationality: "Brasil",
-    overall: 74,
-    potential: 77,
-    salary: "€12000",
-    marketValue: "€6.5M",
-    contract: "2028",
-    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
-  },
   {
     id: 22,
     name: "William Gomes",
@@ -379,21 +351,6 @@ export const fcPortoPlayers2024_25 = [
     contract: "2027",
     stats: { appearances: 46, goals: 7, assists: 4, cleanSheets: 18, rating: 7.1 }
   },
-  {
-    id: 26,
-    name: "Francisco Conceição",
-    position: "RW",
-    function: "Crucial",
-    age: 22,
-    nationality: "Portugal",
-    overall: 79,
-    potential: 86,
-    salary: "€15,000",
-    marketValue: "€35.5M",
-    contract: "2029",
-    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
-  },
-
   // ==================== ATACANTES ====================
   {
     id: 27,
@@ -424,20 +381,6 @@ export const fcPortoPlayers2024_25 = [
     stats: { appearances: 18, goals: 2, assists: 0, cleanSheets: 4, rating: 6.44 }
   },
   {
-    id: 29,
-    name: "Fran Navarro",
-    position: "ST",
-    function: "Importante",
-    age: 27,
-    nationality: "Espanha",
-    overall: 75,
-    potential: 78,
-    salary: "€16,500",
-    marketValue: "€6M",
-    contract: "2029",
-    stats: { appearances: 12, goals: 5, assists: 0, cleanSheets: 3, rating: 6.7 }
-  },
-  {
     id: 30,
     name: "Samu",
     position: "ST",
@@ -450,20 +393,6 @@ export const fcPortoPlayers2024_25 = [
     marketValue: "€32M",
     contract: "2029",
     stats: { appearances: 44, goals: 26, assists: 3, cleanSheets: 16, rating: 7.88 }
-  },
-  {
-    id: 31,
-    name: "Wendel Silva",
-    position: "ST",
-    function: "Esporadico",
-    age: 24,
-    nationality: "Brasil",
-    overall: 67,
-    potential: 70,
-    salary: "€9,900",
-    marketValue: "€1.6M",
-    contract: "2026",
-    stats: { appearances: 7, goals: 2, assists: 2, cleanSheets: 0, rating: 0 }
   }
 ];
 

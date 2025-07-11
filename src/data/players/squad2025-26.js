@@ -48,40 +48,26 @@ export const fcPortoPlayers2025_26 = [
     overall: 84,
     potential: 90,
     salary: "€20,000",
-    marketValue: "€52.0M",
+    marketValue: "€40M",
     contract: "2027",
-    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+    stats: { appearances: 8, goals: 0, assists: 0, cleanSheets: 3, rating: 7.3 }
   },
   {
     id: 3,
-    name: "Samuel Portugal",
+    name: "Lucas França",
     position: "GK",
     function: "Esporadico",
-    age: 31,
+    age: 29,
     nationality: "Brasil",
-    overall: 71,
-    potential: 71,
-    salary: "€8,000",
-    marketValue: "€1.0M",
-    contract: "2026",
-    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+    overall: 74,
+    potential: 76,
+    salary: "€10,000",
+    marketValue: "€3.2M",
+    contract: "2028",
+    stats: { appearances: 2, goals: 0, assists: 0, cleanSheets: 1, rating: 6 }
   },
 
   // ==================== ZAGUEIROS ====================
-  {
-    id: 4,
-    name: "Iván Marcano",
-    position: "CB",
-    function: "Importante",
-    age: 37,
-    nationality: "Espanha",
-    overall: 74,
-    potential: 74,
-    salary: "€10,500",
-    marketValue: "€0.8M",
-    contract: "2025",
-    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
-  },
   {
     id: 5,
     name: "Nehuén Pérez",
@@ -91,10 +77,10 @@ export const fcPortoPlayers2025_26 = [
     nationality: "Argentina",
     overall: 76,
     potential: 81,
-    salary: "€13,000",
-    marketValue: "€10.0M",
-    contract: "2025",
-    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+    salary: "€16,000",
+    marketValue: "€9M",
+    contract: "2029",
+    stats: { appearances: 7, goals: 0, assists: 0, cleanSheets: 3, rating: 7.25 }
   },
   {
     id: 6,
@@ -107,22 +93,22 @@ export const fcPortoPlayers2025_26 = [
     potential: 84,
     salary: "€13,000",
     marketValue: "€15.5M",
-    contract: "2026",
-    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+    contract: "2029",
+    stats: { appearances: 6, goals: 0, assists: 0, cleanSheets: 0, rating: 6.65 }
   },
-  {
+    {
     id: 7,
-    name: "Tiago Djaló",
+    name: "Valentín Gómez",
     position: "CB",
     function: "Importante",
-    age: 25,
-    nationality: "Portugal",
-    overall: 76,
-    potential: 81,
-    salary: "€13,000",
-    marketValue: "€10.0M",
-    contract: "2025",
-    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+    age: 22,
+    nationality: "Argentina",
+    overall: 77,
+    potential: 84,
+    salary: "€15,000",
+    marketValue: "€14M",
+    contract: "2030",
+    stats: { appearances: 6, goals: 0, assists: 0, cleanSheets: 3, rating: 7.07 }
   },
   {
     id: 8,
@@ -136,7 +122,7 @@ export const fcPortoPlayers2025_26 = [
     salary: "€13,500",
     marketValue: "€4.5M",
     contract: "2026",
-    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+    stats: { appearances: 1, goals: 0, assists: 0, cleanSheets: 0, rating: 6.3 }
   },
   
   // ==================== LATERAIS ====================
@@ -150,23 +136,23 @@ export const fcPortoPlayers2025_26 = [
     overall: 76,
     potential: 80,
     salary: "€13,000",
-    marketValue: "€9.5M",
+    marketValue: "€8.5M",
     contract: "2029",
-    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+    stats: { appearances: 3, goals: 0, assists: 0, cleanSheets: 0, rating: 6.8 }
   },
   {
     id: 10,
-    name: "Zaidu",
+    name: "Renan Lodi",
     position: "LB",
-    function: "Importante",
+    function: "Crucial",
     age: 27,
-    nationality: "Nigéria",
-    overall: 73,
-    potential: 74,
-    salary: "€12,000",
-    marketValue: "€3.2M",
-    contract: "2027",
-    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+    nationality: "Brasil",
+    overall: 79,
+    potential: 81,
+    salary: "€19,000",
+    marketValue: "€17M",
+    contract: "2028",
+    stats: { appearances: 6, goals: 0, assists: 3, cleanSheets: 3, rating: 7.45 }
   },
   {
     id: 11,
@@ -178,9 +164,9 @@ export const fcPortoPlayers2025_26 = [
     overall: 77,
     potential: 81,
     salary: "€14,000",
-    marketValue: "€13.5M",
+    marketValue: "€12M",
     contract: "2027",
-    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+    stats: { appearances: 6, goals: 0, assists: 0, cleanSheets: 3, rating: 7.12 }
   },
   {
     id: 12,
@@ -192,9 +178,9 @@ export const fcPortoPlayers2025_26 = [
     overall: 74,
     potential: 86,
     salary: "€8,500",
-    marketValue: "€9.5M",
+    marketValue: "€6M",
     contract: "2028",
-    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+    stats: { appearances: 4, goals: 0, assists: 0, cleanSheets: 1, rating: 6.68 }
   },
 
   // ==================== VOLANTES E MEIAS ====================
@@ -205,82 +191,68 @@ export const fcPortoPlayers2025_26 = [
     function: "Crucial",
     age: 23,
     nationality: "Argentina",
-    overall: 77,
+    overall: 79,
     potential: 85,
     salary: "€17,000",
-    marketValue: "€25.5M",
-    contract: "2027",
-    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+    marketValue: "€23M",
+    contract: "2028",
+    stats: { appearances: 7, goals: 0, assists: 2, cleanSheets: 3, rating: 8.27 }
   },
   {
     id: 14,
     name: "Tomás Pérez",
     position: "CDM",
     function: "Promessa",
-    age: 19,
+    age: 20,
     nationality: "Argentina",
     overall: 62,
     potential: 78,
     salary: "€5,700",
-    marketValue: "€1.2M",
+    marketValue: "€0.8M",
     contract: "2027",
-    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+    stats: { appearances: 1, goals: 0, assists: 0, cleanSheets: 0, rating: 6.2 }
   },
   {
     id: 15,
     name: "Stephen Eustáquio",
-    position: "CM",
+    position: "CDM",
     function: "Importante",
     age: 28,
     nationality: "Canadá",
     overall: 77,
     potential: 78,
     salary: "€16,000",
-    marketValue: "€10.0M",
+    marketValue: "9.5M",
     contract: "2027",
-    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
-  },
-  {
-    id: 16,
-    name: "Fábio Vieira",
-    position: "CM",
-    function: "Importante",
-    age: 24,
-    nationality: "Portugal",
-    overall: 77,
-    potential: 80,
-    salary: "€14,500",
-    marketValue: "€15.0M",
-    contract: "2025",
-    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+    stats: { appearances: 7, goals: 0, assists: 0, cleanSheets: 3, rating: 7.4 }
   },
   {
     id: 17,
-    name: "Romário Baró",
-    position: "CM",
+    name: "Adriano Firmino",
+    position: "CDM",
     function: "Esporadico",
-    age: 24,
-    nationality: "Portugal",
+    age: 25,
+    nationality: "Brasil",
     overall: 70,
-    potential: 75,
-    salary: "€9,800",
-    marketValue: "€2.3M",
-    contract: "2026",
-    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+    potential: 74,
+    salary: "€9,100",
+    marketValue: "€1.9M",
+    contract: "2028",
+    stats: { appearances: 2, goals: 0, assists: 0, cleanSheets: 0, rating: 7.2 }
   },
   {
     id: 18,
-    name: "Marko Grujić",
-    position: "CM",
-    function: "Importante",
-    age: 29,
-    nationality: "Sérvia",
-    overall: 74,
-    potential: 74,
-    salary: "€14,500",
-    marketValue: "€4.1M",
+    name: "Gabri Veiga",
+    position: "CAM",
+    function: "Crucial",
+    age: 23,
+    nationality: "Espanha",
+    overall: 80,
+    potential: 86,
+    salary: "€20,000",
+    marketValue: "€27.5M",
     contract: "2026",
-    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+    stats: { appearances: 7, goals: 3, assists: 2, cleanSheets: 4, rating: 8.13 }
   },
   {
     id: 19,
@@ -292,9 +264,9 @@ export const fcPortoPlayers2025_26 = [
     overall: 69,
     potential: 80,
     salary: "€8,100",
-    marketValue: "€3.1M",
+    marketValue: "€2.8M",
     contract: "2027",
-    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+    stats: { appearances: 1, goals: 0, assists: 1, cleanSheets: 0, rating: 7.9 }
   },
   {
     id: 20,
@@ -306,9 +278,9 @@ export const fcPortoPlayers2025_26 = [
     overall: 72,
     potential: 88,
     salary: "€10,000",
-    marketValue: "€10.0M",
-    contract: "2028",
-    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+    marketValue: "€4.9M",
+    contract: "2031",
+    stats: { appearances: 8, goals: 1, assists: 5, cleanSheets: 3, rating: 8.22 }
   },
 
   // ==================== EXTREMOS ====================
@@ -316,15 +288,15 @@ export const fcPortoPlayers2025_26 = [
     id: 21,
     name: "Ivan Jaime",
     position: "LW",
-    function: "Rodízio",
-    age: 19,
-    nationality: "Brasil",
-    overall: 74,
-    potential: 77,
+    function: "Importante",
+    age: 24,
+    nationality: "Espanha",
+    overall: 76,
+    potential: 80,
     salary: "€12,000",
-    marketValue: "€6.5M",
+    marketValue: "€9.5M",
     contract: "2028",
-    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+    stats: { appearances: 5, goals: 0, assists: 0, cleanSheets: 1, rating: 6.84 }
   },
   {
     id: 22,
@@ -336,37 +308,23 @@ export const fcPortoPlayers2025_26 = [
     overall: 69,
     potential: 82,
     salary: "€7,500",
-    marketValue: "€2.4M",
+    marketValue: "€2.2M",
     contract: "2029",
-    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+    stats: { appearances: 4, goals: 0, assists: 0, cleanSheets: 0, rating: 5.82 }
   },
   {
     id: 23,
-    name: "André Franco",
-    position: "RW",
-    function: "Rodizio",
-    age: 27,
-    nationality: "Portugal",
-    overall: 73,
-    potential: 73,
-    salary: "€13,000",
-    marketValue: "€3.2M",
-    contract: "2027",
-    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
-  },
-  {
-    id: 24,
-    name: "Gonçalo Borges",
-    position: "RW",
-    function: "Rodizio",
+    name: "Borja Sainz",
+    position: "LW",
+    function: "Importante",
     age: 24,
-    nationality: "Portugal",
-    overall: 72,
-    potential: 74,
-    salary: "€11,000",
-    marketValue: "€3.5M",
+    nationality: "Espanha",
+    overall: 77,
+    potential: 81,
+    salary: "€18,000",
+    marketValue: "€16.5M",
     contract: "2027",
-    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+    stats: { appearances: 8, goals: 2, assists: 2, cleanSheets: 1, rating: 7.21 }
   },
   {
     id: 25,
@@ -375,28 +333,13 @@ export const fcPortoPlayers2025_26 = [
     function: "Importante",
     age: 28,
     nationality: "Brasil",
-    overall: 80,
-    potential: 80,
+    overall: 81,
+    potential: 81,
     salary: "€18,000",
-    marketValue: "€21.0M",
+    marketValue: "€26.0M",
     contract: "2027",
-    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+    stats: { appearances: 7, goals: 4, assists: 4, cleanSheets: 4, rating: 7.85 }
   },
-  {
-    id: 26,
-    name: "Francisco Conceição",
-    position: "RW",
-    function: "Crucial",
-    age: 22,
-    nationality: "Portugal",
-    overall: 79,
-    potential: 86,
-    salary: "€15,000",
-    marketValue: "€35.5M",
-    contract: "2029",
-    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
-  },
-
   // ==================== ATACANTES ====================
   {
     id: 27,
@@ -408,9 +351,9 @@ export const fcPortoPlayers2025_26 = [
     overall: 73,
     potential: 76,
     salary: "€12,500",
-    marketValue: "€4.9M",
+    marketValue: "€4.2M",
     contract: "2028",
-    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+    stats: { appearances: 3, goals: 0, assists: 0, cleanSheets: 0, rating: 6.3 }
   },
   {
     id: 28,
@@ -422,23 +365,9 @@ export const fcPortoPlayers2025_26 = [
     overall: 66,
     potential: 80,
     salary: "€8,000",
-    marketValue: "€2.1M",
+    marketValue: "€1.3M",
     contract: "2029",
-    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
-  },
-  {
-    id: 29,
-    name: "Fran Navarro",
-    position: "ST",
-    function: "Importante",
-    age: 27,
-    nationality: "Espanha",
-    overall: 75,
-    potential: 78,
-    salary: "€16,500",
-    marketValue: "€6.0M",
-    contract: "2029",
-    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+    stats: { appearances: 1, goals: 1, assists: 0, cleanSheets: 0, rating: 7.7 }
   },
   {
     id: 30,
@@ -452,20 +381,6 @@ export const fcPortoPlayers2025_26 = [
     salary: "€15,000",
     marketValue: "€32.0M",
     contract: "2029",
-    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
-  },
-  {
-    id: 31,
-    name: "Wendel Silva",
-    position: "ST",
-    function: "Esporadico",
-    age: 24,
-    nationality: "Brasil",
-    overall: 67,
-    potential: 70,
-    salary: "€9,900",
-    marketValue: "€1.6M",
-    contract: "2026",
-    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+    stats: { appearances: 7, goals: 11, assists: 3, cleanSheets: 2, rating: 9 }
   }
 ]

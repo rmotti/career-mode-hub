@@ -30,14 +30,14 @@ export const seasonStats = [
   },
   {
     season: "2025/26",
-    matches: 0,
-    wins: 0,
-    draws: 0,
+    matches: 8,
+    wins: 5,
+    draws: 3,
     losses: 0,
-    goalsFor: 0,
-    goalsAgainst: 0,
-    points: 0 ,
-    position: 3
+    goalsFor: 22,
+    goalsAgainst: 8,
+    points: 15,
+    position: 1
   }
   // Adicione novas temporadas aqui seguindo o mesmo formato
   // Exemplo:
