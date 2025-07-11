@@ -81,26 +81,10 @@ const Formation = ({ isCompact = false }) => {
     return (
       <Card className="w-full">
         <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle className="flex items-center space-x-2">
-              <Users className="h-5 w-5" />
-              <span>Escalação Titular</span>
-            </CardTitle>
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button variant="outline" size="sm">
-                  <Edit className="h-4 w-4 mr-2" />
-                  Editar
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-4xl">
-                <DialogHeader>
-                  <DialogTitle>Editar Escalação</DialogTitle>
-                </DialogHeader>
-                <Formation isCompact={false} />
-              </DialogContent>
-            </Dialog>
-          </div>
+          <CardTitle className="flex items-center space-x-2">
+            <Users className="h-5 w-5" />
+            <span>Escalação Titular</span>
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="relative bg-green-100 rounded-lg p-4 min-h-[300px]" style={{

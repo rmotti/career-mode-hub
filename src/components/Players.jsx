@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Users, Star, Calendar, DollarSign, Target, Award, X } from 'lucide-react';
-import { fcPortoPlayers } from '../data/mockData';
+import { fcPortoPlayers, getSectorColor, getSectorName } from '../data/index.js';
 import Formation from './Formation';
 
 const Players = () => {
@@ -65,9 +65,6 @@ const Players = () => {
 
   return (
     <div className="space-y-6">
-      {/* Escalação */}
-      <Formation isCompact={true} />
-
       {/* Filtros */}
       <Card>
         <CardHeader>

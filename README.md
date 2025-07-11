@@ -137,5 +137,3 @@ Projeto desenvolvido para uso pessoal no modo carreira do EA Sports FC 25.
 
 ---
 
-**Força Porto! 💙🐉**
-

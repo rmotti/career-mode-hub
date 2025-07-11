@@ -5,23 +5,10 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from 'recharts';
 import { DollarSign, TrendingUp, TrendingDown, Calculator, Calendar, Eye } from 'lucide-react';
-import { fcPortoPlayers, transferHistory } from '../data/mockData';
+import { fcPortoPlayers, transfersBySeasonData, weeklyWagesBySeasonData, currentSeasonBalance } from '../data/index.js';
 
 const Financial = () => {
   const [salaryView, setSalaryView] = useState('weekly'); // weekly, monthly, annual
-
-  // Dados de transferências por temporada (apenas 24/25)
-  const transfersBySeasonData = [
-    { season: '2024/25', compras: 15, vendas: 37, saldo: 22 }
-  ];
-
-  // Balanço financeiro da temporada atual
-  const currentSeasonBalance = {
-    receitas: 37000000, // €37M em vendas
-    gastos: 15000000,   // €15M em compras
-    saldoLiquido: 22000000, // €22M positivo
-    folhaSalarial: 109200000 // €2.1M/semana * 52 semanas
-  };
 
   // Calcular folha salarial
   const calculateSalary = (weeklySalary, view) => {
@@ -103,7 +90,7 @@ const Financial = () => {
             <TrendingUp className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">€37M</div>
+            <div className="text-2xl font-bold text-green-600">€171.4M</div>
             <p className="text-xs text-muted-foreground">temporada 2024/25</p>
           </CardContent>
         </Card>
@@ -114,7 +101,7 @@ const Financial = () => {
             <TrendingDown className="h-4 w-4 text-red-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-600">€15M</div>
+            <div className="text-2xl font-bold text-red-600">€41.5M</div>
             <p className="text-xs text-muted-foreground">temporada 2024/25</p>
           </CardContent>
         </Card>
@@ -125,7 +112,7 @@ const Financial = () => {
             <DollarSign className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">+€22M</div>
+            <div className="text-2xl font-bold text-green-600">+€129.9M</div>
             <p className="text-xs text-muted-foreground">lucro na temporada</p>
           </CardContent>
         </Card>
@@ -154,7 +141,7 @@ const Financial = () => {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="season" />
                 <YAxis />
-                <Tooltip formatter={(value, name) => [`€${value}M`, name === 'compras' ? 'Compras' : 'Vendas']} />
+                <Tooltip formatter={(value, name, props) => [`€${value}M`, name === 'Vendas' ? 'Vendas' : 'Compras']} />
                 <Bar dataKey="compras" fill="#FF6B35" name="Compras" />
                 <Bar dataKey="vendas" fill="#4ECDC4" name="Vendas" />
               </BarChart>
@@ -168,9 +155,7 @@ const Financial = () => {
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={[
-                { season: '2024/25', gastoSemanal: 2.1 }
-              ]}>
+              <BarChart data={weeklyWagesBySeasonData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="season" />
                 <YAxis />

@@ -3,10 +3,10 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { TrendingUp, Trophy, Target, Shield, Eye } from 'lucide-react';
-import { seasonStats, fcPortoPlayers } from '../data/mockData';
+import { fcPortoPlayers, seasonStats, biggestPurchases, biggestSales, getPlayersBySeason } from '../data/index.js';
 
 const Statistics = () => {
-  const currentSeason = seasonStats[0]; // Apenas temporada atual
+  const currentSeason = seasonStats[1]; // Apenas temporada atual
   const players = fcPortoPlayers;
 
   // Estatísticas por posição
@@ -28,24 +28,43 @@ const Statistics = () => {
 
   const positionData = Object.values(positionStats).map(stat => ({
     ...stat,
-    avgOverall: Math.round(stat.avgOverall / stat.count),
-    avgAge: Math.round(stat.avgAge / stat.count),
-    totalValue: Math.round(stat.totalValue)
+    avgOverall: (stat.avgOverall / stat.count).toFixed(1),
+    avgAge: (stat.avgAge / stat.count).toFixed(1),
+    totalValue: stat.totalValue.toFixed(1),
   }));
+  
+  // Obter jogadores da temporada vigente (2025/26)
+  const currentSeasonPlayers = getPlayersBySeason('2025/26');
 
-  // Top performers por estatística
-  const topScorers = players
-    .filter(p => p.stats.goals > 0)
-    .sort((a, b) => b.stats.goals - a.stats.goals)
-    .slice(0, 5);
+  // Artilheiros da temporada atual
+  const topScorers = currentSeasonPlayers
+    .filter(player => player.stats.goals > 0)
+    .sort((a, b) => b.stats.goals - a.stats.goals);
 
-  const topAssists = players
-    .filter(p => p.stats.assists > 0)
-    .sort((a, b) => b.stats.assists - a.stats.assists)
-    .slice(0, 5);
+  // Assistentes da temporada atual
+  const topAssists = currentSeasonPlayers
+    .filter(player => player.stats.assists > 0)
+    .sort((a, b) => b.stats.assists - a.stats.assists);
 
-  const bestRated = players
-    .filter(p => p.stats.rating > 0)
+  // Melhores notas da temporada atual
+  const bestRated = currentSeasonPlayers
+    .filter(player => player.stats.rating > 0)
+    .sort((a, b) => b.stats.rating - a.stats.rating);
+
+  // Maiores compras (da temporada vigente)
+  const topPurchases = biggestPurchases.slice(0, 5);
+
+  // Maiores vendas (da temporada vigente)
+  const topSales = biggestSales.slice(0, 5);
+
+  // Jogadores com mais partidas (da temporada vigente)
+  const mostGames = currentSeasonPlayers
+    .filter(player => player.stats.appearances > 0)
+    .sort((a, b) => b.stats.appearances - a.stats.appearances);
+
+  // Melhor nota média (da temporada vigente) - CORREÇÃO APLICADA AQUI
+  const bestAverageRating = currentSeasonPlayers
+    .filter(player => player.stats.rating > 0 && player.stats.appearances >= 5) // Mínimo 5 jogos
     .sort((a, b) => b.stats.rating - a.stats.rating)
     .slice(0, 5);
 
@@ -288,7 +307,109 @@ const Statistics = () => {
         </Card>
       </div>
 
-      {/* Resumo da Temporada Atual */}
+      {/* Novos Rankings da Temporada Vigente */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <TrendingUp className="h-5 w-5" />
+              <span>Maiores Compras</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {biggestPurchases
+                .filter(p => p.season === currentSeason.season)
+                .sort((a, b) => {
+                  const valueA = parseFloat(a.value.replace('€', '').replace('M', '')) || 0;
+                  const valueB = parseFloat(b.value.replace('€', '').replace('M', '')) || 0;
+                  return valueB - valueA;
+                })
+                .slice(0, 5)
+                .map((player, index) => (
+                  <div key={index} className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <Badge variant={index === 0 ? "default" : "secondary"}>
+                        {index + 1}
+                      </Badge>
+                      <div>
+                        <div className="font-medium">{player.name}</div>
+                        <div className="text-sm text-muted-foreground">{player.from}</div>
+                      </div>
+                    </div>
+                    <div className="font-bold">{player.value}</div>
+                  </div>
+                ))}
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <TrendingUp className="h-5 w-5" />
+              <span>Maiores Vendas</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {biggestSales
+                .filter(p => p.season === currentSeason.season)
+                .sort((a, b) => {
+                  const valueA = parseFloat(a.value.replace('€', '').replace('M', '')) || 0;
+                  const valueB = parseFloat(b.value.replace('€', '').replace('M', '')) || 0;
+                  return valueB - valueA;
+                })
+                .filter(p => p.season === currentSeason.season)
+                .slice(0, 5)
+                .map((player, index) => (
+                  <div key={index} className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <Badge variant={index === 0 ? "default" : "secondary"}>
+                    {index + 1}
+                    </Badge>
+                    <div>
+                    <div className="font-medium">{player.name}</div>
+                    <div className="text-sm text-muted-foreground">{player.to}</div>
+                    </div>
+                  </div>
+                  <div className="font-bold">{player.value}</div>
+                  </div>
+                ))}
+              </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <Trophy className="h-5 w-5" />
+                <span>Mais Partidas</span>
+              </CardTitle>
+              </CardHeader>
+              <CardContent>
+              <div className="space-y-3">
+                {mostGames
+                .filter(player => player.season === currentSeason.season || !player.season) // caso precise filtrar por temporada
+                .slice(0, 5)
+                .map((player, index) => (
+                  <div key={player.id} className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <Badge variant={index === 0 ? "default" : "secondary"}>
+                    {index + 1}
+                    </Badge>
+                    <div>
+                    <div className="font-medium text-sm">{player.name}</div>
+                    <div className="text-xs text-muted-foreground">{player.position}</div>
+                    </div>
+                  </div>
+                  <div className="font-bold text-sm">{player.stats.appearances}</div>
+                  </div>
+                ))}
+              </div>
+              </CardContent>
+            </Card>
+            </div>
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
@@ -330,4 +451,3 @@ const Statistics = () => {
 };
 
 export default Statistics;
-

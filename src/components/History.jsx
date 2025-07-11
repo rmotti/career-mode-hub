@@ -6,14 +6,16 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { TrendingUp, Trophy, Target, Shield, Plus, Edit, Trash2, History as HistoryIcon } from 'lucide-react';
 import { useLocalStorage } from '../hooks/useLocalStorage';
-import { seasonStats, fcPortoPlayers } from '../data/mockData';
+import { seasonStats, getHistoricalPlayerStats, biggestSales, biggestPurchases } from '../data/index.js';
 import SeasonModal from './SeasonModal';
 
 const History = () => {
   const [seasons, setSeasons] = useLocalStorage('fc-porto-seasons', seasonStats);
-  const [players] = useLocalStorage('fc-porto-players', fcPortoPlayers);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingSeason, setEditingSeason] = useState(null);
+
+  // Obter estatísticas históricas combinadas
+  const historicalPlayers = getHistoricalPlayerStats();
 
   // Dados para gráfico de evolução por temporada
   const seasonEvolution = seasons.map(season => ({
@@ -30,23 +32,41 @@ const History = () => {
   const totalGoals = seasons.reduce((sum, s) => sum + s.goalsFor, 0);
   const avgPosition = (seasons.reduce((sum, s) => sum + s.position, 0) / seasons.length).toFixed(1);
 
-  // Maiores artilheiros da história (apenas temporada 24/25 em diante)
-  const historicalTopScorers = [
-    { name: "Samu", goals: 8, seasons: "2024/25", position: "ST" },
-    { name: "Pepê", goals: 7, seasons: "2024/25", position: "RW" },
-    { name: "Francisco Moura", goals: 4, seasons: "2024/25", position: "LB" },
-    { name: "Danny Namaso", goals: 4, seasons: "2024/25", position: "ST" },
-    { name: "Gonçalo Borges", goals: 3, seasons: "2024/25", position: "RW" }
-  ].sort((a, b) => b.goals - a.goals);
+  // Maiores artilheiros da história (baseado em estatísticas combinadas)
+  const historicalTopScorers = historicalPlayers
+    .filter(player => player.stats.goals > 0)
+    .sort((a, b) => b.stats.goals - a.stats.goals)
+    .slice(0, 5)
+    .map(player => ({
+      name: player.name,
+      goals: player.stats.goals,
+      seasons: "2024/25 -",
+      position: player.position
+    }));
 
-  // Maiores assistentes da história (apenas temporada 24/25 em diante)
-  const historicalTopAssists = [
-    { name: "Francisco Moura", assists: 10, seasons: "2024/25", position: "LB" },
-    { name: "Martim Fernandes", assists: 6, seasons: "2024/25", position: "RB" },
-    { name: "João Mário", assists: 5, seasons: "2024/25", position: "RB" },
-    { name: "Pepê", assists: 4, seasons: "2024/25", position: "RW" },
-    { name: "Gonçalo Borges", assists: 3, seasons: "2024/25", position: "RW" }
-  ].sort((a, b) => b.assists - a.assists);
+  // Maiores assistentes da história (baseado em estatísticas combinadas)
+  const historicalTopAssists = historicalPlayers
+    .filter(player => player.stats.assists > 0)
+    .sort((a, b) => b.stats.assists - a.stats.assists)
+    .slice(0, 5)
+    .map(player => ({
+      name: player.name,
+      assists: player.stats.assists,
+      seasons: "2024/25 -",
+      position: player.position
+    }));
+
+  // Maior número de jogos (substitui maior valor de mercado)
+  const mostGamesPlayed = historicalPlayers
+    .filter(player => player.stats.appearances > 0)
+    .sort((a, b) => b.stats.appearances - a.stats.appearances)
+    .slice(0, 5)
+    .map(player => ({
+      name: player.name,
+      games: player.stats.appearances,
+      seasons: "2024/25 -",
+      position: player.position
+    }));
 
   // Melhores notas da história (apenas temporada 24/25 em diante)
   const historicalBestRated = [
@@ -134,7 +154,7 @@ const History = () => {
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <Target className="h-5 w-5" />
-              <span>Maiores Artilheiros da História</span>
+              <span>Maiores Artilheiros</span>
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -161,7 +181,7 @@ const History = () => {
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <TrendingUp className="h-5 w-5" />
-              <span>Maiores Assistentes da História</span>
+              <span>Maiores Assistentes</span>
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -191,18 +211,12 @@ const History = () => {
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <Trophy className="h-5 w-5" />
-              <span>Maiores Valores de Mercado</span>
+              <span>Maior Número de Jogos</span>
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {[
-                { name: "Diogo Costa", value: "€52M", position: "GK" },
-                { name: "Samu", value: "€35M", position: "ST" },
-                { name: "Pepê", value: "€25M", position: "RW" },
-                { name: "Galeno", value: "€20M", position: "LW" },
-                { name: "Otávio", value: "€18M", position: "CM" }
-              ].map((player, index) => (
+              {mostGamesPlayed.map((player, index) => (
                 <div key={index} className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
                     <Badge variant={index === 0 ? "default" : "secondary"}>
@@ -210,10 +224,10 @@ const History = () => {
                     </Badge>
                     <div>
                       <div className="font-medium">{player.name}</div>
-                      <div className="text-sm text-muted-foreground">{player.position}</div>
+                      <div className="text-sm text-muted-foreground">{player.position} • {player.seasons}</div>
                     </div>
                   </div>
-                  <div className="font-bold">{player.value}</div>
+                  <div className="font-bold">{player.games} jogos</div>
                 </div>
               ))}
             </div>
@@ -224,17 +238,17 @@ const History = () => {
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <TrendingUp className="h-5 w-5" />
-              <span>Maiores Compras</span>
+              <span>Maiores Compras da História do Clube</span>
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
               {[
-                { name: "Samu", value: "€15M", season: "2024/25", from: "RC Lens" },
-                { name: "Fábio Vieira", value: "€5M", season: "2024/25", from: "Arsenal" },
-                { name: "Nehuén Pérez", value: "€4M", season: "2024/25", from: "Udinese" },
-                { name: "Deniz Gül", value: "€3M", season: "2024/25", from: "Hammarby" },
-                { name: "Tiago Djaló", value: "€2.5M", season: "2024/25", from: "Lille" }
+                { name: "Nico González", value: "€21.20M", season: "23/24", from: "Barcelona" },
+                { name: "David Carmo", value: "€20.28M", season: "22/23", from: "Braga" },
+                { name: "Samu Aghehowa", value: "€20.00M", season: "24/25", from: "Atlético Madrid" },
+                { name: "Óliver Torres", value: "€20.00M", season: "17/18", from: "Atlético Madrid" },
+                { name: "Giannelli Imbula", value: "€20.00M", season: "15/16", from: "Marseille" }
               ].map((player, index) => (
                 <div key={index} className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
@@ -257,17 +271,17 @@ const History = () => {
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <Target className="h-5 w-5" />
-              <span>Maiores Vendas</span>
+              <span>Maiores Vendas da História do Clube</span>
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
               {[
-                { name: "Galeno", value: "€50M", season: "2025/26", to: "Al-Ittihad" },
-                { name: "Nico González", value: "€25M", season: "2025/26", to: "Barcelona (Entrada)" },
-                { name: "João Mário", value: "€15M", season: "2024/25", to: "Benfica (Entrada)" },
-                { name: "Mehdi Taremi", value: "€0M", season: "2024/25", to: "Inter Milan (Livre)" },
-                { name: "Pepe", value: "€0M", season: "2024/25", to: "Livre" }
+                { name: "Otávio", value: "€60M", season: "23/24", to: "Al-Nassr" },
+                { name: "Nico González", value: "€60M", season: "24/25", to: "Man City" },
+                { name: "Luis Díaz", value: "€54M", season: "21/22", to: "Liverpool" },
+                { name: "Éder Militão", value: "€50M", season: "19/20", to: "Real Madrid" },
+                { name: "Galeno", value: "€50M", season: "24/25", to: "Al-Ahli" }
               ].sort((a, b) => {
                 const valueA = parseFloat(a.value.replace('€', '').replace('M', '')) || 0;
                 const valueB = parseFloat(b.value.replace('€', '').replace('M', '')) || 0;

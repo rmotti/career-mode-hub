@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Search, Filter, TrendingUp, TrendingDown, DollarSign, Calendar, Plus, Edit, Trash2 } from 'lucide-react';
 import { useLocalStorage } from '../hooks/useLocalStorage';
-import { transferHistory } from '../data/mockData';
+import { transferHistory } from '../data/index.js';
 import TransferModal from './TransferModal';
 
 const Transfers = () => {
