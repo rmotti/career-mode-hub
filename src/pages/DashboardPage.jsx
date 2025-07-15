@@ -18,7 +18,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Users, Trophy, TrendingUp, DollarSign, Target, Calendar, Eye } from 'lucide-react';
-import { fcPortoPlayers, seasonStats, clubInfo } from '../data/index.js';
+import { squadPlayers, seasonStats, clubInfo } from '../data/index.js';
 
 
 /**
@@ -37,7 +37,7 @@ const Dashboard = () => {
    * Calcula os top 3 artilheiros da temporada
    * Filtra jogadores com gols > 0, ordena por gols decrescente e pega os 3 primeiros
    */
-  const topScorers = fcPortoPlayers
+  const topScorers = squadPlayers
     .filter(player => player.stats.goals > 0)
     .sort((a, b) => b.stats.goals - a.stats.goals)
     .slice(0, 3);
@@ -46,7 +46,7 @@ const Dashboard = () => {
    * Lista completa de artilheiros para o modal "Ver todos"
    * Filtra jogadores com gols > 0 e ordena por gols decrescente
    */
-  const allScorers = fcPortoPlayers
+  const allScorers = squadPlayers
     .filter(player => player.stats.goals > 0)
     .sort((a, b) => b.stats.goals - a.stats.goals);
 
@@ -54,7 +54,7 @@ const Dashboard = () => {
    * Lista completa de assistentes para o modal "Ver todos"
    * Filtra jogadores com assistências > 0 e ordena por assistências decrescente
    */
-  const allAssists = fcPortoPlayers
+  const allAssists = squadPlayers
     .filter(player => player.stats.assists > 0)
     .sort((a, b) => b.stats.assists - a.stats.assists);
 
@@ -62,7 +62,7 @@ const Dashboard = () => {
    * Lista completa de jogadores com melhor nota para o modal "Ver todos"
    * Filtra jogadores com nota > 0 e ordena por nota decrescente
    */
-  const allRated = fcPortoPlayers
+  const allRated = squadPlayers
     .filter(player => player.stats.rating > 0)
     .sort((a, b) => b.stats.rating - a.stats.rating);
 
@@ -71,7 +71,7 @@ const Dashboard = () => {
    * Critérios: idade <= 23 anos E potencial >= 85
    * Ordena por potencial decrescente
    */
-  const youngTalents = fcPortoPlayers
+  const youngTalents = squadPlayers
     .filter(player => player.age <= 23 && player.potential >= 85)
     .sort((a, b) => b.potential - a.potential);
 
@@ -81,7 +81,7 @@ const Dashboard = () => {
    * Considera que marketValue está em formato string, ex: "€20M"
    */
   const totalSquadValue = (() => {
-    const total = fcPortoPlayers.reduce((sum, player) => {
+    const total = squadPlayers.reduce((sum, player) => {
       // Extrai o número do marketValue (ex: "€20M" -> 20)
       const match = typeof player.marketValue === 'string' && player.marketValue.match(/€([\d.]+)M/);
       if (match) {
@@ -105,7 +105,7 @@ const Dashboard = () => {
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{fcPortoPlayers.length}</div>
+            <div className="text-2xl font-bold">{squadPlayers.length}</div>
             <p className="text-xs text-muted-foreground">jogadores registrados</p>
           </CardContent>
         </Card>
@@ -117,7 +117,7 @@ const Dashboard = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {Math.round(fcPortoPlayers.reduce((sum, p) => sum + p.age, 0) / fcPortoPlayers.length)}
+              {Math.round(squadPlayers.reduce((sum, p) => sum + p.age, 0) / squadPlayers.length)}
             </div>
             <p className="text-xs text-muted-foreground">anos</p>
           </CardContent>
@@ -197,7 +197,7 @@ const Dashboard = () => {
               <DialogTitle>Todos os Maiores Contribuidores</DialogTitle>
             </DialogHeader>
             <div className="space-y-3">
-              {fcPortoPlayers
+              {squadPlayers
                 .filter(player => (player.stats.goals + player.stats.assists) > 0)
                 .sort((a, b) => (b.stats.goals + b.stats.assists) - (a.stats.goals + a.stats.assists))
                 .map((player, index) => (
@@ -224,7 +224,7 @@ const Dashboard = () => {
             </CardHeader>
             <CardContent>
           <div className="space-y-3">
-            {fcPortoPlayers
+            {squadPlayers
               .filter(player => (player.stats.goals + player.stats.assists) > 0)
               .sort((a, b) => (b.stats.goals + b.stats.assists) - (a.stats.goals + a.stats.assists))
               .slice(0, 3)

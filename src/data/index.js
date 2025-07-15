@@ -1,5 +1,5 @@
 /**
- * ARQUIVO PRINCIPAL DE DADOS FC PORTO CAREER HUB
+ * ARQUIVO PRINCIPAL DE DADOS CAREER HUB
  * 
  * Este arquivo centraliza todas as importações de dados do sistema.
  * Todos os componentes devem importar dados deste arquivo.
@@ -13,8 +13,8 @@
  */
 
 // ==================== IMPORTAÇÕES ====================
-import { fcPortoPlayers2024_25 } from './players/squad2024-25.js';
-import { fcPortoPlayers2025_26 } from './players/squad2025-26.js';
+import { squadPlayers2024_25 } from './players/squad2024-25.js';
+import { squadPlayers2025_26 } from './players/squad2025-26.js';
 import { seasonStats } from './seasons/seasonStats.js';
 import { transferHistory } from './transfers/transferHistory.js';
 import { 
@@ -35,10 +35,10 @@ import {
 // ==================== EXPORTAÇÕES ====================
 
 // Dados dos jogadores por temporada
-export { fcPortoPlayers2024_25, fcPortoPlayers2025_26 };
+export { squadPlayers2024_25, squadPlayers2025_26 };
 
 // Elenco atual (temporada vigente - 2025/26)
-export const fcPortoPlayers = fcPortoPlayers2025_26;
+export const squadPlayers = squadPlayers2025_26;
 
 // Dados das temporadas
 export { seasonStats };
@@ -96,7 +96,7 @@ export const getSectorName = (position) => {
  * @returns {Array} Array de jogadores do setor especificado
  */
 export const getPlayersBySector = (sector) => {
-  return fcPortoPlayers.filter(player => {
+  return squadPlayers.filter(player => {
     const playerSector = positionToSector[player.position];
     return playerSector === sector;
   });
@@ -110,11 +110,11 @@ export const getPlayersBySector = (sector) => {
 export const getPlayersBySeason = (season) => {
   switch (season) {
     case '2024/25':
-      return fcPortoPlayers2024_25;
+      return squadPlayers2024_25;
     case '2025/26':
-      return fcPortoPlayers2025_26;
+      return squadPlayers2025_26;
     default:
-      return fcPortoPlayers; // Temporada atual por padrão
+      return squadPlayers; // Temporada atual por padrão
   }
 };
 
@@ -123,13 +123,13 @@ export const getPlayersBySeason = (season) => {
  * @returns {object} Objeto com estatísticas gerais do elenco
  */
 export const getSquadStats = () => {
-  const totalPlayers = fcPortoPlayers.length;
+  const totalPlayers = squadPlayers.length;
   const averageAge = totalPlayers > 0
-    ? parseFloat((fcPortoPlayers.reduce((sum, p) => sum + p.age, 0) / totalPlayers).toFixed(1))
+    ? parseFloat((squadPlayers.reduce((sum, p) => sum + p.age, 0) / totalPlayers).toFixed(1))
     : 0;
   // Supondo que todos os valores de mercado estão em milhões (ex: "€10M")
   // Se houver outros formatos, ajuste o parsing conforme necessário.
-  const totalMarketValue = fcPortoPlayers.reduce((sum, p) => {
+  const totalMarketValue = squadPlayers.reduce((sum, p) => {
     let value = 0;
     if (typeof p.marketValue === 'string') {
       if (p.marketValue.includes('M')) {
@@ -154,7 +154,7 @@ export const getSquadStats = () => {
  * @returns {Array} Array de jogadores com estatísticas históricas
  */
 export const getHistoricalPlayerStats = () => {
-  const allPlayers = [...fcPortoPlayers2024_25, ...fcPortoPlayers2025_26];
+  const allPlayers = [...squadPlayers2024_25, ...squadPlayers2025_26];
   const playerStatsMap = new Map();
 
   allPlayers.forEach(player => {

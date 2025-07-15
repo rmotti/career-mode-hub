@@ -34,7 +34,7 @@ import {
   Eye,
 } from 'lucide-react';
 import {
-  fcPortoPlayers,
+  squadPlayers,
   transfersBySeasonData,
   weeklyWagesBySeasonData,
 } from '../data/index.js';
@@ -77,7 +77,7 @@ const Financial = () => {
     return `€${value.toFixed(0)}`;
   };
 
-  const salaryByFunction = fcPortoPlayers.reduce((acc, player) => {
+  const salaryByFunction = squadPlayers.reduce((acc, player) => {
     const func = player.function;
     const salary = calculateSalary(player.salary, salaryView);
 
@@ -98,7 +98,7 @@ const Financial = () => {
     }))
     .sort((a, b) => b.total - a.total);
 
-  const topSalaries = fcPortoPlayers
+  const topSalaries = squadPlayers
     .map((player) => ({
       ...player,
       calculatedSalary: calculateSalary(player.salary, salaryView),
@@ -119,7 +119,7 @@ const Financial = () => {
     '#98D8C8',
   ];
 
-  const totalSalary = fcPortoPlayers.reduce(
+  const totalSalary = squadPlayers.reduce(
     (sum, player) => sum + calculateSalary(player.salary, salaryView),
     0
   );
@@ -294,7 +294,7 @@ const Financial = () => {
                     <DialogTitle>Todos os Salários - {getSalaryLabel(salaryView)}</DialogTitle>
                   </DialogHeader>
                   <div className="space-y-3">
-                    {fcPortoPlayers
+                    {squadPlayers
                       .map((player) => ({
                         ...player,
                         calculatedSalary: calculateSalary(player.salary, salaryView),

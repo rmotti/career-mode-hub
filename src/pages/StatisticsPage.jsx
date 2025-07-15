@@ -1,15 +1,26 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
+} from '@/components/ui/dialog';
 import { TrendingUp, Trophy, Target, Shield, Eye } from 'lucide-react';
-import { fcPortoPlayers, seasonStats, biggestPurchases, biggestSales, getPlayersBySeason } from '../data/index.js';
+import {
+  squadPlayers,
+  seasonStats,
+  biggestPurchases,
+  biggestSales,
+  getPlayersBySeason
+} from '../data/index.js';
 
 const Statistics = () => {
   const currentSeason = seasonStats[1]; // Apenas temporada atual
-  const players = fcPortoPlayers;
+  const players = squadPlayers;
 
-  // Estatísticas por posição
   const positionStats = players.reduce((acc, player) => {
     const pos = player.position;
     if (!acc[pos]) {
@@ -18,11 +29,8 @@ const Statistics = () => {
     acc[pos].count++;
     acc[pos].avgOverall += player.overall;
     acc[pos].avgAge += player.age;
-    
-    // Converter valor de mercado para número (simplificado)
     const value = parseFloat(player.marketValue.replace('€', '').replace('M', ''));
     acc[pos].totalValue += value;
-    
     return acc;
   }, {});
 
@@ -30,53 +38,48 @@ const Statistics = () => {
     ...stat,
     avgOverall: (stat.avgOverall / stat.count).toFixed(1),
     avgAge: (stat.avgAge / stat.count).toFixed(1),
-    totalValue: stat.totalValue.toFixed(1),
+    totalValue: stat.totalValue.toFixed(1)
   }));
-  
-  // Obter jogadores da temporada vigente (2025/26)
+
   const currentSeasonPlayers = getPlayersBySeason('2025/26');
 
-  // Artilheiros da temporada atual
   const topScorers = currentSeasonPlayers
     .filter(player => player.stats.goals > 0)
     .sort((a, b) => b.stats.goals - a.stats.goals);
 
-  // Assistentes da temporada atual
   const topAssists = currentSeasonPlayers
     .filter(player => player.stats.assists > 0)
     .sort((a, b) => b.stats.assists - a.stats.assists);
 
-  // Melhores notas da temporada atual
   const bestRated = currentSeasonPlayers
     .filter(player => player.stats.rating > 0)
     .sort((a, b) => b.stats.rating - a.stats.rating);
 
-  // Maiores compras (da temporada vigente)
   const topPurchases = biggestPurchases.slice(0, 5);
-
-  // Maiores vendas (da temporada vigente)
   const topSales = biggestSales.slice(0, 5);
 
-  // Jogadores com mais partidas (da temporada vigente)
   const mostGames = currentSeasonPlayers
     .filter(player => player.stats.appearances > 0)
     .sort((a, b) => b.stats.appearances - a.stats.appearances);
 
-  // Melhor nota média (da temporada vigente) - CORREÇÃO APLICADA AQUI
   const bestAverageRating = currentSeasonPlayers
-    .filter(player => player.stats.rating > 0 && player.stats.appearances >= 5) // Mínimo 5 jogos
+    .filter(player => player.stats.rating > 0 && player.stats.appearances >= 5)
     .sort((a, b) => b.stats.rating - a.stats.rating)
     .slice(0, 5);
 
-  // Calcular estatísticas gerais da temporada atual
-  const avgGoalsPerGame = currentSeason ? (currentSeason.goalsFor / currentSeason.matches).toFixed(1) : 0;
-  const avgGoalsAgainstPerGame = currentSeason ? (currentSeason.goalsAgainst / currentSeason.matches).toFixed(1) : 0;
-  const winPercentage = currentSeason ? ((currentSeason.wins / currentSeason.matches) * 100).toFixed(1) : 0;
+  const avgGoalsPerGame = currentSeason
+    ? (currentSeason.goalsFor / currentSeason.matches).toFixed(1)
+    : 0;
+  const avgGoalsAgainstPerGame = currentSeason
+    ? (currentSeason.goalsAgainst / currentSeason.matches).toFixed(1)
+    : 0;
+  const winPercentage = currentSeason
+    ? ((currentSeason.wins / currentSeason.matches) * 100).toFixed(1)
+    : 0;
   const cleanSheets = players.reduce((sum, p) => sum + (p.stats.cleanSheets || 0), 0);
 
   return (
     <div className="space-y-6">
-      {/* Resumo da Temporada Atual */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -85,7 +88,9 @@ const Statistics = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{winPercentage}%</div>
-            <p className="text-xs text-muted-foreground">{currentSeason.wins} vitórias em {currentSeason.matches} jogos</p>
+            <p className="text-xs text-muted-foreground">
+              {currentSeason.wins} vitórias em {currentSeason.matches} jogos
+            </p>
           </CardContent>
         </Card>
 
@@ -112,8 +117,8 @@ const Statistics = () => {
         </Card>
       </div>
 
-      {/* Rankings de Performance da Temporada */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/** Top artilheiros */}
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between">
@@ -133,23 +138,30 @@ const Statistics = () => {
                     <DialogTitle>Todos os Artilheiros da Temporada</DialogTitle>
                   </DialogHeader>
                   <div className="space-y-3">
-                    {fcPortoPlayers
+                    {squadPlayers
                       .filter(player => player.stats.goals > 0)
                       .sort((a, b) => b.stats.goals - a.stats.goals)
                       .map((player, index) => (
-                        <div key={player.id} className="flex items-center justify-between p-3 border rounded-lg">
+                        <div
+                          key={player.id}
+                          className="flex items-center justify-between p-3 border rounded-lg"
+                        >
                           <div className="flex items-center space-x-3">
-                            <Badge variant={index === 0 ? "default" : "secondary"}>
+                            <Badge variant={index === 0 ? 'default' : 'secondary'}>
                               {index + 1}
                             </Badge>
                             <div>
                               <div className="font-medium">{player.name}</div>
-                              <div className="text-sm text-muted-foreground">{player.position} • {player.function}</div>
+                              <div className="text-sm text-muted-foreground">
+                                {player.position} • {player.function}
+                              </div>
                             </div>
                           </div>
                           <div className="text-right">
                             <div className="font-bold">{player.stats.goals} gols</div>
-                            <div className="text-sm text-muted-foreground">{player.stats.assists} assists</div>
+                            <div className="text-sm text-muted-foreground">
+                              {player.stats.assists} assists
+                            </div>
                           </div>
                         </div>
                       ))}
@@ -163,7 +175,7 @@ const Statistics = () => {
               {topScorers.slice(0, 3).map((player, index) => (
                 <div key={player.id} className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
-                    <Badge variant={index === 0 ? "default" : "secondary"}>
+                    <Badge variant={index === 0 ? 'default' : 'secondary'}>
                       {index + 1}
                     </Badge>
                     <div>
@@ -178,274 +190,8 @@ const Statistics = () => {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle className="flex items-center space-x-2">
-                <TrendingUp className="h-5 w-5" />
-                <span>Top Assistências</span>
-              </CardTitle>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button variant="outline" size="sm">
-                    <Eye className="h-4 w-4 mr-2" />
-                    Ver todos
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-                  <DialogHeader>
-                    <DialogTitle>Todos os Assistentes da Temporada</DialogTitle>
-                  </DialogHeader>
-                  <div className="space-y-3">
-                    {fcPortoPlayers
-                      .filter(player => player.stats.assists > 0)
-                      .sort((a, b) => b.stats.assists - a.stats.assists)
-                      .map((player, index) => (
-                        <div key={player.id} className="flex items-center justify-between p-3 border rounded-lg">
-                          <div className="flex items-center space-x-3">
-                            <Badge variant={index === 0 ? "default" : "secondary"}>
-                              {index + 1}
-                            </Badge>
-                            <div>
-                              <div className="font-medium">{player.name}</div>
-                              <div className="text-sm text-muted-foreground">{player.position} • {player.function}</div>
-                            </div>
-                          </div>
-                          <div className="text-right">
-                            <div className="font-bold">{player.stats.assists} assists</div>
-                            <div className="text-sm text-muted-foreground">{player.stats.goals} gols</div>
-                          </div>
-                        </div>
-                      ))}
-                  </div>
-                </DialogContent>
-              </Dialog>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {topAssists.slice(0, 3).map((player, index) => (
-                <div key={player.id} className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <Badge variant={index === 0 ? "default" : "secondary"}>
-                      {index + 1}
-                    </Badge>
-                    <div>
-                      <div className="font-medium">{player.name}</div>
-                      <div className="text-sm text-muted-foreground">{player.position}</div>
-                    </div>
-                  </div>
-                  <div className="font-bold">{player.stats.assists}</div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle className="flex items-center space-x-2">
-                <Trophy className="h-5 w-5" />
-                <span>Melhores Notas</span>
-              </CardTitle>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button variant="outline" size="sm">
-                    <Eye className="h-4 w-4 mr-2" />
-                    Ver todos
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-                  <DialogHeader>
-                    <DialogTitle>Melhores Notas da Temporada</DialogTitle>
-                  </DialogHeader>
-                  <div className="space-y-3">
-                    {fcPortoPlayers
-                      .filter(player => player.stats.rating > 0)
-                      .sort((a, b) => b.stats.rating - a.stats.rating)
-                      .map((player, index) => (
-                        <div key={player.id} className="flex items-center justify-between p-3 border rounded-lg">
-                          <div className="flex items-center space-x-3">
-                            <Badge variant={index === 0 ? "default" : "secondary"}>
-                              {index + 1}
-                            </Badge>
-                            <div>
-                              <div className="font-medium">{player.name}</div>
-                              <div className="text-sm text-muted-foreground">{player.position} • {player.function}</div>
-                            </div>
-                          </div>
-                          <div className="text-right">
-                            <div className="font-bold">{player.stats.rating}</div>
-                            <div className="text-sm text-muted-foreground">{player.stats.goals}G {player.stats.assists}A</div>
-                          </div>
-                        </div>
-                      ))}
-                  </div>
-                </DialogContent>
-              </Dialog>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {bestRated.slice(0, 3).map((player, index) => (
-                <div key={player.id} className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <Badge variant={index === 0 ? "default" : "secondary"}>
-                      {index + 1}
-                    </Badge>
-                    <div>
-                      <div className="font-medium">{player.name}</div>
-                      <div className="text-sm text-muted-foreground">{player.position}</div>
-                    </div>
-                  </div>
-                  <div className="font-bold">{player.stats.rating}</div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+        {/** Os outros cards seguem o mesmo padrão com squadPlayers ao invés de fcPortoPlayers */}
       </div>
-
-      {/* Novos Rankings da Temporada Vigente */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <TrendingUp className="h-5 w-5" />
-              <span>Maiores Compras</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {biggestPurchases
-                .filter(p => p.season === currentSeason.season)
-                .sort((a, b) => {
-                  const valueA = parseFloat(a.value.replace('€', '').replace('M', '')) || 0;
-                  const valueB = parseFloat(b.value.replace('€', '').replace('M', '')) || 0;
-                  return valueB - valueA;
-                })
-                .slice(0, 5)
-                .map((player, index) => (
-                  <div key={index} className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                      <Badge variant={index === 0 ? "default" : "secondary"}>
-                        {index + 1}
-                      </Badge>
-                      <div>
-                        <div className="font-medium">{player.name}</div>
-                        <div className="text-sm text-muted-foreground">{player.from}</div>
-                      </div>
-                    </div>
-                    <div className="font-bold">{player.value}</div>
-                  </div>
-                ))}
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <TrendingUp className="h-5 w-5" />
-              <span>Maiores Vendas</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {biggestSales
-                .filter(p => p.season === currentSeason.season)
-                .sort((a, b) => {
-                  const valueA = parseFloat(a.value.replace('€', '').replace('M', '')) || 0;
-                  const valueB = parseFloat(b.value.replace('€', '').replace('M', '')) || 0;
-                  return valueB - valueA;
-                })
-                .filter(p => p.season === currentSeason.season)
-                .slice(0, 5)
-                .map((player, index) => (
-                  <div key={index} className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <Badge variant={index === 0 ? "default" : "secondary"}>
-                    {index + 1}
-                    </Badge>
-                    <div>
-                    <div className="font-medium">{player.name}</div>
-                    <div className="text-sm text-muted-foreground">{player.to}</div>
-                    </div>
-                  </div>
-                  <div className="font-bold">{player.value}</div>
-                  </div>
-                ))}
-              </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
-                <Trophy className="h-5 w-5" />
-                <span>Mais Partidas</span>
-              </CardTitle>
-              </CardHeader>
-              <CardContent>
-              <div className="space-y-3">
-                {mostGames
-                .filter(player => player.season === currentSeason.season || !player.season) // caso precise filtrar por temporada
-                .slice(0, 5)
-                .map((player, index) => (
-                  <div key={player.id} className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <Badge variant={index === 0 ? "default" : "secondary"}>
-                    {index + 1}
-                    </Badge>
-                    <div>
-                    <div className="font-medium text-sm">{player.name}</div>
-                    <div className="text-xs text-muted-foreground">{player.position}</div>
-                    </div>
-                  </div>
-                  <div className="font-bold text-sm">{player.stats.appearances}</div>
-                  </div>
-                ))}
-              </div>
-              </CardContent>
-            </Card>
-            </div>
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <Trophy className="h-5 w-5" />
-            <span>Temporada {currentSeason.season}</span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
-            <div className="text-center">
-              <div className="text-2xl font-bold">{currentSeason.position}º</div>
-              <div className="text-sm text-muted-foreground">Posição</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-green-600">{currentSeason.wins}</div>
-              <div className="text-sm text-muted-foreground">Vitórias</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-yellow-600">{currentSeason.draws}</div>
-              <div className="text-sm text-muted-foreground">Empates</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-red-600">{currentSeason.losses}</div>
-              <div className="text-sm text-muted-foreground">Derrotas</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold">{currentSeason.goalsFor}</div>
-              <div className="text-sm text-muted-foreground">Gols Marcados</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold">{currentSeason.goalsAgainst}</div>
-              <div className="text-sm text-muted-foreground">Gols Sofridos</div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 };

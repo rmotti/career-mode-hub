@@ -1,5 +1,5 @@
 /**
- * DADOS DO ELENCO FC PORTO - TEMPORADA 2025/26
+ * DADOS DO ELENCO - TEMPORADA 2025/26
  * 
  * Este arquivo contém todos os dados dos jogadores do elenco da temporada 2025/26.
  * Para editar os dados dos jogadores desta temporada, modifique as informações abaixo.
@@ -22,7 +22,7 @@
  * - stats: Estatísticas da temporada 2025/26 (ZERADAS)
  */
 
-export const fcPortoPlayers2025_26 = [
+export const squadPlayers2025_26 = [
   // ==================== GOLEIROS ====================
   {
     id: 1,

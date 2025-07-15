@@ -1,5 +1,5 @@
 /**
- * HISTÓRICO DE TRANSFERÊNCIAS FC PORTO
+ * HISTÓRICO DE TRANSFERÊNCIAS
  * 
  * Este arquivo contém todas as transferências do clube (entradas, saídas, empréstimos, renovações).
  * Para adicionar uma nova transferência, adicione um novo objeto ao array seguindo a estrutura.

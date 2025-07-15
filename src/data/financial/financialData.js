@@ -1,15 +1,15 @@
 import { transferHistory } from '../transfers/transferHistory';
-import { fcPortoPlayers2025_26} from '../players/squad2025-26';
-import { fcPortoPlayers2024_25} from '../players/squad2024-25';
+import { squadPlayers2025_26} from '../players/squad2025-26';
+import { squadPlayers2024_25} from '../players/squad2024-25';
 
 // Mapeamento das squads por temporada
 const squads = {
-  '2024/25': fcPortoPlayers2024_25,
-  '2025/26': fcPortoPlayers2025_26
+  '2024/25': squadPlayers2024_25,
+  '2025/26': squadPlayers2025_26
 };
 
 /**
- * DADOS FINANCEIROS FC PORTO
+ * DADOS FINANCEIROS
  * 
  * Este arquivo contém todas as informações financeiras do clube.
  * Para editar valores financeiros, modifique as informações abaixo.

@@ -1,5 +1,5 @@
 /**
- * INFORMAÇÕES DO CLUBE FC PORTO
+ * INFORMAÇÕES DO CLUBE 
  * 
  * Este arquivo contém as informações básicas e configurações do clube.
  * Para editar informações do clube, modifique os dados abaixo.
@@ -16,7 +16,8 @@ export const clubInfo = {
   manager: "Sérgio Conceição",
   league: "Liga Portugal",
   budget: "€45M",
-  wage: "€2.1M/week"
+  wage: "€2.1M/week",
+  season: "2025/26"
 };
 
 /**

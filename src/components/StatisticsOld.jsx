@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { TrendingUp, Trophy, Target, Shield } from 'lucide-react';
-import { seasonStats, fcPortoPlayers } from '../data/mockData';
+import { seasonStats, squadPlayers } from '../data/mockData';
 
 const Statistics = () => {
   // Dados para gráfico de evolução por temporada
@@ -14,7 +14,7 @@ const Statistics = () => {
   })).reverse();
 
   // Estatísticas por posição
-  const positionStats = fcPortoPlayers.reduce((acc, player) => {
+  const positionStats = squadPlayers.reduce((acc, player) => {
     const pos = player.position;
     if (!acc[pos]) {
       acc[pos] = { position: pos, count: 0, avgOverall: 0, avgAge: 0, totalValue: 0 };
@@ -38,17 +38,17 @@ const Statistics = () => {
   }));
 
   // Top performers por estatística
-  const topScorers = fcPortoPlayers
+  const topScorers = squadPlayers
     .filter(p => p.stats.goals > 0)
     .sort((a, b) => b.stats.goals - a.stats.goals)
     .slice(0, 5);
 
-  const topAssists = fcPortoPlayers
+  const topAssists = squadPlayers
     .filter(p => p.stats.assists > 0)
     .sort((a, b) => b.stats.assists - a.stats.assists)
     .slice(0, 5);
 
-  const bestRated = fcPortoPlayers
+  const bestRated = squadPlayers
     .sort((a, b) => b.stats.rating - a.stats.rating)
     .slice(0, 5);
 

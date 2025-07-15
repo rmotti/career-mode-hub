@@ -1,5 +1,5 @@
 /**
- * DADOS DO ELENCO FC PORTO - TEMPORADA 2024/25
+ * DADOS DO ELENCO - TEMPORADA 2024/25
  * 
  * Este arquivo contém todos os dados dos jogadores do elenco da temporada 2024/25.
  * Para editar os dados dos jogadores desta temporada, modifique as informações abaixo.
@@ -19,7 +19,7 @@
  * - stats: Estatísticas da temporada 2024/25
  */
 
-export const fcPortoPlayers2024_25 = [
+export const squadPlayers2024_25 = [
   // ==================== GOLEIROS ====================
   {
     id: 1,

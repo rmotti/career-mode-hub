@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Search, Filter, Edit, Eye, Star } from 'lucide-react';
-import { fcPortoPlayers } from '../data/mockData';
+import { squadPlayers } from '../data/mockData';
 
 const Players = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -14,7 +14,7 @@ const Players = () => {
 
   const positions = ['all', 'GK', 'CB', 'LB', 'RB', 'CDM', 'CM', 'CAM', 'LW', 'RW', 'ST'];
 
-  const filteredPlayers = fcPortoPlayers.filter(player => {
+  const filteredPlayers = squadPlayers.filter(player => {
     const matchesSearch = player.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesPosition = positionFilter === 'all' || player.position === positionFilter;
     return matchesSearch && matchesPosition;

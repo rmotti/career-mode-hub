@@ -19,7 +19,7 @@
  * - stats: Estatísticas da temporada atual
  */
 
-export const fcPortoPlayers = [
+export const squadPlayers = [
   // ==================== GOLEIROS ====================
   {
     id: 1,

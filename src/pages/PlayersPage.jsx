@@ -2,16 +2,14 @@ import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Users, Star, Calendar, DollarSign, Target, Award, X } from 'lucide-react';
-import { fcPortoPlayers, getSectorColor, getSectorName } from '../data/index.js';
-
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Users, Star, Calendar, DollarSign, X } from 'lucide-react';
+import { squadPlayers, getSectorColor, getSectorName } from '../data/index.js';
 
 const Players = () => {
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   const [filterPosition, setFilterPosition] = useState('all');
 
-  // Função para obter setor por posição
   const getSector = (position) => {
     if (position === 'GK') return 'Goleiro';
     if (['CB', 'RB', 'LB'].includes(position)) return 'Defesa';
@@ -20,10 +18,9 @@ const Players = () => {
     return 'Outro';
   };
 
-  // Ordenar jogadores por posição e depois por overall
   const positionOrder = ['GK', 'RB', 'CB', 'LB', 'CDM', 'CM', 'CAM', 'RM', 'LM', 'RW', 'LW', 'ST'];
-  
-  const sortedPlayers = fcPortoPlayers
+
+  const sortedPlayers = squadPlayers
     .filter(player => {
       if (filterPosition === 'all') return true;
       return getSector(player.position) === filterPosition;
@@ -37,24 +34,6 @@ const Players = () => {
 
   const sectors = ['all', 'Goleiro', 'Defesa', 'Meio', 'Ataque'];
 
-  // Função para obter cor por setor
-  const getSectorColor = (position) => {
-    if (position === 'GK') return 'bg-yellow-500 text-white';
-    if (['CB', 'RB', 'LB'].includes(position)) return 'bg-blue-500 text-white';
-    if (['CDM', 'CM', 'CAM', 'RM', 'LM'].includes(position)) return 'bg-green-500 text-white';
-    if (['RW', 'LW', 'ST'].includes(position)) return 'bg-red-500 text-white';
-    return 'bg-gray-500 text-white';
-  };
-
-  // Função para obter nome do setor
-  const getSectorName = (position) => {
-    if (position === 'GK') return 'Goleiro';
-    if (['CB', 'RB', 'LB'].includes(position)) return 'Defensor';
-    if (['CDM', 'CM', 'CAM', 'RM', 'LM'].includes(position)) return 'Meio-campo';
-    if (['RW', 'LW', 'ST'].includes(position)) return 'Atacante';
-    return 'Outro';
-  };
-
   const getPotentialIndicator = (potential) => {
     if (potential >= 90) return '⭐⭐⭐⭐⭐';
     if (potential >= 85) return '⭐⭐⭐⭐';
@@ -65,7 +44,6 @@ const Players = () => {
 
   return (
     <div className="space-y-6">
-      {/* Filtros */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
@@ -89,7 +67,6 @@ const Players = () => {
         </CardContent>
       </Card>
 
-      {/* Lista de Jogadores - Cards Horizontais */}
       <div className="space-y-3">
         {sortedPlayers.map((player) => {
           const potentialIndicator = getPotentialIndicator(player.potential);
@@ -99,12 +76,9 @@ const Players = () => {
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
-                    {/* Overall com cor por setor */}
                     <div className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold ${getSectorColor(player.position)}`}>
                       {player.overall}
                     </div>
-                    
-                    {/* Informações do Jogador */}
                     <div className="flex-1">
                       <div className="flex items-center space-x-2 mb-1">
                         <h3 className="font-semibold text-lg">{player.name}</h3>
@@ -129,7 +103,6 @@ const Players = () => {
                     </div>
                   </div>
 
-                  {/* Estatísticas */}
                   <div className="flex items-center space-x-6 text-sm">
                     <div className="text-center">
                       <div className="font-bold">{player.stats.appearances}</div>
@@ -143,7 +116,7 @@ const Players = () => {
                       <div className="font-bold">{player.stats.assists}</div>
                       <div className="text-muted-foreground">Assists</div>
                     </div>
-                    {(player.position === 'GK' || player.position === 'CB' || player.position === 'RB' || player.position === 'LB') && (
+                    {['GK', 'CB', 'RB', 'LB'].includes(player.position) && (
                       <div className="text-center">
                         <div className="font-bold">{player.stats.cleanSheets}</div>
                         <div className="text-muted-foreground">Clean Sheets</div>
@@ -155,7 +128,6 @@ const Players = () => {
                     </div>
                   </div>
 
-                  {/* Botão Ver Detalhes */}
                   <Button 
                     variant="outline" 
                     size="sm"
@@ -170,7 +142,6 @@ const Players = () => {
         })}
       </div>
 
-      {/* Modal de Detalhes do Jogador */}
       {selectedPlayer && (
         <Dialog open={!!selectedPlayer} onOpenChange={() => setSelectedPlayer(null)}>
           <DialogContent className="max-w-2xl">
@@ -194,44 +165,24 @@ const Players = () => {
                 </Button>
               </div>
             </DialogHeader>
-            
+
             <div className="space-y-4">
-              {/* Informações Básicas */}
               <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <div className="text-sm text-muted-foreground">Idade</div>
-                  <div className="font-medium">{selectedPlayer.age} anos</div>
-                </div>
-                <div>
-                  <div className="text-sm text-muted-foreground">Potencial</div>
-                  <div className="font-medium">{selectedPlayer.potential} {getPotentialIndicator(selectedPlayer.potential)}</div>
-                </div>
-                <div>
-                  <div className="text-sm text-muted-foreground">Valor de Mercado</div>
-                  <div className="font-medium">{selectedPlayer.marketValue}</div>
-                </div>
-                <div>
-                  <div className="text-sm text-muted-foreground">Salário</div>
-                  <div className="font-medium">{selectedPlayer.salary}/semana</div>
-                </div>
-                <div>
-                  <div className="text-sm text-muted-foreground">Contrato até</div>
-                  <div className="font-medium">{selectedPlayer.contract}</div>
-                </div>
-                <div>
-                  <div className="text-sm text-muted-foreground">Função</div>
-                  <div className="font-medium">{selectedPlayer.function}</div>
-                </div>
+                <div><div className="text-sm text-muted-foreground">Idade</div><div className="font-medium">{selectedPlayer.age} anos</div></div>
+                <div><div className="text-sm text-muted-foreground">Potencial</div><div className="font-medium">{selectedPlayer.potential} {getPotentialIndicator(selectedPlayer.potential)}</div></div>
+                <div><div className="text-sm text-muted-foreground">Valor de Mercado</div><div className="font-medium">{selectedPlayer.marketValue}</div></div>
+                <div><div className="text-sm text-muted-foreground">Salário</div><div className="font-medium">{selectedPlayer.salary}/semana</div></div>
+                <div><div className="text-sm text-muted-foreground">Contrato até</div><div className="font-medium">{selectedPlayer.contract}</div></div>
+                <div><div className="text-sm text-muted-foreground">Função</div><div className="font-medium">{selectedPlayer.function}</div></div>
               </div>
 
-              {/* Estatísticas da Temporada */}
               <div>
                 <h4 className="font-semibold mb-2">Estatísticas da Temporada 2025/26</h4>
                 <div className="grid grid-cols-3 gap-4">
                   <div>Jogos: <span className="font-bold">{selectedPlayer.stats.appearances}</span></div>
                   <div>Gols: <span className="font-bold">{selectedPlayer.stats.goals}</span></div>
                   <div>Assistências: <span className="font-bold">{selectedPlayer.stats.assists}</span></div>
-                  {(selectedPlayer.position === 'GK' || selectedPlayer.position === 'CB' || selectedPlayer.position === 'RB' || selectedPlayer.position === 'LB') && (
+                  {['GK', 'CB', 'RB', 'LB'].includes(selectedPlayer.position) && (
                     <div>Clean Sheets: <span className="font-bold">{selectedPlayer.stats.cleanSheets}</span></div>
                   )}
                   <div>Nota Média: <span className="font-bold">{selectedPlayer.stats.rating}</span></div>
@@ -246,4 +197,3 @@ const Players = () => {
 };
 
 export default Players;
-

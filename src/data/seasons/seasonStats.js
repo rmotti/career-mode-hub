@@ -1,5 +1,5 @@
 /**
- * DADOS DAS TEMPORADAS FC PORTO
+ * DADOS DAS TEMPORADAS
  * 
  * Este arquivo contém as estatísticas de todas as temporadas do clube.
  * Para adicionar uma nova temporada ou editar dados existentes, modifique as informações abaixo.

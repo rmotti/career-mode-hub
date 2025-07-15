@@ -1,5 +1,5 @@
-// Dados mock do FC Porto para demonstração
-export const fcPortoPlayers = [
+
+export const squadPlayers = [
   // GOLEIROS
   {
     id: 1,
