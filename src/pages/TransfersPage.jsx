@@ -8,7 +8,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Search, Filter, TrendingUp, TrendingDown, DollarSign, Calendar, Plus, Edit, Trash2 } from 'lucide-react';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { transferHistory } from '../data/index.js';
-import TransferModal from './TransferModal';
+import TransferModal from '../components/TransferModal.jsx';
 
 const Transfers = () => {
   const [transfers, setTransfers] = useLocalStorage('fc-porto-transfers', transferHistory);

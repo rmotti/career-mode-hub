@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import Header from './components/Header';
-import Dashboard from './components/Dashboard';
-import Players from './components/Players';
-import Statistics from './components/Statistics';
-import History from './components/History';
-import Financial from './components/Financial';
-import Transfers from './components/Transfers';
+import Dashboard from './pages/DashboardPage';
+import Players from './pages/PlayersPage';
+import Statistics from './pages/StatisticsPage';
+import History from './pages/HistoryPage';
+import Financial from './pages/FinancialPage';
+import Transfers from './pages/TransfersPage';
 import './App.css';
 
 function App() {

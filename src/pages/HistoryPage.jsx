@@ -7,7 +7,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { TrendingUp, Trophy, Target, Shield, Plus, Edit, Trash2, History as HistoryIcon } from 'lucide-react';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { seasonStats, getHistoricalPlayerStats, biggestSales, biggestPurchases } from '../data/index.js';
-import SeasonModal from './SeasonModal';
+import SeasonModal from '../components/SeasonModal';
 
 const History = () => {
   const [seasons, setSeasons] = useLocalStorage('fc-porto-seasons', seasonStats);

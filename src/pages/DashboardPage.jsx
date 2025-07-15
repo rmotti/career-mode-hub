@@ -19,7 +19,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Users, Trophy, TrendingUp, DollarSign, Target, Calendar, Eye } from 'lucide-react';
 import { fcPortoPlayers, seasonStats, clubInfo } from '../data/index.js';
-import Formation from './Formation';
+
 
 /**
  * Componente principal do Dashboard
