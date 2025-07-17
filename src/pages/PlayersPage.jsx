@@ -106,9 +106,9 @@ const Players = () => {
                     </div>
                   </div>
                 </DialogTitle>
-                <Button variant="ghost" size="sm" onClick={() => setSelectedPlayer(null)}>
+                {/*<Button variant="ghost" size="sm" onClick={() => setSelectedPlayer(null)}>
                   <X className="h-4 w-4" />
-                </Button>
+                </Button>*/}
               </div>
             </DialogHeader>
 
