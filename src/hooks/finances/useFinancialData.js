@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { squadPlayers, transfersBySeasonData, weeklyWagesBySeasonData } from '../../data/index';
-import { calculateSalary, parseCurrency } from '../../utils/finances/financialUtils';
+import { calculateSalary, parseCurrency, formatCurrency } from '../../utils/finances/financialUtils';
 
 export function useFinancialData() {
   const [salaryView, setSalaryView] = useState('weekly');
@@ -73,10 +73,14 @@ const allMarketValues = useMemo(() =>
   []
 );
 
-const totalSquadValue = useMemo(() =>
-  squadPlayers.reduce((sum, player) => sum + (player.marketValue ? parseCurrency(player.marketValue) : 0), 0),
-  []
-);
+const totalSquadValue = useMemo(() => {
+  const total = squadPlayers.reduce(
+    (sum, player) =>
+      sum + (player.marketValue ? player.parsedMarketValue || parseCurrency(player.marketValue) : 0),
+    0
+  );
+  return formatCurrency(total, 'annual'); 
+}, [squadPlayers]);
 
 const selectedSeasonData = transfersBySeasonData.find(s => s.season === selectedSeason);
 

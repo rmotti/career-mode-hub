@@ -35,3 +35,4 @@ export const usePlayerFilter = () => {
     sectors: ['all', 'Goleiro', 'Defesa', 'Meio', 'Ataque'],
   };
 };
+

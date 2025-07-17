@@ -18,7 +18,7 @@ import {
   Eye
 } from 'lucide-react';
 
-import { useDashboardData } from '../hooks/useDashboardData';
+import { usePlayersData } from '../hooks/players/usePlayersData';
 import { useFinancialData } from '../hooks/finances/useFinancialData';
 
 const Dashboard = () => {
@@ -27,8 +27,8 @@ const Dashboard = () => {
     youngTalents,
     squadSize,
     squadPlayers,
-    topContribuitors
-  } = useDashboardData();
+    allContribuitors
+  } = usePlayersData();
 
   const {
     topMarketValues,
@@ -89,7 +89,7 @@ const Dashboard = () => {
       </div>
 
       {/* MAIORES CONTRIBUIDORES */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
         <Card>
           <CardHeader>
@@ -110,7 +110,7 @@ const Dashboard = () => {
                     <DialogTitle>Todos os Maiores Contribuidores</DialogTitle>
                   </DialogHeader>
                   <div className="space-y-3">
-                    {topContribuitors.map((player, index) => (
+                    {allContribuitors.map((player, index) => (
                       <div key={player.id} className="flex items-center justify-between p-3 border rounded-lg">
                         <div className="flex items-center space-x-3">
                           <div className="w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-bold">
@@ -134,7 +134,7 @@ const Dashboard = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {topContribuitors.slice(0, 5).map((player, index) => (
+              {allContribuitors.slice(0, 5).map((player, index) => (
                 <div key={player.id} className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
                     <div className="w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-bold">
