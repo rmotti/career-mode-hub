@@ -1,6 +1,6 @@
 import { Trophy, Users, TrendingUp, History, DollarSign, ArrowLeftRight } from 'lucide-react';
-import { clubInfo } from '../data/club/clubInfo.js';
-import clubLogo from '../assets/fc-porto-logo.png'; // Importe o logo do clube
+import { clubInfo } from '../../data/club/clubInfo.js';
+import clubLogo from '../../assets/fc-porto-logo.png'; // Importe o logo do clube
 
 const Header = ({ activeTab, setActiveTab }) => {
   const tabs = [

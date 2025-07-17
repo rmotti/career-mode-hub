@@ -5,17 +5,17 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+} from '@/components/ui/common/dialog';
+import { Button } from '@/components/ui/common/button';
+import { Input } from '@/components/ui/common/input';
+import { Label } from '@/components/ui/common/label';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue
-} from '@/components/ui/select';
+} from '@/components/ui/common/select';
 
 const PlayerModal = ({ isOpen, onClose, onSave, player = null }) => {
   const [formData, setFormData] = useState({

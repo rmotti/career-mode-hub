@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import Header from './components/Header';
+import Header from './components/ui/Header';
 import Dashboard from './pages/DashboardPage';
 import Players from './pages/PlayersPage';
-import Statistics from './pages/StatisticsPage';
+import Statistics from './pages/StatsPage';
 import History from './pages/HistoryPage';
-import Financial from './pages/FinancialPage';
+import Financial from './pages/FinancesPage';
 import Transfers from './pages/TransfersPage';
 import './App.css';
 

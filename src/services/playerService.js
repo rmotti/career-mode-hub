@@ -1,5 +1,5 @@
-import { fcPortoPlayers } from '../data/index';
+import { squadPlayers } from '../data/index';
 
 export const getPlayers = async () => {
-  return fcPortoPlayers;
+  return squadPlayers;
 };

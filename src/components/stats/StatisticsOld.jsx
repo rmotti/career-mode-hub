@@ -1,8 +1,8 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/common/card';
+import { Badge } from '@/components/ui/common/badge';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { TrendingUp, Trophy, Target, Shield } from 'lucide-react';
-import { seasonStats, squadPlayers } from '../data/mockData';
+import { seasonStats, squadPlayers } from '../../data/mockData';
 
 const Statistics = () => {
   // Dados para gráfico de evolução por temporada
