@@ -4,46 +4,18 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Users, Star, Calendar, DollarSign, X } from 'lucide-react';
-import { squadPlayers, getSectorColor, getSectorName } from '../data/index.js';
+
+import { usePlayerFilter } from '@/hooks/usePlayerFilter';
+import { getPotentialIndicator } from '@/utils/playerUtils';
+import { getSectorColor, getSectorName } from '@/data';
 
 const Players = () => {
   const [selectedPlayer, setSelectedPlayer] = useState(null);
-  const [filterPosition, setFilterPosition] = useState('all');
-
-  const getSector = (position) => {
-    if (position === 'GK') return 'Goleiro';
-    if (['CB', 'RB', 'LB'].includes(position)) return 'Defesa';
-    if (['CDM', 'CM', 'CAM', 'RM', 'LM'].includes(position)) return 'Meio';
-    if (['RW', 'LW', 'ST'].includes(position)) return 'Ataque';
-    return 'Outro';
-  };
-
-  const positionOrder = ['GK', 'RB', 'CB', 'LB', 'CDM', 'CM', 'CAM', 'RM', 'LM', 'RW', 'LW', 'ST'];
-
-  const sortedPlayers = squadPlayers
-    .filter(player => {
-      if (filterPosition === 'all') return true;
-      return getSector(player.position) === filterPosition;
-    })
-    .sort((a, b) => {
-      const posA = positionOrder.indexOf(a.position);
-      const posB = positionOrder.indexOf(b.position);
-      if (posA !== posB) return posA - posB;
-      return b.overall - a.overall;
-    });
-
-  const sectors = ['all', 'Goleiro', 'Defesa', 'Meio', 'Ataque'];
-
-  const getPotentialIndicator = (potential) => {
-    if (potential >= 90) return '⭐⭐⭐⭐⭐';
-    if (potential >= 85) return '⭐⭐⭐⭐';
-    if (potential >= 80) return '⭐⭐⭐';
-    if (potential >= 75) return '⭐⭐';
-    return '⭐';
-  };
+  const { filterPosition, setFilterPosition, filteredAndSortedPlayers, sectors } = usePlayerFilter();
 
   return (
     <div className="space-y-6">
+      {/* Filtros */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
@@ -56,7 +28,7 @@ const Players = () => {
             {sectors.map(sector => (
               <Button
                 key={sector}
-                variant={filterPosition === sector ? "default" : "outline"}
+                variant={filterPosition === sector ? 'default' : 'outline'}
                 size="sm"
                 onClick={() => setFilterPosition(sector)}
               >
@@ -67,10 +39,11 @@ const Players = () => {
         </CardContent>
       </Card>
 
+      {/* Lista de Jogadores */}
       <div className="space-y-3">
-        {sortedPlayers.map((player) => {
+        {filteredAndSortedPlayers.map((player) => {
           const potentialIndicator = getPotentialIndicator(player.potential);
-          
+
           return (
             <Card key={player.id} className="hover:shadow-md transition-shadow cursor-pointer">
               <CardContent className="p-4">
@@ -87,52 +60,24 @@ const Players = () => {
                         <Badge variant="outline">{player.function}</Badge>
                       </div>
                       <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-                        <span className="flex items-center space-x-1">
-                          <Calendar className="h-4 w-4" />
-                          <span>{player.age} anos</span>
-                        </span>
-                        <span className="flex items-center space-x-1">
-                          <Star className="h-4 w-4" />
-                          <span>{potentialIndicator}</span>
-                        </span>
-                        <span className="flex items-center space-x-1">
-                          <DollarSign className="h-4 w-4" />
-                          <span>{player.marketValue}</span>
-                        </span>
+                        <span className="flex items-center space-x-1"><Calendar className="h-4 w-4" /><span>{player.age} anos</span></span>
+                        <span className="flex items-center space-x-1"><Star className="h-4 w-4" /><span>{potentialIndicator}</span></span>
+                        <span className="flex items-center space-x-1"><DollarSign className="h-4 w-4" /><span>{player.marketValue}</span></span>
                       </div>
                     </div>
                   </div>
 
                   <div className="flex items-center space-x-6 text-sm">
-                    <div className="text-center">
-                      <div className="font-bold">{player.stats.appearances}</div>
-                      <div className="text-muted-foreground">Jogos</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="font-bold">{player.stats.goals}</div>
-                      <div className="text-muted-foreground">Gols</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="font-bold">{player.stats.assists}</div>
-                      <div className="text-muted-foreground">Assists</div>
-                    </div>
+                    <div className="text-center"><div className="font-bold">{player.stats.appearances}</div><div className="text-muted-foreground">Jogos</div></div>
+                    <div className="text-center"><div className="font-bold">{player.stats.goals}</div><div className="text-muted-foreground">Gols</div></div>
+                    <div className="text-center"><div className="font-bold">{player.stats.assists}</div><div className="text-muted-foreground">Assists</div></div>
                     {['GK', 'CB', 'RB', 'LB'].includes(player.position) && (
-                      <div className="text-center">
-                        <div className="font-bold">{player.stats.cleanSheets}</div>
-                        <div className="text-muted-foreground">Clean Sheets</div>
-                      </div>
+                      <div className="text-center"><div className="font-bold">{player.stats.cleanSheets}</div><div className="text-muted-foreground">Clean Sheets</div></div>
                     )}
-                    <div className="text-center">
-                      <div className="font-bold">{player.stats.rating}</div>
-                      <div className="text-muted-foreground">Nota</div>
-                    </div>
+                    <div className="text-center"><div className="font-bold">{player.stats.rating}</div><div className="text-muted-foreground">Nota</div></div>
                   </div>
 
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    onClick={() => setSelectedPlayer(player)}
-                  >
+                  <Button variant="outline" size="sm" onClick={() => setSelectedPlayer(player)}>
                     Ver Detalhes
                   </Button>
                 </div>
@@ -142,6 +87,7 @@ const Players = () => {
         })}
       </div>
 
+      {/* Modal de Detalhes */}
       {selectedPlayer && (
         <Dialog open={!!selectedPlayer} onOpenChange={() => setSelectedPlayer(null)}>
           <DialogContent className="max-w-2xl">

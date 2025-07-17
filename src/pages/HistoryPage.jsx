@@ -2,80 +2,44 @@ import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
-import { TrendingUp, Trophy, Target, Shield, Plus, Edit, Trash2, History as HistoryIcon } from 'lucide-react';
-import { useLocalStorage } from '../hooks/useLocalStorage';
-import { seasonStats, getHistoricalPlayerStats, biggestSales, biggestPurchases } from '../data/index.js';
-import SeasonModal from '../components/SeasonModal';
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader,
+  AlertDialogTitle, AlertDialogTrigger
+} from '@/components/ui/alert-dialog';
+import { Trophy, Target, Shield, Plus, Edit, Trash2, History as HistoryIcon } from 'lucide-react';
+
+import { useSeasons } from '@/hooks/useSeasons';
+import { getHistoricalStats, getSeasonEvolution,getHistoricalPlayerStats, getTopStats } from '@/utils/historyStatsUtils';
+import SeasonModal from '@/components/SeasonModal';
 
 const History = () => {
-  const [seasons, setSeasons] = useLocalStorage('fc-porto-seasons', seasonStats);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingSeason, setEditingSeason] = useState(null);
 
-  // Obter estatísticas históricas combinadas
-  const historicalPlayers = getHistoricalPlayerStats();
+  const {
+    seasons,
+    addSeason,
+    updateSeason,
+    deleteSeason
+  } = useSeasons();
 
-  // Dados para gráfico de evolução por temporada
-  const seasonEvolution = seasons.map(season => ({
-    season: season.season,
-    points: season.points,
-    goals: season.goalsFor,
-    position: season.position
-  })).reverse();
+  const historicalPlayers = getHistoricalPlayerStats(seasons);
 
-  // Estatísticas históricas
-  const totalTitles = seasons.filter(s => s.position === 1).length;
-  const totalMatches = seasons.reduce((sum, s) => sum + s.matches, 0);
-  const totalWins = seasons.reduce((sum, s) => sum + s.wins, 0);
-  const totalGoals = seasons.reduce((sum, s) => sum + s.goalsFor, 0);
-  const avgPosition = (seasons.reduce((sum, s) => sum + s.position, 0) / seasons.length).toFixed(1);
+  const {
+    totalTitles,
+    totalMatches,
+    totalWins,
+    totalGoals,
+    avgPosition,
+    goalsAgainst
+  } = getHistoricalStats(seasons);
 
-  // Maiores artilheiros da história (baseado em estatísticas combinadas)
-  const historicalTopScorers = historicalPlayers
-    .filter(player => player.stats.goals > 0)
-    .sort((a, b) => b.stats.goals - a.stats.goals)
-    .slice(0, 5)
-    .map(player => ({
-      name: player.name,
-      goals: player.stats.goals,
-      seasons: "2024/25 -",
-      position: player.position
-    }));
-
-  // Maiores assistentes da história (baseado em estatísticas combinadas)
-  const historicalTopAssists = historicalPlayers
-    .filter(player => player.stats.assists > 0)
-    .sort((a, b) => b.stats.assists - a.stats.assists)
-    .slice(0, 5)
-    .map(player => ({
-      name: player.name,
-      assists: player.stats.assists,
-      seasons: "2024/25 -",
-      position: player.position
-    }));
-
-  // Maior número de jogos (substitui maior valor de mercado)
-  const mostGamesPlayed = historicalPlayers
-    .filter(player => player.stats.appearances > 0)
-    .sort((a, b) => b.stats.appearances - a.stats.appearances)
-    .slice(0, 5)
-    .map(player => ({
-      name: player.name,
-      games: player.stats.appearances,
-      seasons: "2024/25 -",
-      position: player.position
-    }));
-
-  // Melhores notas da história (apenas temporada 24/25 em diante)
-  const historicalBestRated = [
-    { name: "Samu", rating: 8.1, seasons: "2024/25", position: "ST" },
-    { name: "Diogo Costa", rating: 7.8, seasons: "2024/25", position: "GK" },
-    { name: "Alan Varela", rating: 7.23, seasons: "2024/25", position: "CDM" },
-    { name: "Francisco Moura", rating: 7.11, seasons: "2024/25", position: "LB" },
-    { name: "Pepê", rating: 7.1, seasons: "2024/25", position: "RW" }
-  ].sort((a, b) => b.rating - a.rating);
+  const {
+    topScorers,
+    topAssists,
+    topAppearances
+  } = getTopStats(historicalPlayers);
 
   const handleAddSeason = () => {
     setEditingSeason(null);
@@ -88,23 +52,15 @@ const History = () => {
   };
 
   const handleSaveSeason = (seasonData) => {
-    if (editingSeason) {
-      setSeasons(prev => prev.map(s => s.season === editingSeason.season ? seasonData : s));
-    } else {
-      setSeasons(prev => [seasonData, ...prev]);
-    }
-  };
-
-  const handleDeleteSeason = (seasonToDelete) => {
-    setSeasons(prev => prev.filter(s => s.season !== seasonToDelete));
+    editingSeason ? updateSeason(seasonData) : addSeason(seasonData);
   };
 
   return (
     <div className="space-y-6">
-      {/* Resumo Histórico */}
+      {/* Estatísticas Resumidas */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className="flex justify-between items-center pb-2">
             <CardTitle className="text-sm font-medium">Títulos Conquistados</CardTitle>
             <Trophy className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
@@ -115,201 +71,77 @@ const History = () => {
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className="flex justify-between items-center pb-2">
             <CardTitle className="text-sm font-medium">Total de Jogos</CardTitle>
             <Target className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{totalMatches}</div>
-            <p className="text-xs text-muted-foreground">{totalWins} vitórias ({((totalWins/totalMatches)*100).toFixed(1)}%)</p>
+            <p className="text-xs text-muted-foreground">{totalWins} vitórias ({((totalWins / totalMatches) * 100).toFixed(1)}%)</p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className="flex justify-between items-center pb-2">
             <CardTitle className="text-sm font-medium">Total de Gols</CardTitle>
             <Shield className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{totalGoals}</div>
-            <p className="text-xs text-muted-foreground">{(totalGoals/totalMatches).toFixed(1)} por jogo</p>
+            <p className="text-xs text-muted-foreground">{(totalGoals / totalMatches).toFixed(1)} por jogo</p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className="flex justify-between items-center pb-2">
             <CardTitle className="text-sm font-medium">Gols Sofridos</CardTitle>
             <Shield className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{seasons.reduce((sum, s) => sum + s.goalsAgainst, 0)}</div>
-            <p className="text-xs text-muted-foreground">{(seasons.reduce((sum, s) => sum + s.goalsAgainst, 0)/totalMatches).toFixed(1)} por jogo</p>
+            <div className="text-2xl font-bold">{goalsAgainst}</div>
+            <p className="text-xs text-muted-foreground">{(goalsAgainst / totalMatches).toFixed(1)} por jogo</p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Rankings Históricos */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <Target className="h-5 w-5" />
-              <span>Maiores Artilheiros</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {historicalTopScorers.map((player, index) => (
-                <div key={index} className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <Badge variant={index === 0 ? "default" : "secondary"}>
-                      {index + 1}
-                    </Badge>
-                    <div>
-                      <div className="font-medium">{player.name}</div>
-                      <div className="text-sm text-muted-foreground">{player.seasons}</div>
+      {/* Rankings */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {[ 
+          { title: "Maiores Artilheiros", icon: <Target className="h-5 w-5" />, data: topScorers, key: "goals", label: "gols" },
+          { title: "Maiores Assistentes", icon: <Target className="h-5 w-5" />, data: topAssists, key: "assists", label: "assistências" },
+          { title: "Mais Jogos", icon: <Trophy className="h-5 w-5" />, data: topAppearances, key: "games", label: "jogos" }
+        ].map(({ title, icon, data, key, label }, i) => (
+          <Card key={i}>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                {icon}
+                <span>{title}</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {data.map((p, index) => (
+                  <div key={index} className="flex justify-between items-center">
+                    <div className="flex items-center space-x-3">
+                      <Badge variant={index === 0 ? "default" : "secondary"}>{index + 1}</Badge>
+                      <div>
+                        <div className="font-medium">{p.name}</div>
+                        <div className="text-sm text-muted-foreground">{p.position} • {p.seasons}</div>
+                      </div>
                     </div>
+                    <div className="font-bold">{p[key]} {label}</div>
                   </div>
-                  <div className="font-bold">{player.goals}</div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <TrendingUp className="h-5 w-5" />
-              <span>Maiores Assistentes</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {historicalTopAssists.map((player, index) => (
-                <div key={index} className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <Badge variant={index === 0 ? "default" : "secondary"}>
-                      {index + 1}
-                    </Badge>
-                    <div>
-                      <div className="font-medium">{player.name}</div>
-                      <div className="text-sm text-muted-foreground">{player.seasons}</div>
-                    </div>
-                  </div>
-                  <div className="font-bold">{player.assists}</div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Novos Rankings */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <Trophy className="h-5 w-5" />
-              <span>Maior Número de Jogos</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {mostGamesPlayed.map((player, index) => (
-                <div key={index} className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <Badge variant={index === 0 ? "default" : "secondary"}>
-                      {index + 1}
-                    </Badge>
-                    <div>
-                      <div className="font-medium">{player.name}</div>
-                      <div className="text-sm text-muted-foreground">{player.position} • {player.seasons}</div>
-                    </div>
-                  </div>
-                  <div className="font-bold">{player.games} jogos</div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <TrendingUp className="h-5 w-5" />
-              <span>Maiores Compras da História do Clube</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {[
-                { name: "Gabri Veiga", value: "€21.30M", season: "25/26", from: "Al-Ahli" },
-                { name: "Nico González", value: "€21.20M", season: "23/24", from: "Barcelona" },
-                { name: "David Carmo", value: "€20.28M", season: "22/23", from: "Braga" },
-                { name: "Samu Aghehowa", value: "€20.00M", season: "24/25", from: "Atlético Madrid" },
-                { name: "Óliver Torres", value: "€20.00M", season: "17/18", from: "Atlético Madrid" }
-                
-              ].map((player, index) => (
-                <div key={index} className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <Badge variant={index === 0 ? "default" : "secondary"}>
-                      {index + 1}
-                    </Badge>
-                    <div>
-                      <div className="font-medium">{player.name}</div>
-                      <div className="text-sm text-muted-foreground">{player.from}</div>
-                    </div>
-                  </div>
-                  <div className="font-bold">{player.value}</div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <Target className="h-5 w-5" />
-              <span>Maiores Vendas da História do Clube</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {[
-                { name: "Otávio", value: "€60M", season: "23/24", to: "Al-Nassr" },
-                { name: "Nico González", value: "€60M", season: "24/25", to: "Man City" },
-                { name: "Luis Díaz", value: "€54M", season: "21/22", to: "Liverpool" },
-                { name: "Éder Militão", value: "€50M", season: "19/20", to: "Real Madrid" },
-                { name: "Galeno", value: "€50M", season: "24/25", to: "Al-Ahli" }
-              ].sort((a, b) => {
-                const valueA = parseFloat(a.value.replace('€', '').replace('M', '')) || 0;
-                const valueB = parseFloat(b.value.replace('€', '').replace('M', '')) || 0;
-                return valueB - valueA;
-              }).map((player, index) => (
-                <div key={index} className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <Badge variant={index === 0 ? "default" : "secondary"}>
-                      {index + 1}
-                    </Badge>
-                    <div>
-                      <div className="font-medium">{player.name}</div>
-                      <div className="text-sm text-muted-foreground">{player.to}</div>
-                    </div>
-                  </div>
-                  <div className="font-bold">{player.value}</div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        ))}
       </div>
 
       {/* Histórico de Temporadas */}
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
+          <div className="flex justify-between items-center">
             <CardTitle className="flex items-center space-x-2">
               <HistoryIcon className="h-5 w-5" />
               <span>Histórico de Temporadas</span>
@@ -353,11 +185,7 @@ const History = () => {
                     <td className="text-center py-2 font-bold">{season.points}</td>
                     <td className="text-center py-2">
                       <div className="flex justify-center space-x-1">
-                        <Button 
-                          variant="outline" 
-                          size="sm"
-                          onClick={() => handleEditSeason(season)}
-                        >
+                        <Button variant="outline" size="sm" onClick={() => handleEditSeason(season)}>
                           <Edit className="h-3 w-3" />
                         </Button>
                         <AlertDialog>
@@ -375,7 +203,7 @@ const History = () => {
                             </AlertDialogHeader>
                             <AlertDialogFooter>
                               <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                              <AlertDialogAction onClick={() => handleDeleteSeason(season.season)}>
+                              <AlertDialogAction onClick={() => deleteSeason(season.season)}>
                                 Excluir
                               </AlertDialogAction>
                             </AlertDialogFooter>
@@ -391,7 +219,7 @@ const History = () => {
         </CardContent>
       </Card>
 
-      {/* Modal de Adicionar/Editar Temporada */}
+      {/* Modal de Temporada */}
       <SeasonModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -403,4 +231,3 @@ const History = () => {
 };
 
 export default History;
-
