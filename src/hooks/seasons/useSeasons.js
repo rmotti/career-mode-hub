@@ -1,5 +1,5 @@
-import { useLocalStorage } from './useLocalStorage';
-import { seasonStats } from '../data';
+import { useLocalStorage } from '../storage/useLocalStorage';
+import { seasonStats } from '../../data';
 
 export function useSeasons() {
   const [seasons, setSeasons] = useLocalStorage('fc-porto-seasons', seasonStats);

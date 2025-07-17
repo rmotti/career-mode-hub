@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { useLocalStorage } from '@/hooks/storage/useLocalStorage';
 import { transferHistory } from '@/data';
 
 export const useTransfers = () => {

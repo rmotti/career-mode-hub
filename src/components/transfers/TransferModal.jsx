@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/common/dialog';
+import { Button } from '@/components/ui/common/button';
+import { Input } from '@/components/ui/common/input';
+import { Label } from '@/components/ui/common/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/common/select';
+import { Textarea } from '@/components/ui/common/textarea';
 
 const TransferModal = ({ isOpen, onClose, onSave, transfer = null }) => {
   const [formData, setFormData] = useState({

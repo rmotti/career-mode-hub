@@ -1,17 +1,17 @@
 import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/common/card';
+import { Badge } from '@/components/ui/common/badge';
+import { Button } from '@/components/ui/common/button';
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader,
   AlertDialogTitle, AlertDialogTrigger
-} from '@/components/ui/alert-dialog';
+} from '@/components/ui/common/alert-dialog';
 import { Trophy, Target, Shield, Plus, Edit, Trash2, History as HistoryIcon } from 'lucide-react';
 
-import { useSeasons } from '@/hooks/useSeasons';
-import { getHistoricalStats, getSeasonEvolution,getHistoricalPlayerStats, getTopStats } from '@/utils/historyStatsUtils';
-import SeasonModal from '@/components/SeasonModal';
+import { useSeasons } from '@/hooks/seasons/useSeasons';
+import { getHistoricalStats, getSeasonEvolution,getHistoricalPlayerStats, getTopStats } from '@/utils/seasons/historyStatsUtils';
+import SeasonModal from '@/components/stats/SeasonModal';
 
 const History = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

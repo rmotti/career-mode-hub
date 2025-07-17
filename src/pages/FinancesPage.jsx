@@ -1,13 +1,13 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/common/card';
+import { Badge } from '@/components/ui/common/badge';
+import { Button } from '@/components/ui/common/button';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger
-} from '@/components/ui/dialog';
+} from '@/components/ui/common/dialog';
 import {
   BarChart,
   Bar,
@@ -28,8 +28,8 @@ import {
   Eye
 } from 'lucide-react';
 
-import { useFinancialData } from '../hooks/useFinancialData';
-import { formatCurrency, getSalaryLabel } from '../utils/financialUtils';
+import { useFinancialData } from '../hooks/finances/useFinancialData';
+import { formatCurrency, getSalaryLabel } from '../utils/finances/financialUtils';
 
 const COLORS = [
   '#003366',

@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
-import { squadPlayers, transfersBySeasonData, weeklyWagesBySeasonData } from '../data/index';
-import { calculateSalary, parseCurrency } from '../utils/financialUtils';
+import { squadPlayers, transfersBySeasonData, weeklyWagesBySeasonData } from '../../data/index';
+import { calculateSalary, parseCurrency } from '../../utils/finances/financialUtils';
 
 export function useFinancialData() {
   const [salaryView, setSalaryView] = useState('weekly');

@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/common/card';
+import { Badge } from '@/components/ui/common/badge';
+import { Button } from '@/components/ui/common/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/common/dialog';
 import { Users, Star, Calendar, DollarSign, X } from 'lucide-react';
 
-import { usePlayerFilter } from '@/hooks/usePlayerFilter';
-import { getPotentialIndicator } from '@/utils/playerUtils';
+import { usePlayerFilter } from '@/hooks/players/usePlayerFilter';
+import { getPotentialIndicator } from '@/utils/players/playerUtils';
 import { getSectorColor, getSectorName } from '@/data';
 
 const Players = () => {
