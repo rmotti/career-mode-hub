@@ -7,10 +7,10 @@ import {
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader,
   AlertDialogTitle, AlertDialogTrigger
 } from '@/components/ui/common/alert-dialog';
-import { Trophy, Target, Shield, Plus, Edit, Trash2, History as HistoryIcon } from 'lucide-react';
+import { Trophy, Target, Shield, Plus, Edit, Trash2, History as HistoryIcon, Eye } from 'lucide-react';
 
 import { useSeasons } from '@/hooks/seasons/useSeasons';
-import { getHistoricalStats, getSeasonEvolution,getHistoricalPlayerStats, getTopStats } from '@/utils/seasons/historyStatsUtils';
+import { getHistoricalStats, getHistoricalPlayerStats, getTopStats } from '@/utils/seasons/historyStatsUtils';
 import SeasonModal from '@/components/stats/SeasonModal';
 
 const History = () => {
@@ -31,7 +31,6 @@ const History = () => {
     totalMatches,
     totalWins,
     totalGoals,
-    avgPosition,
     goalsAgainst
   } = getHistoricalStats(seasons);
 
@@ -54,6 +53,71 @@ const History = () => {
   const handleSaveSeason = (seasonData) => {
     editingSeason ? updateSeason(seasonData) : addSeason(seasonData);
   };
+
+  // Card genérico para ranking de jogadores
+  const RankingCard = ({ title, icon: Icon, players, labelFormatter }) => (
+    <Card>
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <CardTitle className="flex items-center space-x-2">
+            <Icon className="h-5 w-5" />
+            <span>{title}</span>
+          </CardTitle>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="outline" size="sm">
+                <Eye className="h-4 w-4 mr-2" />
+                Ver todos
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+              <AlertDialogHeader>
+                <AlertDialogTitle>{title}</AlertDialogTitle>
+              </AlertDialogHeader>
+              <div className="space-y-3">
+                {(players || []).map((player, index) => (
+                  <div key={player.id} className="flex items-center justify-between p-3 border rounded-lg">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-bold">
+                        {index + 1}
+                      </div>
+                      <div>
+                        <div className="font-medium">{player.name}</div>
+                        <div className="text-sm text-muted-foreground">{player.position} • {player.function}</div>
+                      </div>
+                    </div>
+                    <div className="text-right font-bold">
+                      {labelFormatter(player)}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-3">
+          {(players || []).slice(0, 5).map((player, index) => (
+            <div key={player.id} className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <div className="w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-bold">
+                  {index + 1}
+                </div>
+                <div>
+                  <div className="font-medium">{player.name}</div>
+                  <div className="text-sm text-muted-foreground">{player.position}</div>
+                </div>
+              </div>
+              <div className="text-right font-bold">
+                {labelFormatter(player)}
+              </div>
+            </div>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  );
 
   return (
     <div className="space-y-6">
@@ -106,6 +170,24 @@ const History = () => {
 
       {/* Rankings */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <RankingCard
+          title="Mais Gols na História"
+          icon={Target}
+          players={topScorers}
+          labelFormatter={(p) => `${p.stats.goals} gols`}
+        />
+        <RankingCard
+          title="Mais Assistências na História"
+          icon={Target}
+          players={topAssists}
+          labelFormatter={(p) => `${p.stats.assists} assists`}
+        />
+        <RankingCard
+          title="Mais Partidas na História"
+          icon={Target}
+          players={topAppearances}
+          labelFormatter={(p) => `${p.stats.appearances} jogos`}
+        />
       </div>
 
       {/* Histórico de Temporadas */}
