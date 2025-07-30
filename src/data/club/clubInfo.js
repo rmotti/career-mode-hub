@@ -9,13 +9,13 @@
  * INFORMAÇÕES BÁSICAS DO CLUBE
  */
 export const clubInfo = {
-  name: "FC Porto",
-  founded: 1893,
-  stadium: "Estádio do Dragão",
-  capacity: 50033,
-  manager: "Sérgio Conceição",
-  league: "Liga Portugal",
-  budget: "€45M",
+  name: "Bayer Leverkusen",
+  founded: 1904,
+  stadium: "BayArena",
+  capacity: 30210,
+  manager: "Xabi Alonso",
+  league: "Bundesliga",
+  budget: "€60M",
   wage: "€2.1M/week",
   season: "2025/26"
 };

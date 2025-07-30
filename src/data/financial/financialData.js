@@ -97,11 +97,11 @@ export const weeklyWagesBySeasonData = [
  * Valores em milhões de euros
  */
 export const highestMarketValues = [
-  { name: "Diogo Costa", value: "€52M", position: "GK", age: 25 },
-  { name: "Francisco Conceição", value: "€35.5M", position: "RW", age: 22 },
-  { name: "Samu", value: "€32M", position: "ST", age: 21 },
-  { name: "Galeno", value: "€28M", position: "LW", age: 27 },
-  { name: "Alan Varela", value: "€25.5M", position: "CDM", age: 23 }
+  { name: "Florian Wirtz", value: "€145M", position: "CAM", age: 22 },
+  { name: "Jonathan Tah", value: "€67.5M", position: "CB", age: 29 },
+  { name: "Jonathan David", value: "€56.5M", position: "ST", age: 25 },
+  { name: "Alejandro Grimaldo", value: "€53M", position: "LB", age: 29 },
+  { name: "Jeremie Frimpong", value: "€52M", position: "RB", age: 24 }
 ];
 /**
  * MAIORES COMPRAS DA HISTÓRIA
@@ -109,11 +109,11 @@ export const highestMarketValues = [
  * Valores em milhões de euros
  */
 export const biggestPurchases = [
-  { name: "Nico González", value: "€21.20M", season: "23/24", from: "Barcelona" },
-  { name: "David Carmo", value: "€20.28M", season: "22/23", from: "Braga" },
-  { name: "Samu Aghehowa", value: "€20.00M", season: "24/25", from: "Atlético Madrid" },
-  { name: "Óliver Torres", value: "€20.00M", season: "17/18", from: "Atlético Madrid" },
-  { name: "Giannelli Imbula", value: "€20.00M", season: "15/16", from: "Marseille" }
+  { name: "Andrey Santos", value: "€50M", season: "25/26", from: "Chelsea" },
+  { name: "Jonathan David", value: "€40M", season: "25/26", from: "Losc Lille" },
+  { name: "Andriy Lunin", value: "€40M", season: "25/26", from: "Real Madrid" },
+  { name: "Kenan Yildiz", value: "€35M", season: "25/26", from: "Juventus" },
+  { name: "Kerem Demirbay", value: "€32M", season: "19/20", from: "Hoffenheim" }
 ];
 
 /**
@@ -122,11 +122,11 @@ export const biggestPurchases = [
  * Valores em milhões de euros
  */
 export const biggestSales = [
-  { name: "Otávio", value: "€60M", season: "23/24", to: "Al-Nassr" },
-  { name: "Nico González", value: "€60M", season: "24/25", to: "Man City" },
-  { name: "Luis Díaz", value: "€54M", season: "21/22", to: "Liverpool" },
-  { name: "Éder Militão", value: "€50M", season: "19/20", to: "Real Madrid" },
-  { name: "Galeno", value: "€50M", season: "24/25", to: "Al-Ahli" }
+  { name: "Kai Havertz", value: "€80M", season: "20/21", to: "Chelsea" },
+  { name: "Exequiel Palacios", value: "€75M", season: "25/26", to: "Manchester United" },
+  { name: "Victor Boniface", value: "€60M", season: "25/26", to: "Tottenham" },
+  { name: "Patrick Schick", value: "€58M", season: "25/26", to: "Juventus" },
+  { name: "Moussa Diaby", value: "€55M", season: "23/24", to: "Aston Villa" }
 ];
 
 

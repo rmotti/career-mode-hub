@@ -2,7 +2,7 @@ import { useLocalStorage } from '../storage/useLocalStorage';
 import { seasonStats } from '../../data';
 
 export function useSeasons() {
-  const [seasons, setSeasons] = useLocalStorage('fc-porto-seasons', seasonStats);
+  const [seasons, setSeasons] = useLocalStorage('fc-bayer-seasons', seasonStats);
 
   const addSeason = (newSeason) => setSeasons(prev => [newSeason, ...prev]);
 

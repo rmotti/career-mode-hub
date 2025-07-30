@@ -83,7 +83,7 @@ const History = () => {
 
         <Card>
           <CardHeader className="flex justify-between items-center pb-2">
-            <CardTitle className="text-sm font-medium">Total de Gols</CardTitle>
+            <CardTitle className="text-sm font-medium">Gols Marcados</CardTitle>
             <Shield className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -106,36 +106,6 @@ const History = () => {
 
       {/* Rankings */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {[ 
-          { title: "Maiores Artilheiros", icon: <Target className="h-5 w-5" />, data: topScorers, key: "goals", label: "gols" },
-          { title: "Maiores Assistentes", icon: <Target className="h-5 w-5" />, data: topAssists, key: "assists", label: "assistências" },
-          { title: "Mais Jogos", icon: <Trophy className="h-5 w-5" />, data: topAppearances, key: "games", label: "jogos" }
-        ].map(({ title, icon, data, key, label }, i) => (
-          <Card key={i}>
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
-                {icon}
-                <span>{title}</span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {data.map((p, index) => (
-                  <div key={index} className="flex justify-between items-center">
-                    <div className="flex items-center space-x-3">
-                      <Badge variant={index === 0 ? "default" : "secondary"}>{index + 1}</Badge>
-                      <div>
-                        <div className="font-medium">{p.name}</div>
-                        <div className="text-sm text-muted-foreground">{p.position} • {p.seasons}</div>
-                      </div>
-                    </div>
-                    <div className="font-bold">{p[key]} {label}</div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        ))}
       </div>
 
       {/* Histórico de Temporadas */}
