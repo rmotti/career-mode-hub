@@ -1,6 +1,7 @@
 # Career Mode Hub - Sistema de Gestão de Carreira
 
-Uma interface web moderna e intuitiva para gerenciar dados de elencos, temporadas, estatísticas e transferências em um modo carreira de futebol.
+Uma interface web moderna e intuitiva para gerenciar dados de elencos, temporadas, estatísticas e transferências em um modo carreira de futebol. No momento, você pode visualizar um exemplo de modo carreira em andamento feito por mim, mas futuramente poderá ser utilizado e personalizado conforme suas necessidades!
+Além disso, o login ainda é estático e meramente ilustrativo
 
 ## 🎯 Funcionalidades
 
