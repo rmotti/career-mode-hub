@@ -6,33 +6,39 @@ import Statistics from './pages/StatsPage';
 import History from './pages/HistoryPage';
 import Financial from './pages/FinancesPage';
 import Transfers from './pages/TransfersPage';
+import Login from './pages/LoginPage';
 import './App.css';
 
 function App() {
-  const [activeTab, setActiveTab] = useState('dashboard');
+  const [activeTab, setActiveTab] = useState('login');
 
-  const renderContent = () => {
-    switch (activeTab) {
-      case 'dashboard':
-        return <Dashboard />;
-      case 'players':
-        return <Players />;
-      case 'stats':
-        return <Statistics />;
-      case 'history':
-        return <History />;
-      case 'financial':
-        return <Financial />;
-      case 'transfers':
-        return <Transfers />;
-      default:
-        return <Dashboard />;
-    }
-  };
+const renderContent = () => {
+  switch (activeTab) {
+    case 'login':
+      return <Login onLogin={() => setActiveTab('dashboard')} />;
+    case 'dashboard':
+      return <Dashboard />;
+    case 'players':
+      return <Players />;
+    case 'stats':
+      return <Statistics />;
+    case 'history':
+      return <History />;
+    case 'financial':
+      return <Financial />;
+    case 'transfers':
+      return <Transfers />;
+    default:
+      return <Login onLogin={() => setActiveTab('dashboard')} />;
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-background">
-      <Header activeTab={activeTab} setActiveTab={setActiveTab} />
+      {activeTab !== 'login' && (
+        <Header activeTab={activeTab} setActiveTab={setActiveTab} />
+      )}
       <main className="container mx-auto px-4 py-6">
         {renderContent()}
       </main>

@@ -18,8 +18,8 @@ import {
   Eye
 } from 'lucide-react';
 
-import { usePlayersData } from '../hooks/players/usePlayersData';
-import { useFinancialData } from '../hooks/finances/useFinancialData';
+import { usePlayersData } from '@/hooks/players/usePlayersData';
+import { useFinancialData } from '@/hooks/finances/useFinancialData';
 
 const Dashboard = () => {
   const {
@@ -59,7 +59,9 @@ const Dashboard = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {Math.round(squadPlayers.reduce((sum, p) => sum + p.age, 0) / squadPlayers.length)}
+              {squadPlayers?.length
+                ? Math.round(squadPlayers.reduce((sum, p) => sum + p.age, 0) / squadPlayers.length)
+                : 0}
             </div>
             <p className="text-xs text-muted-foreground">anos</p>
           </CardContent>
@@ -110,7 +112,7 @@ const Dashboard = () => {
                     <DialogTitle>Todos os Maiores Contribuidores</DialogTitle>
                   </DialogHeader>
                   <div className="space-y-3">
-                    {allContribuitors.map((player, index) => (
+                    {(allContribuitors || []).map((player, index) => (
                       <div key={player.id} className="flex items-center justify-between p-3 border rounded-lg">
                         <div className="flex items-center space-x-3">
                           <div className="w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-bold">
@@ -134,7 +136,7 @@ const Dashboard = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {allContribuitors.slice(0, 5).map((player, index) => (
+              {(allContribuitors || []).slice(0, 5).map((player, index) => (
                 <div key={player.id} className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
                     <div className="w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-bold">
@@ -175,7 +177,7 @@ const Dashboard = () => {
                     <DialogTitle>Todos os Destaques</DialogTitle>
                   </DialogHeader>
                   <div className="space-y-3">
-                    {allMarketValues.map((player, index) => (
+                    {(allMarketValues || []).map((player, index) => (
                       <div key={player.id} className="flex items-center justify-between p-3 border rounded-lg">
                         <div className="flex items-center space-x-3">
                           <div className="w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-bold">
@@ -203,7 +205,7 @@ const Dashboard = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {topMarketValues.map((player, index) => (
+              {(topMarketValues || []).map((player, index) => (
                 <div key={player.id} className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
                     <div className="w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-bold">
@@ -212,7 +214,7 @@ const Dashboard = () => {
                     <div>
                       <div className="font-medium">{player.name}</div>
                       <div className="text-sm text-muted-foreground">
-                        {player.age} anos • {player.position}
+                        {player.age} anos • {player.position} • {player.nationality}
                       </div>
                     </div>
                   </div>
@@ -248,12 +250,12 @@ const Dashboard = () => {
                     <DialogTitle>Todos os Jovens Talentos</DialogTitle>
                   </DialogHeader>
                   <div className="space-y-3">
-                    {youngTalents.map((player) => (
+                    {(youngTalents || []).map((player) => (
                       <div key={player.id} className="flex items-center justify-between p-3 border rounded-lg">
                         <div>
                           <div className="font-medium">{player.name}</div>
                           <div className="text-sm text-muted-foreground">
-                            {player.age} anos • {player.position} • {player.function}
+                            {player.age} anos • {player.position} • {player.nationality}
                           </div>
                         </div>
                         <div className="text-right">
@@ -271,12 +273,12 @@ const Dashboard = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {youngTalents.slice(0, 4).map((player) => (
+              {(youngTalents || []).slice(0, 5).map((player) => (
                 <div key={player.id} className="flex items-center justify-between">
                   <div>
                     <div className="font-medium">{player.name}</div>
                     <div className="text-sm text-muted-foreground">
-                      {player.age} anos • {player.position}
+                      {player.age} anos • {player.position} • {player.nationality}
                     </div>
                   </div>
                   <div className="text-right">

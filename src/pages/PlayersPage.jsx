@@ -108,7 +108,8 @@ const Players = () => {
                 </DialogTitle>
                 {/*<Button variant="ghost" size="sm" onClick={() => setSelectedPlayer(null)}>
                   <X className="h-4 w-4" />
-                </Button>*/}
+                </Button>
+                Não sei onde está o outro botão e por que ele está duplicado, então por hora deixo esse, que seria o ideal, comentado*/}
               </div>
             </DialogHeader>
 

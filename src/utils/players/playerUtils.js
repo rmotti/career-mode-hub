@@ -53,7 +53,7 @@ export function getAllRated(players) {
 
 export function getYoungTalents(players) {
   return players
-    .filter(p => p.age <= 23 && p.potential >= 85)
+    .filter(p => p.age <= 23 && p.potential >= 80)
     .sort((a, b) => b.potential - a.potential);
 }
 

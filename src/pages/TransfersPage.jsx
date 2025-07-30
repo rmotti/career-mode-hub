@@ -32,8 +32,8 @@ import {
 import * as lucideReact from 'lucide-react';
 
 import TransferModal from '@/components/transfers/TransferModal';
-import { useTransfers } from '@/hooks/transfers/useTransfers';
-import { getTransferTypeColor, getTransferIcon, formatDate } from '@/utils/transfers/transferUtils';
+import { useTransfers } from '@/hooks/finances/useTransfers';
+import { getTransferTypeColor, getTransferIcon, formatDate } from '@/utils/finances/transferUtils';
 
 const Transfers = () => {
   const {
@@ -54,6 +54,7 @@ const Transfers = () => {
     handleDelete,
     transfers
   } = useTransfers();
+
 
   const transferTypes = ['all', 'Entrada', 'Saída', 'Empréstimo (Entrada)', 'Empréstimo (Saída)', 'Renovação'];
   const seasons = ['all', ...Array.from(new Set(transfers.map(t => t.season))).sort().reverse()];

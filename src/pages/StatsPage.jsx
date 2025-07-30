@@ -70,14 +70,77 @@ const Statistics = () => {
         </Card>
       </div>
 
-    {/* MAIORES ARTILHEIROS */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+    {/* MAIS PARTIDAS */}
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle className="flex items-center space-x-2">
                 <Target className="h-5 w-5" />
-                <span>Top Artilheiros</span>
+                <span>Mais Partidas</span>
+              </CardTitle>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="outline" size="sm">
+                    <Eye className="h-4 w-4 mr-2" />
+                    Ver todos
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle>Todos</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-3">
+                    {squadPlayers
+                      .filter(player => player.stats.appearances >= 0)
+                      .sort((a, b) => b.stats.appearances - a.stats.appearances)
+                      .map((player, index) => (
+                        <div key={player.id} className="flex items-center justify-between p-3 border rounded-lg">
+                          <div className="flex items-center space-x-3">
+                            <Badge variant={index === 0 ? 'default' : 'secondary'}>{index + 1}</Badge>
+                            <div>
+                              <div className="font-medium">{player.name}</div>
+                              <div className="text-sm text-muted-foreground">
+                                {player.position} • {player.function}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <div className="font-bold">{player.stats.appearances} Partidas</div>
+                            <div className="text-sm text-muted-foreground">{player.stats.rating} Nota Média</div>
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {mostGames.slice(0, 5).map((player, index) => (
+                <div key={player.id} className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <Badge variant={index === 0 ? 'default' : 'secondary'}>{index + 1}</Badge>
+                    <div>
+                      <div className="font-medium">{player.name}</div>
+                      <div className="text-sm text-muted-foreground">{player.position}</div>
+                    </div>
+                  </div>
+                  <div className="font-bold">{player.stats.appearances}</div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+        {/* MAIORES ARTILHEIROS */}
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle className="flex items-center space-x-2">
+                <Target className="h-5 w-5" />
+                <span>Mais Gols</span>
               </CardTitle>
               <Dialog>
                 <DialogTrigger asChild>
@@ -139,7 +202,7 @@ const Statistics = () => {
             <div className="flex items-center justify-between">
               <CardTitle className="flex items-center space-x-2">
                 <Target className="h-5 w-5" />
-                <span>Top Assistentes</span>
+                <span>Mais Assistências</span>
               </CardTitle>
               <Dialog>
                 <DialogTrigger asChild>
@@ -195,7 +258,68 @@ const Statistics = () => {
             </div>
           </CardContent>
         </Card>
-        
+        {/* MAIORES MÉDIAS */}
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle className="flex items-center space-x-2">
+                <Target className="h-5 w-5" />
+                <span>Maiores Médias</span>
+              </CardTitle>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="outline" size="sm">
+                    <Eye className="h-4 w-4 mr-2" />
+                    Ver todos
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle>Todos os Jogadores</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-3">
+                    {squadPlayers
+                      .filter(player => player.stats.rating >= 0)
+                      .sort((a, b) => b.stats.rating - a.stats.rating)
+                      .map((player, index) => (
+                        <div key={player.id} className="flex items-center justify-between p-3 border rounded-lg">
+                          <div className="flex items-center space-x-3">
+                            <Badge variant={index === 0 ? 'default' : 'secondary'}>{index + 1}</Badge>
+                            <div>
+                              <div className="font-medium">{player.name}</div>
+                              <div className="text-sm text-muted-foreground">
+                                {player.position} • {player.function}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <div className="font-bold">{player.stats.rating} Média</div>
+                            <div className="text-sm text-muted-foreground">{player.stats.appearances} Partidas</div>
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {bestAverageRating.slice(0, 5).map((player, index) => (
+                <div key={player.id} className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <Badge variant={index === 0 ? 'default' : 'secondary'}>{index + 1}</Badge>
+                    <div>
+                      <div className="font-medium">{player.name}</div>
+                      <div className="text-sm text-muted-foreground">{player.position}</div>
+                    </div>
+                  </div>
+                  <div className="font-bold">{player.stats.rating}</div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

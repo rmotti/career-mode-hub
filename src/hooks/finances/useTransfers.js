@@ -3,7 +3,7 @@ import { useLocalStorage } from '@/hooks/storage/useLocalStorage';
 import { transferHistory } from '@/data';
 
 export const useTransfers = () => {
-  const [transfers, setTransfers] = useLocalStorage('fc-porto-transfers', transferHistory);
+  const [transfers, setTransfers] = useLocalStorage('fc-bayer-transfers', transferHistory);
   const [searchTerm, setSearchTerm] = useState('');
   const [typeFilter, setTypeFilter] = useState('all');
   const [seasonFilter, setSeasonFilter] = useState('all');
@@ -26,7 +26,7 @@ export const useTransfers = () => {
   }, [transfers, searchTerm, typeFilter, seasonFilter]);
 
   const financialStats = useMemo(() => {
-    const currentSeasonTransfers = transfers.filter((t) => t.season === '2024/25');
+    const currentSeasonTransfers = transfers.filter((t) => t.season === '2025/26');
 
     let totalInvested = 0;
     let totalReceived = 0;

@@ -20,24 +20,24 @@ export const seasonStats = [
   {
     season: "2024/25",
     matches: 34,
-    wins: 22,
-    draws: 5,
-    losses: 7,
-    goalsFor: 65,
-    goalsAgainst: 30,
-    points: 71,
-    position: 3
+    wins: 19,
+    draws: 12,
+    losses: 3,
+    goalsFor: 72,
+    goalsAgainst: 43,
+    points: 69,
+    position: 2
   },
   {
     season: "2025/26",
     matches: 8,
-    wins: 5,
-    draws: 3,
-    losses: 0,
-    goalsFor: 22,
-    goalsAgainst: 8,
-    points: 15,
-    position: 1
+    wins: 6,
+    draws: 1,
+    losses: 1,
+    goalsFor: 24,
+    goalsAgainst: 11,
+    points: 19,
+    position: 3
   }
   // Adicione novas temporadas aqui seguindo o mesmo formato
   // Exemplo:
