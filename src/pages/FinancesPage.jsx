@@ -48,17 +48,22 @@ const Financial = () => {
     allSalaries,
     weeklyWagesBySeasonData,
     transfersBySeasonData,
-    financialStatsTransfers
+    financialStatsTransfers,
+    getFinancialStatsBySeason
   } = useFinancialData();
 
-  // Dados para gráficos
-  const transferSeasons = (transfersBySeasonData || []).map(d => d.season);
-  const totalInvested = (transfersBySeasonData || []).map(d => d.totalInvested || 0);
-  const totalReceived = (transfersBySeasonData || []).map(d => d.totalReceived || 0);
-
+  /* ------------------ Dados para gráficos ------------------ */
+  // 1️⃣ Evolução da Folha Salarial
   const wagesSeasons = (weeklyWagesBySeasonData || []).map(d => d.season);
   const weeklyWages = (weeklyWagesBySeasonData || []).map(d => d.weeklyExpense || 0);
 
+  // 2️⃣ Receitas vs Despesas
+  const transferStats = getFinancialStatsBySeason();
+  const transferSeasons = transferStats.map(d => d.season);
+  const totalInvested = transferStats.map(d => d.totalInvested);
+  const totalReceived = transferStats.map(d => d.totalReceived);
+
+  // 3️⃣ Gráfico de Pizza
   const pieLabels = (salaryByFunction || []).map(d => d.function);
   const pieValues = (salaryByFunction || []).map(d => d.total);
 
@@ -136,9 +141,77 @@ const Financial = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{totalSalaryWeekly}</div>
-            <p className="text-xs text-muted-foreground">
-              por semana ({selectedSeason})
-            </p>
+            <p className="text-xs text-muted-foreground">por semana ({selectedSeason})</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Gráficos lado a lado */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* Evolução da Folha Salarial */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Evolução da Folha Salarial (por Semana)</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Plot
+              data={[
+                {
+                  type: 'bar',
+                  x: wagesSeasons,
+                  y: weeklyWages.map(v => v / 1_000_000),
+                  name: 'Folha Semanal (€M)',
+                  marker: { color: '#4ECDC4' }
+                }
+              ]}
+              layout={{
+                height: 300,
+                autosize: true,
+                bargap: 0.6,
+                yaxis: { title: '€ Milhões/semana' },
+                xaxis: { title: 'Temporada' },
+                margin: { t: 30, r: 20, l: 40, b: 40 }
+              }}
+              style={{ width: '100%' }}
+            />
+          </CardContent>
+        </Card>
+
+        {/* Receitas vs Despesas */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Receitas vs. Despesas por Temporada</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Plot
+              data={[
+                {
+                  type: 'bar',
+                  x: transferSeasons,
+                  y: totalReceived,
+                  name: 'Receitas (Vendas)',
+                  marker: { color: '#4CAF50' }
+                },
+                {
+                  type: 'bar',
+                  x: transferSeasons,
+                  y: totalInvested,
+                  name: 'Despesas (Compras)',
+                  marker: { color: '#F44336' }
+                }
+              ]}
+              layout={{
+                barmode: 'group',
+                bargap: 0.4,
+                bargroupgap: 0.2,
+                height: 300,
+                autosize: true,
+                yaxis: { title: '€ Milhões' },
+                xaxis: { title: 'Temporada' },
+                margin: { t: 30, r: 20, l: 40, b: 40 }
+              }}
+              style={{ width: '100%' }}
+            />
           </CardContent>
         </Card>
       </div>
@@ -218,9 +291,7 @@ const Financial = () => {
                 className="flex items-center justify-between p-3 border rounded-lg"
               >
                 <div className="flex items-center space-x-3">
-                  <Badge variant={index < 3 ? 'default' : 'secondary'}>
-                    {index + 1}
-                  </Badge>
+                  <Badge variant={index < 3 ? 'default' : 'secondary'}>{index + 1}</Badge>
                   <div>
                     <div className="font-medium">{player.name}</div>
                     <div className="text-sm text-muted-foreground">

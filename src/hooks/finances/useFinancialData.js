@@ -8,16 +8,8 @@ import {
 } from '@/data';
 import { calculateSalary, parseCurrency, formatCurrency } from '@/utils/finances/financialUtils';
 
-/**
- * Hook unificado para o módulo Financeiro
- * - Controla transferências
- * - Calcula salários, folha e valores de mercado
- * - Integra temporadas (2024/25 e 2025/26)
- */
 export function useFinancialData() {
-  /* ----------------------------
-   * 0️⃣ MOCK DINÂMICO POR TEMPORADA
-   * ---------------------------- */
+  /* ---------------------------- 0️⃣ MOCK DINÂMICO ---------------------------- */
   const weeklyWagesBySeasonData = useMemo(
     () => [
       {
@@ -40,9 +32,7 @@ export function useFinancialData() {
     []
   );
 
-  /* ----------------------------
-   * 1️⃣ ESTADO DE TRANSFERÊNCIAS
-   * ---------------------------- */
+  /* ---------------------------- 1️⃣ ESTADO DE TRANSFERÊNCIAS ---------------------------- */
   const [transfers, setTransfers] = useLocalStorage('fc-bayer-transfers', transferHistory || []);
   const [searchTerm, setSearchTerm] = useState('');
   const [typeFilter, setTypeFilter] = useState('all');
@@ -50,12 +40,36 @@ export function useFinancialData() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTransfer, setEditingTransfer] = useState(null);
 
-  // Temporada selecionada (default = última disponível)
   const [selectedSeason, setSelectedSeason] = useState(
     transfersBySeasonData[transfersBySeasonData.length - 1].season
   );
 
-  // Transferências filtradas
+  /* 🔹 CRUD de transferências */
+  const handleAdd = () => {
+    setEditingTransfer(null);
+    setIsModalOpen(true);
+  };
+
+  const handleEdit = (transfer) => {
+    setEditingTransfer(transfer);
+    setIsModalOpen(true);
+  };
+
+  const handleSave = (transferData) => {
+    if (editingTransfer) {
+      setTransfers((prev) =>
+        prev.map((t) => (t.id === editingTransfer.id ? transferData : t))
+      );
+    } else {
+      setTransfers((prev) => [transferData, ...prev]);
+    }
+  };
+
+  const handleDelete = (id) => {
+    setTransfers((prev) => prev.filter((t) => t.id !== id));
+  };
+
+  /* 🔹 Lista filtrada */
   const filteredTransfers = useMemo(() => {
     return (transfers || [])
       .filter((transfer) => {
@@ -73,7 +87,7 @@ export function useFinancialData() {
       .sort((a, b) => new Date(b.date) - new Date(a.date));
   }, [transfers, searchTerm, typeFilter, seasonFilter]);
 
-  // Estatísticas financeiras da temporada selecionada
+  /* 🔹 Estatísticas da temporada selecionada */
   const financialStatsTransfers = useMemo(() => {
     const currentSeasonTransfers = (transfers || []).filter(
       (t) => t.season === selectedSeason
@@ -104,70 +118,64 @@ export function useFinancialData() {
     };
   }, [transfers, selectedSeason]);
 
-  // CRUD de transferências
-  const handleAdd = () => {
-    setEditingTransfer(null);
-    setIsModalOpen(true);
+  /* ✅ NOVA FUNÇÃO: Estatísticas de TODAS as temporadas para gráfico Receitas x Despesas */
+  const getFinancialStatsBySeason = () => {
+    return (transfersBySeasonData || []).map((seasonData) => {
+      const season = seasonData.season;
+      const seasonTransfers = (transfers || []).filter(t => t.season === season);
+
+      let totalInvested = 0;
+      let totalReceived = 0;
+
+      seasonTransfers.forEach((transfer) => {
+        const fee = transfer.fee;
+        if (fee && fee !== 'Livre' && fee !== 'Empréstimo') {
+          const value = parseFloat(fee.replace('€', '').replace('M', ''));
+          if (!isNaN(value)) {
+            if (['Entrada', 'Empréstimo (Entrada)'].includes(transfer.type)) {
+              totalInvested += value;
+            } else if (['Saída', 'Empréstimo (Saída)'].includes(transfer.type)) {
+              totalReceived += value;
+            }
+          }
+        }
+      });
+
+      return { season, totalInvested, totalReceived };
+    });
   };
 
-  const handleEdit = (transfer) => {
-    setEditingTransfer(transfer);
-    setIsModalOpen(true);
-  };
+  /* ---------------------------- 2️⃣ ESTADO FINANCEIRO (SALÁRIOS) ---------------------------- */
+  const [salaryView, setSalaryView] = useState('weekly');
 
-  const handleSave = (transferData) => {
-    if (editingTransfer) {
-      setTransfers((prev) =>
-        prev.map((t) => (t.id === editingTransfer.id ? transferData : t))
-      );
-    } else {
-      setTransfers((prev) => [transferData, ...prev]);
-    }
-  };
-
-  const handleDelete = (id) => {
-    setTransfers((prev) => prev.filter((t) => t.id !== id));
-  };
-
-  /* ----------------------------
-   * 2️⃣ ESTADO FINANCEIRO (SALÁRIOS)
-   * ---------------------------- */
-  const [salaryView, setSalaryView] = useState('weekly'); // 'weekly', 'monthly', 'annual'
-
-  // Jogadores da temporada selecionada
   const selectedSeasonPlayers = useMemo(() => {
     const seasonData = weeklyWagesBySeasonData.find(d => d.season === selectedSeason);
     return seasonData?.players || [];
   }, [selectedSeason, weeklyWagesBySeasonData]);
 
-  // Salário total do elenco
   const totalSalaryWeekly = useMemo(() => {
-    const total = (selectedSeasonPlayers || []).reduce(
-      (sum, p) => sum + parseCurrency(p.salary, 'weekly'),
-      0
+    const total = selectedSeasonPlayers.reduce(
+      (sum, p) => sum + parseCurrency(p.salary, 'weekly'), 0
     );
     return `€${(total / 1_000_000).toFixed(2)}M`;
   }, [selectedSeasonPlayers]);
 
   const totalSalaryMonthly = useMemo(() => {
-    const total = (selectedSeasonPlayers || []).reduce(
-      (sum, p) => sum + parseCurrency(p.salary, 'weekly'),
-      0
+    const total = selectedSeasonPlayers.reduce(
+      (sum, p) => sum + parseCurrency(p.salary, 'weekly'), 0
     );
     return `€${((total * 4.33) / 1_000_000).toFixed(2)}M`;
   }, [selectedSeasonPlayers]);
 
   const totalSalaryYearly = useMemo(() => {
-    const total = (selectedSeasonPlayers || []).reduce(
-      (sum, p) => sum + parseCurrency(p.salary, 'weekly'),
-      0
+    const total = selectedSeasonPlayers.reduce(
+      (sum, p) => sum + parseCurrency(p.salary, 'weekly'), 0
     );
     return `€${((total * 52) / 1_000_000).toFixed(2)}M`;
   }, [selectedSeasonPlayers]);
 
-  // Salário agrupado por função
   const salaryByFunction = useMemo(() => {
-    const grouped = (selectedSeasonPlayers || []).reduce((acc, player) => {
+    const grouped = selectedSeasonPlayers.reduce((acc, player) => {
       const func = player.function;
       const salary = calculateSalary(player.salary, salaryView);
       if (!acc[func]) acc[func] = { function: func, total: 0, count: 0 };
@@ -175,70 +183,55 @@ export function useFinancialData() {
       acc[func].count++;
       return acc;
     }, {});
-
     return Object.values(grouped)
       .map(f => ({ ...f, average: f.total / f.count }))
       .sort((a, b) => b.total - a.total);
   }, [salaryView, selectedSeasonPlayers]);
 
-  // Top 10 maiores salários
   const topSalaries = useMemo(() =>
-    (selectedSeasonPlayers || [])
+    selectedSeasonPlayers
       .map(p => ({ ...p, calculatedSalary: calculateSalary(p.salary, salaryView) }))
       .sort((a, b) => b.calculatedSalary - a.calculatedSalary)
       .slice(0, 10),
     [salaryView, selectedSeasonPlayers]
   );
 
-  // Lista completa de salários
   const allSalaries = useMemo(() =>
-    (selectedSeasonPlayers || [])
+    selectedSeasonPlayers
       .map(p => ({ ...p, calculatedSalary: calculateSalary(p.salary, salaryView) }))
       .sort((a, b) => b.calculatedSalary - a.calculatedSalary),
     [salaryView, selectedSeasonPlayers]
   );
 
-  // Top 5 valores de mercado
   const topMarketValues = useMemo(() =>
-    (selectedSeasonPlayers || [])
+    selectedSeasonPlayers
       .filter(p => p.marketValue)
-      .map(player => ({
-        ...player,
-        parsedMarketValue: parseCurrency(player.marketValue)
-      }))
+      .map(player => ({ ...player, parsedMarketValue: parseCurrency(player.marketValue) }))
       .sort((a, b) => b.parsedMarketValue - a.parsedMarketValue)
       .slice(0, 5),
     [selectedSeasonPlayers]
   );
 
   const allMarketValues = useMemo(() =>
-    (selectedSeasonPlayers || [])
+    selectedSeasonPlayers
       .filter(p => p.marketValue)
-      .map(player => ({
-        ...player,
-        parsedMarketValue: parseCurrency(player.marketValue)
-      }))
+      .map(player => ({ ...player, parsedMarketValue: parseCurrency(player.marketValue) }))
       .sort((a, b) => b.parsedMarketValue - a.parsedMarketValue),
     [selectedSeasonPlayers]
   );
 
-  // Valor total do elenco
   const totalSquadValue = useMemo(() => {
-    const total = (selectedSeasonPlayers || []).reduce(
-      (sum, p) => sum + (p.marketValue ? parseCurrency(p.marketValue) : 0),
-      0
+    const total = selectedSeasonPlayers.reduce(
+      (sum, p) => sum + (p.marketValue ? parseCurrency(p.marketValue) : 0), 0
     );
     return formatCurrency(total, 'annual');
   }, [selectedSeasonPlayers]);
 
-  // Dados da temporada selecionada (para gráficos)
   const selectedSeasonData = transfersBySeasonData.find(s => s.season === selectedSeason);
 
-  /* ----------------------------
-   * 3️⃣ RETORNO DO HOOK UNIFICADO
-   * ---------------------------- */
+  /* ---------------------------- 3️⃣ RETORNO ---------------------------- */
   return {
-    // Transferências
+    // Transferências e CRUD
     transfers,
     setTransfers,
     searchTerm,
@@ -252,12 +245,13 @@ export function useFinancialData() {
     editingTransfer,
     filteredTransfers,
     financialStatsTransfers,
+    getFinancialStatsBySeason,
     handleAdd,
     handleEdit,
     handleSave,
     handleDelete,
 
-    // Financeiro (salários e mercado)
+    // Financeiro
     squadPlayers: selectedSeasonPlayers,
     salaryView,
     setSalaryView,
