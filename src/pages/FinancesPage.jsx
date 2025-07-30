@@ -48,17 +48,22 @@ const Financial = () => {
     allSalaries,
     weeklyWagesBySeasonData,
     transfersBySeasonData,
-    financialStatsTransfers
+    financialStatsTransfers,
+    getFinancialStatsBySeason
   } = useFinancialData();
 
-  // Dados formatados para os gráficos
-  const transferSeasons = (transfersBySeasonData || []).map(d => d.season);
-  const totalInvested = (transfersBySeasonData || []).map(d => d.totalInvested || 0);
-  const totalReceived = (transfersBySeasonData || []).map(d => d.totalReceived || 0);
-
+  /* ------------------ Dados para gráficos ------------------ */
+  // 1️⃣ Evolução da Folha Salarial
   const wagesSeasons = (weeklyWagesBySeasonData || []).map(d => d.season);
   const weeklyWages = (weeklyWagesBySeasonData || []).map(d => d.weeklyExpense || 0);
 
+  // 2️⃣ Receitas vs Despesas
+  const transferStats = getFinancialStatsBySeason();
+  const transferSeasons = transferStats.map(d => d.season);
+  const totalInvested = transferStats.map(d => d.totalInvested);
+  const totalReceived = transferStats.map(d => d.totalReceived);
+
+  // 3️⃣ Gráfico de Pizza
   const pieLabels = (salaryByFunction || []).map(d => d.function);
   const pieValues = (salaryByFunction || []).map(d => d.total);
 
@@ -117,24 +122,13 @@ const Financial = () => {
           <CardContent>
             <div
               className={`text-2xl font-bold ${
-                (financialStatsTransfers?.totalReceived || 0) -
-                  (financialStatsTransfers?.totalInvested || 0) >=
-                0
+                (financialStatsTransfers?.netBalance || 0) >= 0
                   ? 'text-green-600'
                   : 'text-red-600'
               }`}
             >
-              {(financialStatsTransfers?.totalReceived || 0) -
-                (financialStatsTransfers?.totalInvested || 0) >=
-              0
-                ? '+'
-                : '-'}
-              €
-              {Math.abs(
-                (financialStatsTransfers?.totalReceived || 0) -
-                  (financialStatsTransfers?.totalInvested || 0)
-              )}
-              M
+              {(financialStatsTransfers?.netBalance || 0) >= 0 ? '+' : '-'}€
+              {Math.abs(financialStatsTransfers?.netBalance || 0)}M
             </div>
             <p className="text-xs text-muted-foreground">lucro na temporada</p>
           </CardContent>
@@ -147,11 +141,80 @@ const Financial = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{totalSalaryWeekly}</div>
-            <p className="text-xs text-muted-foreground">por semana</p>
+            <p className="text-xs text-muted-foreground">por semana ({selectedSeason})</p>
           </CardContent>
         </Card>
       </div>
 
+      {/* Gráficos lado a lado */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* Evolução da Folha Salarial */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Evolução da Folha Salarial (por Semana)</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Plot
+              data={[
+                {
+                  type: 'bar',
+                  x: wagesSeasons,
+                  y: weeklyWages.map(v => v / 1_000_000),
+                  name: 'Folha Semanal (€M)',
+                  marker: { color: '#4ECDC4' }
+                }
+              ]}
+              layout={{
+                height: 300,
+                autosize: true,
+                bargap: 0.6,
+                yaxis: { title: '€ Milhões/semana' },
+                xaxis: { title: 'Temporada' },
+                margin: { t: 30, r: 20, l: 40, b: 40 }
+              }}
+              style={{ width: '100%' }}
+            />
+          </CardContent>
+        </Card>
+
+        {/* Receitas vs Despesas */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Receitas vs. Despesas por Temporada</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Plot
+              data={[
+                {
+                  type: 'bar',
+                  x: transferSeasons,
+                  y: totalReceived,
+                  name: 'Receitas (Vendas)',
+                  marker: { color: '#4CAF50' }
+                },
+                {
+                  type: 'bar',
+                  x: transferSeasons,
+                  y: totalInvested,
+                  name: 'Despesas (Compras)',
+                  marker: { color: '#F44336' }
+                }
+              ]}
+              layout={{
+                barmode: 'group',
+                bargap: 0.4,
+                bargroupgap: 0.2,
+                height: 300,
+                autosize: true,
+                yaxis: { title: '€ Milhões' },
+                xaxis: { title: 'Temporada' },
+                margin: { t: 30, r: 20, l: 40, b: 40 }
+              }}
+              style={{ width: '100%' }}
+            />
+          </CardContent>
+        </Card>
+      </div>
 
       {/* Top Salários */}
       <Card>
@@ -159,7 +222,9 @@ const Financial = () => {
           <div className="flex items-center justify-between">
             <CardTitle className="flex items-center space-x-2">
               <DollarSign className="h-5 w-5" />
-              <span>Top 10 Maiores Salários - {getSalaryLabel(salaryView)}</span>
+              <span>
+                Top 10 Maiores Salários - {getSalaryLabel(salaryView)} ({selectedSeason})
+              </span>
             </CardTitle>
             <div className="flex items-center space-x-2">
               {['weekly', 'monthly', 'annual'].map((view) => (
@@ -182,7 +247,7 @@ const Financial = () => {
                 <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
                   <DialogHeader>
                     <DialogTitle>
-                      Todos os Salários - {getSalaryLabel(salaryView)}
+                      Todos os Salários - {getSalaryLabel(salaryView)} ({selectedSeason})
                     </DialogTitle>
                   </DialogHeader>
                   <div className="space-y-3">
@@ -247,10 +312,11 @@ const Financial = () => {
           </div>
         </CardContent>
       </Card>
+
       {/* Gráfico Pizza */}
       <Card>
         <CardHeader>
-          <CardTitle>Distribuição de Salários por Função</CardTitle>
+          <CardTitle>Distribuição de Salários por Função ({selectedSeason})</CardTitle>
         </CardHeader>
         <CardContent>
           <Plot
@@ -269,9 +335,7 @@ const Financial = () => {
         </CardContent>
       </Card>
     </div>
-    
   );
-  
 };
 
 export default Financial;
