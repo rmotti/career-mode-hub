@@ -51,7 +51,7 @@ const Financial = () => {
     financialStatsTransfers
   } = useFinancialData();
 
-  // Dados formatados para os gráficos
+  // Dados para gráficos
   const transferSeasons = (transfersBySeasonData || []).map(d => d.season);
   const totalInvested = (transfersBySeasonData || []).map(d => d.totalInvested || 0);
   const totalReceived = (transfersBySeasonData || []).map(d => d.totalReceived || 0);
@@ -117,24 +117,13 @@ const Financial = () => {
           <CardContent>
             <div
               className={`text-2xl font-bold ${
-                (financialStatsTransfers?.totalReceived || 0) -
-                  (financialStatsTransfers?.totalInvested || 0) >=
-                0
+                (financialStatsTransfers?.netBalance || 0) >= 0
                   ? 'text-green-600'
                   : 'text-red-600'
               }`}
             >
-              {(financialStatsTransfers?.totalReceived || 0) -
-                (financialStatsTransfers?.totalInvested || 0) >=
-              0
-                ? '+'
-                : '-'}
-              €
-              {Math.abs(
-                (financialStatsTransfers?.totalReceived || 0) -
-                  (financialStatsTransfers?.totalInvested || 0)
-              )}
-              M
+              {(financialStatsTransfers?.netBalance || 0) >= 0 ? '+' : '-'}€
+              {Math.abs(financialStatsTransfers?.netBalance || 0)}M
             </div>
             <p className="text-xs text-muted-foreground">lucro na temporada</p>
           </CardContent>
@@ -147,11 +136,12 @@ const Financial = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{totalSalaryWeekly}</div>
-            <p className="text-xs text-muted-foreground">por semana</p>
+            <p className="text-xs text-muted-foreground">
+              por semana ({selectedSeason})
+            </p>
           </CardContent>
         </Card>
       </div>
-
 
       {/* Top Salários */}
       <Card>
@@ -159,7 +149,9 @@ const Financial = () => {
           <div className="flex items-center justify-between">
             <CardTitle className="flex items-center space-x-2">
               <DollarSign className="h-5 w-5" />
-              <span>Top 10 Maiores Salários - {getSalaryLabel(salaryView)}</span>
+              <span>
+                Top 10 Maiores Salários - {getSalaryLabel(salaryView)} ({selectedSeason})
+              </span>
             </CardTitle>
             <div className="flex items-center space-x-2">
               {['weekly', 'monthly', 'annual'].map((view) => (
@@ -182,7 +174,7 @@ const Financial = () => {
                 <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
                   <DialogHeader>
                     <DialogTitle>
-                      Todos os Salários - {getSalaryLabel(salaryView)}
+                      Todos os Salários - {getSalaryLabel(salaryView)} ({selectedSeason})
                     </DialogTitle>
                   </DialogHeader>
                   <div className="space-y-3">
@@ -226,7 +218,9 @@ const Financial = () => {
                 className="flex items-center justify-between p-3 border rounded-lg"
               >
                 <div className="flex items-center space-x-3">
-                  <Badge variant={index < 3 ? 'default' : 'secondary'}>{index + 1}</Badge>
+                  <Badge variant={index < 3 ? 'default' : 'secondary'}>
+                    {index + 1}
+                  </Badge>
                   <div>
                     <div className="font-medium">{player.name}</div>
                     <div className="text-sm text-muted-foreground">
@@ -247,10 +241,11 @@ const Financial = () => {
           </div>
         </CardContent>
       </Card>
+
       {/* Gráfico Pizza */}
       <Card>
         <CardHeader>
-          <CardTitle>Distribuição de Salários por Função</CardTitle>
+          <CardTitle>Distribuição de Salários por Função ({selectedSeason})</CardTitle>
         </CardHeader>
         <CardContent>
           <Plot
@@ -269,9 +264,7 @@ const Financial = () => {
         </CardContent>
       </Card>
     </div>
-    
   );
-  
 };
 
 export default Financial;

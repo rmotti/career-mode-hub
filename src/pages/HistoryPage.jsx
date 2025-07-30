@@ -114,7 +114,7 @@ const History = () => {
           <div className="flex justify-between items-center">
             <CardTitle className="flex items-center space-x-2">
               <HistoryIcon className="h-5 w-5" />
-              <span>Histórico de Temporadas</span>
+              <span>Histórico de Temporadas - Liga Nacional</span>
             </CardTitle>
             <Button onClick={handleAddSeason} className="flex items-center space-x-2">
               <Plus className="h-4 w-4" />

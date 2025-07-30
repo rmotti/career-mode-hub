@@ -1,14 +1,45 @@
 import { useState, useMemo } from 'react';
 import { useLocalStorage } from '@/hooks/storage/useLocalStorage';
-import { transferHistory, squadPlayers, transfersBySeasonData, weeklyWagesBySeasonData } from '@/data';
+import {
+  transferHistory,
+  transfersBySeasonData,
+  squadPlayers2024_25,
+  squadPlayers2025_26
+} from '@/data';
 import { calculateSalary, parseCurrency, formatCurrency } from '@/utils/finances/financialUtils';
 
 /**
- * Hook unificado do módulo financeiro:
- * - Gerencia transferências (CRUD, filtros e estatísticas)
- * - Calcula folha salarial e valores de mercado do elenco
+ * Hook unificado para o módulo Financeiro
+ * - Controla transferências
+ * - Calcula salários, folha e valores de mercado
+ * - Integra temporadas (2024/25 e 2025/26)
  */
 export function useFinancialData() {
+  /* ----------------------------
+   * 0️⃣ MOCK DINÂMICO POR TEMPORADA
+   * ---------------------------- */
+  const weeklyWagesBySeasonData = useMemo(
+    () => [
+      {
+        season: '2024/25',
+        players: squadPlayers2024_25,
+        weeklyExpense: squadPlayers2024_25.reduce(
+          (sum, p) => sum + parseCurrency(p.salary, 'weekly'),
+          0
+        )
+      },
+      {
+        season: '2025/26',
+        players: squadPlayers2025_26,
+        weeklyExpense: squadPlayers2025_26.reduce(
+          (sum, p) => sum + parseCurrency(p.salary, 'weekly'),
+          0
+        )
+      }
+    ],
+    []
+  );
+
   /* ----------------------------
    * 1️⃣ ESTADO DE TRANSFERÊNCIAS
    * ---------------------------- */
@@ -19,12 +50,12 @@ export function useFinancialData() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTransfer, setEditingTransfer] = useState(null);
 
-  // Temporada selecionada (default = última temporada disponível)
+  // Temporada selecionada (default = última disponível)
   const [selectedSeason, setSelectedSeason] = useState(
     transfersBySeasonData[transfersBySeasonData.length - 1].season
   );
 
-  // Filtro e ordenação de transferências
+  // Transferências filtradas
   const filteredTransfers = useMemo(() => {
     return (transfers || [])
       .filter((transfer) => {
@@ -35,15 +66,14 @@ export function useFinancialData() {
           transfer.toClub?.toLowerCase().includes(search);
 
         const matchesType = typeFilter === 'all' || transfer.type === typeFilter;
-        const matchesSeason =
-          seasonFilter === 'all' || transfer.season === seasonFilter;
+        const matchesSeason = seasonFilter === 'all' || transfer.season === seasonFilter;
 
         return matchesSearch && matchesType && matchesSeason;
       })
       .sort((a, b) => new Date(b.date) - new Date(a.date));
   }, [transfers, searchTerm, typeFilter, seasonFilter]);
 
-  // Estatísticas financeiras de transferências baseadas na temporada selecionada
+  // Estatísticas financeiras da temporada selecionada
   const financialStatsTransfers = useMemo(() => {
     const currentSeasonTransfers = (transfers || []).filter(
       (t) => t.season === selectedSeason
@@ -104,41 +134,40 @@ export function useFinancialData() {
    * ---------------------------- */
   const [salaryView, setSalaryView] = useState('weekly'); // 'weekly', 'monthly', 'annual'
 
-  // Salário total do elenco em milhões por semana
+  // Jogadores da temporada selecionada
+  const selectedSeasonPlayers = useMemo(() => {
+    const seasonData = weeklyWagesBySeasonData.find(d => d.season === selectedSeason);
+    return seasonData?.players || [];
+  }, [selectedSeason, weeklyWagesBySeasonData]);
+
+  // Salário total do elenco
   const totalSalaryWeekly = useMemo(() => {
-    const total = (squadPlayers || []).reduce(
-      (sum, p) => sum + parseCurrency(p.salary, salaryView),
+    const total = (selectedSeasonPlayers || []).reduce(
+      (sum, p) => sum + parseCurrency(p.salary, 'weekly'),
       0
     );
-    const totalInMillions = total / 1_000_000;
-    return `€${totalInMillions.toFixed(2)}M`;
-  }, [salaryView, squadPlayers]);
+    return `€${(total / 1_000_000).toFixed(2)}M`;
+  }, [selectedSeasonPlayers]);
 
-  // Salário total do elenco em milhões por mês
   const totalSalaryMonthly = useMemo(() => {
-    const total = (squadPlayers || []).reduce(
-      (sum, p) => sum + parseCurrency(p.salary, salaryView),
+    const total = (selectedSeasonPlayers || []).reduce(
+      (sum, p) => sum + parseCurrency(p.salary, 'weekly'),
       0
     );
-    const monthlyTotal = total * 4.33; // Aproximadamente 52/12 semanas
-    const totalInMillions = monthlyTotal / 1_000_000;
-    return `€${totalInMillions.toFixed(2)}M`;
-  }, [salaryView, squadPlayers]);
+    return `€${((total * 4.33) / 1_000_000).toFixed(2)}M`;
+  }, [selectedSeasonPlayers]);
 
-  // Salário total do elenco em milhões por ano
   const totalSalaryYearly = useMemo(() => {
-    const total = (squadPlayers || []).reduce(
-      (sum, p) => sum + parseCurrency(p.salary, salaryView),
+    const total = (selectedSeasonPlayers || []).reduce(
+      (sum, p) => sum + parseCurrency(p.salary, 'weekly'),
       0
     );
-    const yearlyTotal = total * 52;
-    const totalInMillions = yearlyTotal / 1_000_000;
-    return `€${totalInMillions.toFixed(2)}M`;
-  }, [salaryView, squadPlayers]);
+    return `€${((total * 52) / 1_000_000).toFixed(2)}M`;
+  }, [selectedSeasonPlayers]);
 
-  // Salário agrupado por função no elenco
+  // Salário agrupado por função
   const salaryByFunction = useMemo(() => {
-    const grouped = (squadPlayers || []).reduce((acc, player) => {
+    const grouped = (selectedSeasonPlayers || []).reduce((acc, player) => {
       const func = player.function;
       const salary = calculateSalary(player.salary, salaryView);
       if (!acc[func]) acc[func] = { function: func, total: 0, count: 0 };
@@ -150,28 +179,28 @@ export function useFinancialData() {
     return Object.values(grouped)
       .map(f => ({ ...f, average: f.total / f.count }))
       .sort((a, b) => b.total - a.total);
-  }, [salaryView]);
+  }, [salaryView, selectedSeasonPlayers]);
 
   // Top 10 maiores salários
   const topSalaries = useMemo(() =>
-    (squadPlayers || [])
+    (selectedSeasonPlayers || [])
       .map(p => ({ ...p, calculatedSalary: calculateSalary(p.salary, salaryView) }))
       .sort((a, b) => b.calculatedSalary - a.calculatedSalary)
       .slice(0, 10),
-    [salaryView]
+    [salaryView, selectedSeasonPlayers]
   );
 
-  // Lista completa de salários (para modal)
+  // Lista completa de salários
   const allSalaries = useMemo(() =>
-    (squadPlayers || [])
+    (selectedSeasonPlayers || [])
       .map(p => ({ ...p, calculatedSalary: calculateSalary(p.salary, salaryView) }))
       .sort((a, b) => b.calculatedSalary - a.calculatedSalary),
-    [salaryView]
+    [salaryView, selectedSeasonPlayers]
   );
 
-  // Top 5 maiores valores de mercado
+  // Top 5 valores de mercado
   const topMarketValues = useMemo(() =>
-    (squadPlayers || [])
+    (selectedSeasonPlayers || [])
       .filter(p => p.marketValue)
       .map(player => ({
         ...player,
@@ -179,28 +208,28 @@ export function useFinancialData() {
       }))
       .sort((a, b) => b.parsedMarketValue - a.parsedMarketValue)
       .slice(0, 5),
-    []
+    [selectedSeasonPlayers]
   );
 
   const allMarketValues = useMemo(() =>
-    (squadPlayers || [])
+    (selectedSeasonPlayers || [])
       .filter(p => p.marketValue)
       .map(player => ({
         ...player,
         parsedMarketValue: parseCurrency(player.marketValue)
       }))
       .sort((a, b) => b.parsedMarketValue - a.parsedMarketValue),
-    []
+    [selectedSeasonPlayers]
   );
 
-  // Valor total do elenco no mercado
+  // Valor total do elenco
   const totalSquadValue = useMemo(() => {
-    const total = (squadPlayers || []).reduce(
+    const total = (selectedSeasonPlayers || []).reduce(
       (sum, p) => sum + (p.marketValue ? parseCurrency(p.marketValue) : 0),
       0
     );
-    return formatCurrency(total, 'annual'); 
-  }, []);
+    return formatCurrency(total, 'annual');
+  }, [selectedSeasonPlayers]);
 
   // Dados da temporada selecionada (para gráficos)
   const selectedSeasonData = transfersBySeasonData.find(s => s.season === selectedSeason);
@@ -229,7 +258,7 @@ export function useFinancialData() {
     handleDelete,
 
     // Financeiro (salários e mercado)
-    squadPlayers,
+    squadPlayers: selectedSeasonPlayers,
     salaryView,
     setSalaryView,
     selectedSeason,
