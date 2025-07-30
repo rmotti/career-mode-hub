@@ -271,7 +271,7 @@ const History = () => {
         </CardContent>
       </Card>
 
-      {/* Modal de Temporada */}
+      {/* Modal da Temporada */}
       <SeasonModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
