@@ -65,7 +65,7 @@ const Transfers = () => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Recebido</CardTitle>
+            <CardTitle className="text-sm font-medium">Total Recebido Esta Temporada</CardTitle>
             <lucideReact.TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -76,7 +76,7 @@ const Transfers = () => {
         
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Investido</CardTitle>
+            <CardTitle className="text-sm font-medium">Total Investido Esta Temporada</CardTitle>
             <lucideReact.TrendingDown className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -87,7 +87,7 @@ const Transfers = () => {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Saldo Líquido</CardTitle>
+            <CardTitle className="text-sm font-medium">Saldo Líquido da Temporada</CardTitle>
             <lucideReact.DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>

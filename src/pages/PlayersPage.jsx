@@ -3,11 +3,31 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/common
 import { Badge } from '@/components/ui/common/badge';
 import { Button } from '@/components/ui/common/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/common/dialog';
-import { Users, Star, Calendar, DollarSign, X } from 'lucide-react';
+import { Users, Star, Calendar, DollarSign } from 'lucide-react';
 
 import { usePlayerFilter } from '@/hooks/players/usePlayerFilter';
 import { getPotentialIndicator } from '@/utils/players/playerUtils';
-import { getSectorColor, getSectorName } from '@/data';
+import { getSectorName } from '@/data';
+
+// 🔹 Nova versão do getSectorColor para duas cores (card e círculo)
+function getSectorColor(position) {
+  switch (position) {
+    case 'GK':
+      return { cardBg: 'bg-yellow-50', circleBg: 'bg-yellow-200 text-yellow-900' };
+    case 'CB':
+    case 'LB':
+    case 'RB':
+      return { cardBg: 'bg-blue-50', circleBg: 'bg-blue-200 text-blue-900' };
+    case 'CDM':
+    case 'CM':
+    case 'CAM':
+    case 'LM':
+    case 'RM':
+      return { cardBg: 'bg-green-50', circleBg: 'bg-green-200 text-green-900' };
+    default: // atacantes
+      return { cardBg: 'bg-red-50', circleBg: 'bg-red-200 text-red-900' };
+  }
+}
 
 const Players = () => {
   const [selectedPlayer, setSelectedPlayer] = useState(null);
@@ -43,13 +63,17 @@ const Players = () => {
       <div className="space-y-3">
         {filteredAndSortedPlayers.map((player) => {
           const potentialIndicator = getPotentialIndicator(player.potential);
+          const { cardBg, circleBg } = getSectorColor(player.position);
 
           return (
-            <Card key={player.id} className="hover:shadow-md transition-shadow cursor-pointer">
+            <Card
+              key={player.id}
+              className={`hover:shadow-md transition-shadow cursor-pointer ${cardBg}`}
+            >
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
-                    <div className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold ${getSectorColor(player.position)}`}>
+                    <div className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold ${circleBg}`}>
                       {player.overall}
                     </div>
                     <div className="flex-1">
@@ -94,7 +118,7 @@ const Players = () => {
             <DialogHeader>
               <div className="flex items-center justify-between">
                 <DialogTitle className="flex items-center space-x-3">
-                  <div className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold ${getSectorColor(selectedPlayer.position)}`}>
+                  <div className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold ${getSectorColor(selectedPlayer.position).circleBg}`}>
                     {selectedPlayer.overall}
                   </div>
                   <div>
@@ -106,10 +130,6 @@ const Players = () => {
                     </div>
                   </div>
                 </DialogTitle>
-                {/*<Button variant="ghost" size="sm" onClick={() => setSelectedPlayer(null)}>
-                  <X className="h-4 w-4" />
-                </Button>
-                Não sei onde está o outro botão e por que ele está duplicado, então por hora deixo esse, que seria o ideal, comentado*/}
               </div>
             </DialogHeader>
 

@@ -16,6 +16,7 @@ export const useSeasonStatistics = () => {
     ? ((currentSeason.wins / currentSeason.matches) * 100).toFixed(1)
     : 0;
 
+
   const avgGoalsPerGame = currentSeason
     ? (currentSeason.goalsFor / currentSeason.matches).toFixed(1)
     : 0;
