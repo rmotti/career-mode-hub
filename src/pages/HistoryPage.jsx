@@ -1,123 +1,48 @@
-import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/common/card';
 import { Badge } from '@/components/ui/common/badge';
 import { Button } from '@/components/ui/common/button';
 import {
-  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
-  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader,
-  AlertDialogTitle, AlertDialogTrigger
-} from '@/components/ui/common/alert-dialog';
-import { Trophy, Target, Shield, Plus, Edit, Trash2, History as HistoryIcon, Eye } from 'lucide-react';
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
+} from '@/components/ui/common/dialog';
+import { 
+  Eye, Target, Trophy, Shield, History as HistoryIcon, 
+  Plus, Edit, Trash2, TrendingUp, TrendingDown 
+} from 'lucide-react';
 
-import { useSeasons } from '@/hooks/seasons/useSeasons';
-import { getHistoricalStats, getHistoricalPlayerStats, getTopStats } from '@/utils/seasons/historyStatsUtils';
+import { useSeasonsData } from '@/hooks/seasons/useSeasonsData';
 import SeasonModal from '@/components/stats/SeasonModal';
 
 const History = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingSeason, setEditingSeason] = useState(null);
-
   const {
     seasons,
-    addSeason,
-    updateSeason,
-    deleteSeason
-  } = useSeasons();
-
-  const historicalPlayers = getHistoricalPlayerStats(seasons);
-
-  const {
+    isModalOpen,
+    setIsModalOpen,
+    editingSeason,
+    handleAddSeason,
+    handleEditSeason,
+    handleSaveSeason,
+    deleteSeason,
     totalTitles,
     totalMatches,
     totalWins,
     totalGoals,
-    goalsAgainst
-  } = getHistoricalStats(seasons);
-
-  const {
+    goalsAgainst,
+    topContributors,
     topScorers,
     topAssists,
-    topAppearances
-  } = getTopStats(historicalPlayers);
+    topAppearances,
+    topBuys,
+    topSales,
+    formatCurrency
+  } = useSeasonsData();
 
-  const handleAddSeason = () => {
-    setEditingSeason(null);
-    setIsModalOpen(true);
+  const formatTransferFee = (value, originalFee) => {
+    return value && value > 0 ? formatCurrency(value) : (originalFee || 'Gratuito');
   };
-
-  const handleEditSeason = (season) => {
-    setEditingSeason(season);
-    setIsModalOpen(true);
-  };
-
-  const handleSaveSeason = (seasonData) => {
-    editingSeason ? updateSeason(seasonData) : addSeason(seasonData);
-  };
-
-  // Card genérico para ranking de jogadores
-  const RankingCard = ({ title, icon: Icon, players, labelFormatter }) => (
-    <Card>
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center space-x-2">
-            <Icon className="h-5 w-5" />
-            <span>{title}</span>
-          </CardTitle>
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button variant="outline" size="sm">
-                <Eye className="h-4 w-4 mr-2" />
-                Ver todos
-              </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-              <AlertDialogHeader>
-                <AlertDialogTitle>{title}</AlertDialogTitle>
-              </AlertDialogHeader>
-              <div className="space-y-3">
-                {(players || []).map((player, index) => (
-                  <div key={player.id} className="flex items-center justify-between p-3 border rounded-lg">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-bold">
-                        {index + 1}
-                      </div>
-                      <div>
-                        <div className="font-medium">{player.name}</div>
-                        <div className="text-sm text-muted-foreground">{player.position} • {player.function}</div>
-                      </div>
-                    </div>
-                    <div className="text-right font-bold">
-                      {labelFormatter(player)}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </AlertDialogContent>
-          </AlertDialog>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-3">
-          {(players || []).slice(0, 5).map((player, index) => (
-            <div key={player.id} className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-bold">
-                  {index + 1}
-                </div>
-                <div>
-                  <div className="font-medium">{player.name}</div>
-                  <div className="text-sm text-muted-foreground">{player.position}</div>
-                </div>
-              </div>
-              <div className="text-right font-bold">
-                {labelFormatter(player)}
-              </div>
-            </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
-  );
 
   return (
     <div className="space-y-6">
@@ -141,18 +66,22 @@ const History = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{totalMatches}</div>
-            <p className="text-xs text-muted-foreground">{totalWins} vitórias ({((totalWins / totalMatches) * 100).toFixed(1)}%)</p>
+            <p className="text-xs text-muted-foreground">
+              {totalWins} vitórias ({totalMatches ? ((totalWins / totalMatches) * 100).toFixed(1) : 0}%)
+            </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex justify-between items-center pb-2">
             <CardTitle className="text-sm font-medium">Gols Marcados</CardTitle>
-            <Shield className="h-4 w-4 text-muted-foreground" />
+            <Target className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{totalGoals}</div>
-            <p className="text-xs text-muted-foreground">{(totalGoals / totalMatches).toFixed(1)} por jogo</p>
+            <p className="text-xs text-muted-foreground">
+              {totalMatches ? (totalGoals / totalMatches).toFixed(1) : 0} por jogo
+            </p>
           </CardContent>
         </Card>
 
@@ -163,31 +92,196 @@ const History = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{goalsAgainst}</div>
-            <p className="text-xs text-muted-foreground">{(goalsAgainst / totalMatches).toFixed(1)} por jogo</p>
+            <p className="text-xs text-muted-foreground">
+              {totalMatches ? (goalsAgainst / totalMatches).toFixed(1) : 0} por jogo
+            </p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Rankings */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <RankingCard
-          title="Mais Gols na História"
-          icon={Target}
-          players={topScorers}
-          labelFormatter={(p) => `${p.stats.goals} gols`}
-        />
-        <RankingCard
-          title="Mais Assistências na História"
-          icon={Target}
-          players={topAssists}
-          labelFormatter={(p) => `${p.stats.assists} assists`}
-        />
-        <RankingCard
-          title="Mais Partidas na História"
-          icon={Target}
-          players={topAppearances}
-          labelFormatter={(p) => `${p.stats.appearances} jogos`}
-        />
+      {/* Rankings do Save */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+        {/* Maiores Contribuidores */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <Target className="h-5 w-5 text-primary" />
+              <span>Maiores Contribuidores</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {topContributors.slice(0, 5).map((p, index) => (
+              <div
+                key={`contributors-${p.id || p.name}-${index}`}
+                className="flex items-center justify-between"
+              >
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-bold">
+                    {index + 1}
+                  </div>
+                  <div>
+                    <div className="font-medium">{p.name}</div>
+                    <div className="text-sm text-muted-foreground">
+                      {p.position} {p.function && `• ${p.function}`}
+                    </div>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="font-bold">{p.contributions} contribuições</div>
+                  <div className="text-sm text-muted-foreground">
+                    {p.stats.goals} gols • {p.stats.assists} assists
+                  </div>
+                </div>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+
+        {/* Artilheiros */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <Trophy className="h-5 w-5 text-primary" />
+              <span>Maiores Artilheiros do Save</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {topScorers.slice(0, 5).map((p, index) => (
+              <div
+                key={`scorers-${p.id || p.name}-${index}`}
+                className="flex items-center justify-between"
+              >
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-bold">
+                    {index + 1}
+                  </div>
+                  <div>
+                    <div className="font-medium">{p.name}</div>
+                    <div className="text-sm text-muted-foreground">{p.position}</div>
+                  </div>
+                </div>
+                <div className="text-right font-bold">{p.stats.goals} gols</div>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+
+        {/* Assistentes */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <Target className="h-5 w-5 text-primary" />
+              <span>Maiores Assistentes do Save</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {topAssists.slice(0, 5).map((p, index) => (
+              <div
+                key={`assists-${p.id || p.name}-${index}`}
+                className="flex items-center justify-between"
+              >
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-bold">
+                    {index + 1}
+                  </div>
+                  <div>
+                    <div className="font-medium">{p.name}</div>
+                    <div className="text-sm text-muted-foreground">{p.position}</div>
+                  </div>
+                </div>
+                <div className="text-right font-bold">{p.stats.assists} assists</div>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+
+        {/* Jogadores Mais Usados */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <Eye className="h-5 w-5 text-primary" />
+              <span>Jogadores Mais Usados</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {topAppearances.slice(0, 5).map((p, index) => (
+              <div
+                key={`appearances-${p.id || p.name}-${index}`}
+                className="flex items-center justify-between"
+              >
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-bold">
+                    {index + 1}
+                  </div>
+                  <div>
+                    <div className="font-medium">{p.name}</div>
+                    <div className="text-sm text-muted-foreground">{p.position}</div>
+                  </div>
+                </div>
+                <div className="text-right font-bold">{p.stats.appearances} jogos</div>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Maiores Compras e Vendas */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <TrendingUp className="h-5 w-5 text-primary" />
+              <span>Maiores Compras da Hisória</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {topBuys.slice(0, 5).map((t, index) => (
+              <div
+                key={`buy-${t.player || index}-${index}`}
+                className="flex items-center justify-between"
+              >
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-bold">
+                    {index + 1}
+                  </div>
+                  <div>
+                    <div className="font-medium">{t.player}</div>
+                    <div className="text-sm text-muted-foreground">{t.type}</div>
+                  </div>
+                </div>
+                <div className="text-right font-bold">{formatTransferFee(t.value, t.fee)}</div>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <TrendingDown className="h-5 w-5 text-primary" />
+              <span>Maiores Vendas da História</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {topSales.slice(0, 5).map((t, index) => (
+              <div
+                key={`sale-${t.player || index}-${index}`}
+                className="flex items-center justify-between"
+              >
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-bold">
+                    {index + 1}
+                  </div>
+                  <div>
+                    <div className="font-medium">{t.player}</div>
+                    <div className="text-sm text-muted-foreground">{t.type}</div>
+                  </div>
+                </div>
+                <div className="text-right font-bold">{formatTransferFee(t.value, t.fee)}</div>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
       </div>
 
       {/* Histórico de Temporadas */}
@@ -223,7 +317,7 @@ const History = () => {
                   <tr key={season.season} className="border-b">
                     <td className="py-2 font-medium">{season.season}</td>
                     <td className="text-center py-2">
-                      <Badge variant={season.position === 1 ? "default" : "secondary"}>
+                      <Badge variant={season.position === 1 ? 'default' : 'secondary'}>
                         {season.position}º
                       </Badge>
                     </td>
@@ -240,27 +334,32 @@ const History = () => {
                         <Button variant="outline" size="sm" onClick={() => handleEditSeason(season)}>
                           <Edit className="h-3 w-3" />
                         </Button>
-                        <AlertDialog>
-                          <AlertDialogTrigger asChild>
+                        <Dialog>
+                          <DialogTrigger asChild>
                             <Button variant="outline" size="sm">
                               <Trash2 className="h-3 w-3" />
                             </Button>
-                          </AlertDialogTrigger>
-                          <AlertDialogContent>
-                            <AlertDialogHeader>
-                              <AlertDialogTitle>Confirmar Exclusão</AlertDialogTitle>
-                              <AlertDialogDescription>
-                                Tem certeza que deseja excluir a temporada {season.season}? Esta ação não pode ser desfeita.
-                              </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                              <AlertDialogAction onClick={() => deleteSeason(season.season)}>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>Confirmar Exclusão</DialogTitle>
+                            </DialogHeader>
+                            <p className="text-sm">
+                              Tem certeza que deseja excluir a temporada {season.season}? Esta ação não pode ser desfeita.
+                            </p>
+                            <div className="flex justify-end space-x-2 mt-4">
+                              <DialogTrigger asChild>
+                                <Button variant="outline">Cancelar</Button>
+                              </DialogTrigger>
+                              <Button
+                                variant="destructive"
+                                onClick={() => deleteSeason(season.season)}
+                              >
                                 Excluir
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialog>
+                              </Button>
+                            </div>
+                          </DialogContent>
+                        </Dialog>
                       </div>
                     </td>
                   </tr>
@@ -271,7 +370,6 @@ const History = () => {
         </CardContent>
       </Card>
 
-      {/* Modal de Temporada */}
       <SeasonModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

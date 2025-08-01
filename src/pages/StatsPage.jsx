@@ -36,25 +36,50 @@ const Statistics = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">% de Vitórias</CardTitle>
+            <CardTitle className="text-sm font-medium">Desempenho na Temporada {currentSeason.season}</CardTitle>
             <Trophy className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{winPercentage}%</div>
+            <div className="text-2xl font-bold">{currentSeason.wins} Vitórias</div>
             <p className="text-xs text-muted-foreground">
-              {currentSeason.wins} vitórias em {currentSeason.matches} jogos
+               em {currentSeason.matches} jogos
             </p>
           </CardContent>
         </Card>
-
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Média de Gols</CardTitle>
+            <CardTitle className="text-sm font-medium">Desempenho na Temporada {currentSeason.season}</CardTitle>
+            <Trophy className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{currentSeason.draws} Empates</div>
+            <p className="text-xs text-muted-foreground">
+               em {currentSeason.matches} jogos
+            </p>
+          </CardContent>
+        </Card>
+                <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Desempenho na Temporada {currentSeason.season}</CardTitle>
+            <Trophy className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{currentSeason.losses} Derrotas</div>
+            <p className="text-xs text-muted-foreground">
+               em {currentSeason.matches} jogos
+            </p>
+          </CardContent>
+        </Card>
+    </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Gols Marcados</CardTitle>
             <Target className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{avgGoalsPerGame}</div>
-            <p className="text-xs text-muted-foreground">por jogo esta temporada</p>
+            <div className="text-2xl font-bold">{currentSeason.goalsFor}</div>
+            <p className="text-xs text-muted-foreground">{avgGoalsPerGame} por jogo esta temporada</p>
           </CardContent>
         </Card>
 
@@ -64,8 +89,8 @@ const Statistics = () => {
             <Shield className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{avgGoalsAgainstPerGame}</div>
-            <p className="text-xs text-muted-foreground">por jogo esta temporada</p>
+            <div className="text-2xl font-bold">{currentSeason.goalsAgainst}</div>
+            <p className="text-xs text-muted-foreground">{avgGoalsAgainstPerGame} por jogo esta temporada</p>
           </CardContent>
         </Card>
       </div>

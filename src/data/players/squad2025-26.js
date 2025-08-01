@@ -25,7 +25,7 @@
 export const squadPlayers2025_26 = [
  // ==================== GOLEIROS ====================
   {
-    id: 1,
+    id: 33,
     name: "Andriy Lunin",
     position: "GK",
     function: "Importante",
@@ -69,7 +69,7 @@ export const squadPlayers2025_26 = [
 
   // ==================== ZAGUEIROS ====================
   {
-    id: 4,
+    id: 34,
     name: "Lucas Beraldo",
     position: "CB",
     function: "Esporádico",
@@ -83,7 +83,7 @@ export const squadPlayers2025_26 = [
     stats: { appearances: 5, goals: 0, assists: 0, cleanSheets: 0, rating: 6.56 }
   },
   {
-    id: 6,
+    id: 7,
     name: "Jonathan Tah",
     position: "CB",
     function: "Crucial",
@@ -97,7 +97,7 @@ export const squadPlayers2025_26 = [
     stats: { appearances: 12, goals: 0, assists: 0, cleanSheets: 2, rating: 7.13 }
   },
   {
-    id: 7,
+    id: 9,
     name: "Edmond Tapsoba",
     position: "CB",
     function: "Importante",
@@ -111,7 +111,7 @@ export const squadPlayers2025_26 = [
     stats: { appearances: 5, goals: 0, assists: 0, cleanSheets: 0, rating: 6.9 }
   },
    {
-    id: 8,
+    id: 10,
     name: "Piero Hincapié",
     position: "CB",
     function: "Importante",
@@ -125,7 +125,7 @@ export const squadPlayers2025_26 = [
     stats: { appearances: 12, goals: 0, assists: 0, cleanSheets: 2, rating: 6.86 }
   },
    {
-    id: 9,
+    id: 11,
     name: "Jeanuel Belocian",
     position: "CB",
     function: "Promessa",
@@ -139,7 +139,7 @@ export const squadPlayers2025_26 = [
     stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
   },
  {
-    id: 10,
+    id: 35,
     name: "Odilon Kossounou",
     position: "CB",
     function: "Rodízio",
@@ -155,7 +155,7 @@ export const squadPlayers2025_26 = [
   
   // ==================== LATERAIS ====================
   {
-    id: 11,
+    id: 14,
     name: "Arthur",
     position: "RB",
     function: "Promessa",
@@ -169,7 +169,7 @@ export const squadPlayers2025_26 = [
     stats: { appearances: 3, goals: 0, assists: 0, cleanSheets: 0, rating: 6.6 }
   },
   {
-    id: 12,
+    id: 15,
     name: "Alejandro Grimaldo",
     position: "LB",
     function: "Crucial",
@@ -183,7 +183,7 @@ export const squadPlayers2025_26 = [
     stats: { appearances: 13, goals: 3, assists: 2, cleanSheets: 2, rating: 7.62 }
   },
     {
-    id: 13,
+    id: 16,
     name: "Jeremie Frimpong",
     position: "RB",
     function: "Crucial",
@@ -199,7 +199,7 @@ export const squadPlayers2025_26 = [
 
   // ==================== VOLANTES E MEIAS ====================
   {
-    id: 14,
+    id: 17,
     name: "Granit Xhaka",
     position: "CDM",
     function: "Crucial",
@@ -213,7 +213,7 @@ export const squadPlayers2025_26 = [
     stats: { appearances: 12, goals: 2, assists: 3, cleanSheets: 2, rating: 7.61 }
   },
   {
-    id: 15,
+    id: 18,
     name: "Robert Andrich",
     position: "CDM",
     function: "Importante",
@@ -227,7 +227,7 @@ export const squadPlayers2025_26 = [
     stats: { appearances: 8, goals: 1, assists: 0, cleanSheets: 1, rating: 7.1 }
   },
   {
-    id: 16,
+    id: 36,
     name: "Andrey Santos",
     position: "CM",
     function: "Rodízio",
@@ -241,7 +241,7 @@ export const squadPlayers2025_26 = [
     stats: { appearances: 9, goals: 1, assists: 3, cleanSheets: 1, rating: 7.31 }
   },
   {
-    id: 17,
+    id: 37,
     name: "Juan Nardoni",
     position: "CM",
     function: "Esporádico",
@@ -255,7 +255,7 @@ export const squadPlayers2025_26 = [
     stats: { appearances: 7, goals: 0, assists: 1, cleanSheets: 0, rating: 6.77 }
   },
   {
-    id: 18,
+    id: 38,
     name: "Gustavo Puerta",
     position: "CM",
     function: "Promessa",
@@ -269,7 +269,7 @@ export const squadPlayers2025_26 = [
     stats: { appearances: 2, goals: 0, assists: 0, cleanSheets: 0, rating: 6.75 }
   },
   {
-    id: 19,
+    id: 22,
     name: "Jonas Hofmann",
     position: "CAM",
     function: "Rodízio",
@@ -283,7 +283,7 @@ export const squadPlayers2025_26 = [
     stats: { appearances: 7, goals: 4, assists: 1, cleanSheets: 0, rating: 7.9 }
   },
   {
-    id: 20,
+    id: 23,
     name: "Florian Wirtz",
     position: "CAM",
     function: "Crucial",
@@ -297,8 +297,8 @@ export const squadPlayers2025_26 = [
     stats: { appearances: 12, goals: 11, assists: 11, cleanSheets: 1, rating: 8.87 }
   },
   {
-    id: 21,
-    name: "kenan Yildiz",
+    id: 39,
+    name: "Kenan Yildiz",
     position: "CAM",
     function: "Rodízio",
     age: 20,
@@ -313,7 +313,7 @@ export const squadPlayers2025_26 = [
 
   // ==================== EXTREMOS ====================
   {
-    id: 22,
+    id: 26,
     name: "Nathan Tella",
     position: "RW",
     function: "Esporádico",
@@ -328,7 +328,7 @@ export const squadPlayers2025_26 = [
   },
   // ==================== ATACANTES ====================
   {
-    id: 23,
+    id: 40,
     name: "Jonathan David",
     position: "ST",
     function: "Importante",
@@ -342,7 +342,7 @@ export const squadPlayers2025_26 = [
     stats: { appearances: 10, goals: 9, assists: 4, cleanSheets: 2, rating: 8.72 }
   },
   {
-    id: 24,
+    id: 41,
     name: "Gabriel Jesus",
     position: "ST",
     function: "Rodízio",
@@ -356,7 +356,7 @@ export const squadPlayers2025_26 = [
     stats: { appearances: 11, goals: 7, assists: 4, cleanSheets: 0, rating: 7.66 }
   },
   {
-    id: 25,
+    id: 30,
     name: "Martin Terrier",
     position: "ST",
     function: "Rodízio",
