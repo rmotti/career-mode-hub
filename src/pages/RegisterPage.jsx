@@ -3,17 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/common/card';
 import { Button } from '@/components/ui/common/button';
 import { Input } from '@/components/ui/common/input';
+import { toast } from 'sonner'; // ✅ Sonner para toasts
 
 export default function Register() {
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setLoading(true);
 
     try {
       const res = await fetch('http://localhost:5000/api/users/register', {
@@ -26,16 +27,23 @@ export default function Register() {
 
       if (!res.ok) throw new Error(data.message || 'Erro ao registrar');
 
-      // 🔹 Salva token e usuário automaticamente se o backend retornar token
+      // 🔹 Salva token e usuário
       if (data.token) {
-        localStorage.setItem('authToken', data.token);
+        localStorage.setItem('token', data.token); // Mantém compatível com saveService
       }
       localStorage.setItem('user', JSON.stringify(data.user));
+
+      // ✅ Toast de sucesso
+      toast.success(`Conta criada! Bem-vindo(a), ${data.user.userName || userName}`);
 
       // Redireciona para /saves
       navigate('/saves');
     } catch (err) {
-      setError(err.message);
+      console.error('Erro ao registrar:', err.message);
+      // ✅ Toast de erro
+      toast.error(err.message || 'Erro ao criar conta. Tente novamente.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -79,12 +87,11 @@ export default function Register() {
             <Button
               type="submit"
               className="w-full py-2 text-lg font-semibold bg-primary text-white rounded-xl hover:brightness-110 transition"
+              disabled={loading}
             >
-              Criar Conta
+              {loading ? 'Criando...' : 'Criar Conta'}
             </Button>
           </form>
-
-          {error && <p className="text-red-400 mt-4 text-center">{error}</p>}
 
           <div className="text-center mt-6 text-sm text-gray-300">
             Já tem conta?{' '}
