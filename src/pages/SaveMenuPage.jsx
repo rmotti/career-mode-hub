@@ -2,15 +2,18 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/common/card';
 import { Button } from '@/components/ui/common/button';
+import { toast } from 'sonner'; // ✅ Sonner para toasts
 
 export default function SaveMenuPage() {
   const navigate = useNavigate();
 
   const handleNewSave = () => {
+    toast.info('Iniciando criação de um novo save...'); // ✅ Toast informativo
     navigate('/select-team');
   };
 
   const handleLoadSave = () => {
+    toast.info('Carregando seus saves...'); // ✅ Toast informativo
     navigate('/load-save');
   };
 

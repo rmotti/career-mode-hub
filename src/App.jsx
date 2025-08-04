@@ -12,6 +12,8 @@ import SelectTeamPage from './pages/SelectTeamPage';
 import SaveMenuPage from './pages/SaveMenuPage';
 import LoadSavePage from './pages/LoadSavePage';
 import './App.css';
+import { Toaster } from "sonner";
+
 
 function Layout() {
   const location = useLocation();
@@ -34,6 +36,7 @@ function Layout() {
           <Route path="/financial" element={<Financial />} />
           <Route path="/transfers" element={<Transfers />} />
         </Routes>
+        <Toaster richColors /> {/* ✅ Exibe toasts globais */}
       </main>
     </div>
   );

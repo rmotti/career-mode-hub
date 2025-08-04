@@ -3,24 +3,40 @@ import { useNavigate } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/common/card';
 import { Button } from '@/components/ui/common/button';
 import { Input } from '@/components/ui/common/input';
-import { login } from '@/services/authService'; // 🔹 Importa o serviço
+import { login } from '@/services/authService'; // 🔹 Serviço de login
+import { toast } from 'sonner'; // ✅ Sonner para toasts
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setLoading(true);
 
     try {
-      const user = await login(email, password);
-      console.log('Usuário logado:', user);
-      navigate('/saves'); // 🔹 Só navega se login OK
+      // 🔹 Faz login via backend
+      const res = await login(email, password);
+
+      // 🔹 Salva token e usuário no localStorage
+      localStorage.setItem('token', res.token);
+      localStorage.setItem('user', JSON.stringify(res.user));
+
+      console.log('Usuário logado:', res.user);
+
+      // ✅ Toast de sucesso
+      toast.success(`Bem-vindo(a), ${res.user.userName || 'usuário'}!`);
+
+      // 🔹 Redireciona para a página de saves
+      navigate('/saves');
     } catch (err) {
-      setError(err.message);
+      console.error('Erro no login:', err);
+      // ✅ Toast de erro
+      toast.error(err.response?.data?.message || 'Erro ao fazer login. Verifique suas credenciais.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -55,12 +71,11 @@ export default function Login() {
             <Button
               type="submit"
               className="w-full py-2 text-lg font-semibold bg-primary text-white rounded-xl hover:brightness-110 transition"
+              disabled={loading}
             >
-              Entrar no Clube
+              {loading ? 'Entrando...' : 'Entrar no Clube'}
             </Button>
           </form>
-
-          {error && <p className="text-red-400 mt-4 text-center">{error}</p>}
 
           <div className="text-center mt-6 text-sm text-gray-300">
             Novo por aqui?{' '}
