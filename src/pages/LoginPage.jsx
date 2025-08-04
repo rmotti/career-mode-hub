@@ -3,16 +3,25 @@ import { useNavigate } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/common/card';
 import { Button } from '@/components/ui/common/button';
 import { Input } from '@/components/ui/common/input';
+import { login } from '@/services/authService'; // 🔹 Importa o serviço
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Simulação de login
-    navigate('/saves');
+    setError('');
+
+    try {
+      const user = await login(email, password);
+      console.log('Usuário logado:', user);
+      navigate('/saves'); // 🔹 Só navega se login OK
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   return (
@@ -50,6 +59,8 @@ export default function Login() {
               Entrar no Clube
             </Button>
           </form>
+
+          {error && <p className="text-red-400 mt-4 text-center">{error}</p>}
 
           <div className="text-center mt-6 text-sm text-gray-300">
             Novo por aqui?{' '}

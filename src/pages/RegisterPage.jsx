@@ -4,20 +4,39 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/common
 import { Button } from '@/components/ui/common/button';
 import { Input } from '@/components/ui/common/input';
 
-export default function RegisterPage() {
-  const [name, setName] = useState('');
+export default function Register() {
+  const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
 
-    // 🔹 Simula criação de conta (futuro: POST para API)
-    console.log('Novo usuário:', { name, email, password });
+    try {
+      const res = await fetch('http://localhost:5000/api/users/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userName, email, password }),
+      });
 
-    // Após registro, vai para o login
-    navigate('/');
+      const data = await res.json();
+
+      if (!res.ok) throw new Error(data.message || 'Erro ao registrar');
+
+      // 🔹 Salva token e usuário automaticamente se o backend retornar token
+      if (data.token) {
+        localStorage.setItem('authToken', data.token);
+      }
+      localStorage.setItem('user', JSON.stringify(data.user));
+
+      // Redireciona para /saves
+      navigate('/saves');
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   return (
@@ -25,17 +44,17 @@ export default function RegisterPage() {
       <Card className="w-full max-w-md shadow-xl border border-white/10 bg-white/5 backdrop-blur-lg rounded-2xl overflow-hidden">
         <CardHeader className="text-center space-y-2 pt-6">
           <CardTitle className="text-3xl font-bold text-white tracking-wide">Criar Conta</CardTitle>
-          <p className="text-sm text-gray-300">Registre-se para começar sua carreira</p>
+          <p className="text-sm text-gray-300">Entre para o Career Hub</p>
         </CardHeader>
 
         <CardContent>
           <form onSubmit={handleSubmit} className="flex flex-col gap-5 mt-4">
             <Input
               type="text"
-              placeholder="Nome"
-              value={name}
+              placeholder="Nome de usuário"
+              value={userName}
               required
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => setUserName(e.target.value)}
               className="bg-white/10 text-gray-100 placeholder-gray-300 border-white/20 focus:border-primary focus:ring-primary"
             />
 
@@ -65,9 +84,11 @@ export default function RegisterPage() {
             </Button>
           </form>
 
+          {error && <p className="text-red-400 mt-4 text-center">{error}</p>}
+
           <div className="text-center mt-6 text-sm text-gray-300">
-            Já tem uma conta?{' '}
-            <a href="/" className="text-primary font-semibold hover:underline">
+            Já tem conta?{' '}
+            <a href="/login" className="text-primary font-semibold hover:underline">
               Entrar
             </a>
           </div>
