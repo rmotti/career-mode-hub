@@ -1,18 +1,10 @@
-import axios from "axios";
+// src/services/saveService.js
+import api from './api';
 
-const API_URL = "http://localhost:5000/api/saves"; //https://career-mode-hub-backend.onrender.com/api/saves
+export const getSaves = () => api.get('/saves');
 
-// Adiciona token automaticamente
-const authHeader = () => ({
-  headers: {
-    Authorization: `Bearer ${localStorage.getItem("token")}`,
-  },
-});
+export const createSave = (data) => api.post('/saves', data);
 
-export const getSaves = () => axios.get(API_URL, authHeader());
+export const updateSave = (id, data) => api.put(`/saves/${id}`, data);
 
-export const createSave = (data) => axios.post(API_URL, data, authHeader());
-
-export const updateSave = (id, data) => axios.put(`${API_URL}/${id}`, data, authHeader());
-
-export const deleteSave = (id) => axios.delete(`${API_URL}/${id}`, authHeader());
+export const deleteSave = (id) => api.delete(`/saves/${id}`);

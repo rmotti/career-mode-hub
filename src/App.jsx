@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import Header from './components/ui/Header';
 import Dashboard from './pages/DashboardPage';
 import Players from './pages/PlayersPage';
@@ -14,17 +14,26 @@ import LoadSavePage from './pages/LoadSavePage';
 import './App.css';
 import { Toaster } from "sonner";
 
-
 function Layout() {
   const location = useLocation();
-  const hideHeader = ['/', '/register', '/select-team', '/saves', '/load-save'].includes(location.pathname);
+
+  // ✅ Agora o Header será ocultado também no /login
+  const hideHeader = [
+    '/login',
+    '/register',
+    '/select-team',
+    '/saves',
+    '/load-save',
+  ].includes(location.pathname);
 
   return (
     <div className="min-h-screen bg-background">
       {!hideHeader && <Header />}
       <main className="container mx-auto px-4 py-6">
         <Routes>
-          <Route path="/" element={<Login />} />
+          {/* ✅ Redireciona a raiz para /login */}
+          <Route path="/" element={<Navigate to="/login" />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/saves" element={<SaveMenuPage />} />
           <Route path="/load-save" element={<LoadSavePage />} />
@@ -35,7 +44,11 @@ function Layout() {
           <Route path="/history" element={<History />} />
           <Route path="/financial" element={<Financial />} />
           <Route path="/transfers" element={<Transfers />} />
+
+          {/* ✅ Caso acesse rota inexistente, redireciona para login */}
+          <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
+
         <Toaster richColors /> {/* ✅ Exibe toasts globais */}
       </main>
     </div>

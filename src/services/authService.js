@@ -1,40 +1,24 @@
 // src/services/authService.js
-const API_URL = "http://localhost:5000/api/users";
+import api from './api';
 
 export async function register(userName, email, password) {
-  const res = await fetch(`${API_URL}/register`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ userName, email, password }),
-  });
-
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.message || 'Erro ao registrar');
+  const { data } = await api.post('/users/register', { userName, email, password });
 
   // Salva token e usuário
   localStorage.setItem('token', data.token);
   localStorage.setItem('user', JSON.stringify(data.user));
 
-  return data; // 🔹 Retorna tudo (token + user)
+  return data; // { message, token, user }
 }
 
 export async function login(email, password) {
-  const res = await fetch(`${API_URL}/login`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password }),
-  });
+  const { data } = await api.post('/users/login', { email, password });
 
-  const data = await res.json();
+  // Salva token e usuário
+  localStorage.setItem('token', data.token);
+  localStorage.setItem('user', JSON.stringify(data.user));
 
-  if (res.ok && data.token) {
-    // Salva token e usuário com os mesmos nomes usados no saveService
-    localStorage.setItem('token', data.token);
-    localStorage.setItem('user', JSON.stringify(data.user));
-    return data; // 🔹 Retorna { message, token, user }
-  } else {
-    throw new Error(data.message || 'Erro no login');
-  }
+  return data; // { message, token, user }
 }
 
 export function getToken() {
