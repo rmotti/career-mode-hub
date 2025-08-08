@@ -6,24 +6,13 @@ import { createSave } from "@/services/saveService";
 import { toast } from "sonner";
 import axios from "axios";
 
-// Placeholder para bandeiras e logos ausentes
-const placeholderImg = "https://upload.wikimedia.org/wikipedia/commons/0/09/No_image_available.svg";
-
 export default function SelectTeamPage() {
   const navigate = useNavigate();
 
-  const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
-
   const [countries, setCountries] = useState([]);
-  const [leagues, setLeagues] = useState([]);
-  const [teams, setTeams] = useState([]);
-
   const [selectedCountry, setSelectedCountry] = useState(null);
-  const [selectedLeague, setSelectedLeague] = useState(null);
-  const [selectedTeam, setSelectedTeam] = useState(null);
 
-  // 🔹 Spinner de loading
   const Spinner = () => (
     <div className="flex flex-col items-center justify-center py-4">
       <div className="w-8 h-8 border-4 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
@@ -31,14 +20,15 @@ export default function SelectTeamPage() {
     </div>
   );
 
-  // 🔹 Buscar países ao abrir
+  // 🔹 Buscar países ao montar
   useEffect(() => {
     setLoading(true);
     axios
-      .get("/api/teams/countries")
+      .get("/api/countries")
       .then((res) => {
         console.log("Countries API response:", res.data);
-        setCountries(Array.isArray(res.data) ? res.data : []);
+        const data = Array.isArray(res.data) ? res.data : res.data.countries || [];
+        setCountries(data);
       })
       .catch((err) => {
         console.error("Erro ao carregar países:", err.message);
@@ -48,50 +38,22 @@ export default function SelectTeamPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  // 🔹 Buscar ligas quando selecionar país
-  useEffect(() => {
+  // 🔹 Criar save ao confirmar país
+  const handleSelectCountry = async () => {
     if (!selectedCountry) return;
-    setLoading(true);
-    axios
-      .get(`/api/teams/leagues?country=${selectedCountry}`)
-      .then((res) => setLeagues(Array.isArray(res.data) ? res.data : []))
-      .catch(() => {
-        toast.error("Erro ao carregar ligas.");
-        setLeagues([]);
-      })
-      .finally(() => setLoading(false));
-  }, [selectedCountry]);
-
-  // 🔹 Buscar times quando selecionar liga
-  useEffect(() => {
-    if (!selectedLeague) return;
-    setLoading(true);
-    axios
-      .get(`/api/teams/teams?league=${selectedLeague.id}&season=${selectedLeague.season}`)
-      .then((res) => setTeams(Array.isArray(res.data) ? res.data : []))
-      .catch(() => {
-        toast.error("Erro ao carregar times.");
-        setTeams([]);
-      })
-      .finally(() => setLoading(false));
-  }, [selectedLeague]);
-
-  // 🔹 Criar save ao confirmar time
-  const handleSelectTeam = async () => {
-    if (!selectedTeam) return;
     setLoading(true);
 
     try {
       const res = await createSave({
-        name: `Save ${selectedTeam.name}`,
-        team: selectedTeam.name,
+        name: `Save ${selectedCountry.name}`,
+        country: selectedCountry.name,
         season: "2025/26",
       });
 
-      localStorage.setItem("selectedTeam", JSON.stringify(selectedTeam));
+      localStorage.setItem("selectedCountry", JSON.stringify(selectedCountry));
       localStorage.setItem("currentSave", res.data._id);
 
-      toast.success(`Save "${selectedTeam.name}" criado com sucesso!`);
+      toast.success(`Save "${selectedCountry.name}" criado com sucesso!`);
       navigate("/dashboard");
     } catch (error) {
       console.error("Erro ao criar save:", error.response?.data || error.message);
@@ -101,31 +63,7 @@ export default function SelectTeamPage() {
     }
   };
 
-  const handleClose = () => navigate("/");
-
-  // 🔹 Renderizador de listas com fallback
-  const renderList = (items, onClick, labelKey = "name", imgKey = "logo") => {
-    if (!Array.isArray(items) || items.length === 0) {
-      return <p className="text-gray-400">Nenhum resultado encontrado.</p>;
-    }
-
-    return items.map((item) => (
-      <Button
-        key={item.id || item.code || item[labelKey]}
-        className={`w-64 flex items-center justify-start gap-3 px-4 ${
-          selectedTeam?.id === item.id ? "bg-blue-600 text-white" : ""
-        }`}
-        onClick={() => onClick(item)}
-      >
-        <img
-          src={item[imgKey] || placeholderImg}
-          alt={item[labelKey]}
-          className="w-6 h-6 rounded-sm object-contain"
-        />
-        <span className="truncate">{item[labelKey]}</span>
-      </Button>
-    ));
-  };
+  const handleClose = () => navigate("/saves");
 
   return (
     <div className="min-h-screen bg-background">
@@ -138,49 +76,48 @@ export default function SelectTeamPage() {
                      p-6 rounded-xl shadow-xl animate-in fade-in zoom-in-95"
         >
           <p id="dialog-desc" className="sr-only">
-            Selecione país, liga e time para criar o save
+            Selecione o País para criar o save
           </p>
 
           <DialogHeader className="flex flex-col items-center">
             <DialogTitle className="w-full text-center text-xl font-bold">
-              {step === 1 && "Selecione o País"}
-              {step === 2 && "Selecione a Liga"}
-              {step === 3 && "Selecione o Time"}
+              Selecione o País
             </DialogTitle>
           </DialogHeader>
 
           <div className="flex flex-col items-center gap-3 mt-4 max-h-[320px] overflow-y-auto w-full">
             {loading && <Spinner />}
 
-            {!loading && step === 1 && renderList(countries, (c) => {
-              setSelectedCountry(c.name);
-              setStep(2);
-            }, "name", "flag")}
+            {!loading && countries.length === 0 && (
+              <p className="text-gray-400">Nenhum país encontrado.</p>
+            )}
 
-            {!loading && step === 2 && renderList(leagues, (l) => {
-              setSelectedLeague(l);
-              setStep(3);
-            }, "name", "logo")}
+            {!loading &&
+              countries.map((country, index) => {
+                const isSelected = selectedCountry?.name === country.name;
 
-            {!loading && step === 3 && renderList(teams, (t) => setSelectedTeam(t), "name", "logo")}
+                return (
+                  <Button
+                    key={index}
+                    className={`w-64 flex items-center justify-start gap-3 px-4 ${
+                      isSelected ? "bg-blue-600 text-white" : ""
+                    }`}
+                    onClick={() => setSelectedCountry(country)}
+                  >
+                    <span className="truncate">{country.name}</span>
+                  </Button>
+                );
+              })}
           </div>
 
-          <div className="flex justify-between w-full mt-6">
-            {step > 1 && (
-              <Button variant="secondary" onClick={() => setStep(step - 1)}>
-                Voltar
-              </Button>
-            )}
-
-            {step === 3 && (
-              <Button
-                className="ml-auto w-32"
-                disabled={!selectedTeam || loading}
-                onClick={handleSelectTeam}
-              >
-                {loading ? "Criando..." : "Confirmar"}
-              </Button>
-            )}
+          <div className="flex justify-end w-full mt-6">
+            <Button
+              className="ml-auto w-32"
+              disabled={!selectedCountry || loading}
+              onClick={handleSelectCountry}
+            >
+              {loading ? "Criando..." : "Confirmar"}
+            </Button>
           </div>
         </DialogContent>
       </Dialog>

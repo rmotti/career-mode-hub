@@ -95,9 +95,12 @@ export default function Register() {
 
           <div className="text-center mt-6 text-sm text-gray-300">
             Já tem conta?{' '}
-            <a href="/login" className="text-primary font-semibold hover:underline">
+            <span
+              onClick={() => navigate('/login')}
+              className="text-primary font-semibold hover:underline cursor-pointer"
+            >
               Entrar
-            </a>
+            </span>
           </div>
         </CardContent>
       </Card>
