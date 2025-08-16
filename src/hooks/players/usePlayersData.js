@@ -11,7 +11,7 @@ import {
 } from '../../utils/players/playerUtils';
 
 export function usePlayersData() {
-  const currentSeason = seasonStats[1];
+  const currentSeason = seasonStats[2];
 
   const topContribuitors = useMemo(() => getTopContribuitors(squadPlayers), []);
   const allScorers = useMemo(() => getAllScorers(squadPlayers), []);

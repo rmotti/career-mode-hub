@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import Plot from 'react-plotly.js';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/common/card';
 import { Badge } from '@/components/ui/common/badge';
@@ -36,7 +36,14 @@ const COLORS = [
   '#98D8C8'
 ];
 
-const Financial = () => {
+// Helper: formata número em milhões com 1 casa (pt-BR)
+const formatMillions = (v, digits = 1) =>
+  Number(v ?? 0).toLocaleString('pt-BR', {
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits
+  });
+
+const FinancesPage = () => {
   const {
     salaryView,
     setSalaryView,
@@ -52,20 +59,44 @@ const Financial = () => {
     getFinancialStatsBySeason
   } = useFinancialData();
 
+  // Temporadas dinâmicas (une salários e transferências) e ordena desc
+  const seasons = useMemo(() => {
+    const fromWages = (weeklyWagesBySeasonData || []).map(d => d.season);
+    const fromTransfers = (transfersBySeasonData || []).map(d => d.season);
+    const unique = Array.from(new Set([...fromWages, ...fromTransfers]));
+    return unique.sort((a, b) => {
+      const aStart = parseInt(String(a).split('/')[0], 10);
+      const bStart = parseInt(String(b).split('/')[0], 10);
+      return bStart - aStart;
+    });
+  }, [weeklyWagesBySeasonData, transfersBySeasonData]);
+
+  // Garante seleção da temporada mais recente
+  useEffect(() => {
+    if (!selectedSeason || (seasons.length && !seasons.includes(selectedSeason))) {
+      setSelectedSeason(seasons[0]);
+    }
+  }, [seasons, selectedSeason, setSelectedSeason]);
+
   /* ------------------ Dados para gráficos ------------------ */
-  // 1️⃣ Evolução da Folha Salarial
-  const wagesSeasons = (weeklyWagesBySeasonData || []).map(d => d.season);
-  const weeklyWages = (weeklyWagesBySeasonData || []).map(d => d.weeklyExpense || 0);
+  // 1) Evolução da Folha Salarial (em milhões)
+  const wagesSeasons = (weeklyWagesBySeasonData || []).map(d => String(d.season));
+  const weeklyWagesMillions = (weeklyWagesBySeasonData || []).map(
+    d => (Number(d.weeklyExpense) || 0) / 1_000_000
+  );
 
-  // 2️⃣ Receitas vs Despesas
+  // 2) Receitas vs Despesas (já em milhões)
   const transferStats = getFinancialStatsBySeason();
-  const transferSeasons = transferStats.map(d => d.season);
-  const totalInvested = transferStats.map(d => d.totalInvested);
-  const totalReceived = transferStats.map(d => d.totalReceived);
+  const transferSeasons = transferStats.map(d => String(d.season));
+  const totalInvested = transferStats.map(d => Number(d.totalInvested) || 0);
+  const totalReceived = transferStats.map(d => Number(d.totalReceived) || 0);
 
-  // 3️⃣ Gráfico de Pizza
+  // 3) Pizza por função
   const pieLabels = (salaryByFunction || []).map(d => d.function);
-  const pieValues = (salaryByFunction || []).map(d => d.total);
+  const pieValues = (salaryByFunction || []).map(d => Number(d.total) || 0);
+
+  // Saldo líquido formatado
+  const net = Number(financialStatsTransfers?.netBalance ?? 0);
 
   return (
     <div className="space-y-6">
@@ -77,9 +108,9 @@ const Financial = () => {
             <SelectValue placeholder="Selecione a temporada" />
           </SelectTrigger>
           <SelectContent>
-            {(transfersBySeasonData || []).map((season) => (
-              <SelectItem key={season.season} value={season.season}>
-                {season.season}
+            {seasons.map((season) => (
+              <SelectItem key={season} value={season}>
+                {season}
               </SelectItem>
             ))}
           </SelectContent>
@@ -95,7 +126,7 @@ const Financial = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-green-600">
-              €{financialStatsTransfers?.totalReceived || 0}M
+              €{formatMillions(financialStatsTransfers?.totalReceived, 1)}M
             </div>
             <p className="text-xs text-muted-foreground">temporada {selectedSeason}</p>
           </CardContent>
@@ -108,7 +139,7 @@ const Financial = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-red-600">
-              €{financialStatsTransfers?.totalInvested || 0}M
+              €{formatMillions(financialStatsTransfers?.totalInvested, 1)}M
             </div>
             <p className="text-xs text-muted-foreground">temporada {selectedSeason}</p>
           </CardContent>
@@ -121,14 +152,11 @@ const Financial = () => {
           </CardHeader>
           <CardContent>
             <div
-              className={`text-2xl font-bold ${
-                (financialStatsTransfers?.netBalance || 0) >= 0
-                  ? 'text-green-600'
-                  : 'text-red-600'
-              }`}
+              className={
+                'text-2xl font-bold ' + (net >= 0 ? 'text-green-600' : 'text-red-600')
+              }
             >
-              {(financialStatsTransfers?.netBalance || 0) >= 0 ? '+' : '-'}€
-              {Math.abs(financialStatsTransfers?.netBalance || 0)}M
+              {net >= 0 ? '+' : '-'}€{formatMillions(Math.abs(net), 1)}M
             </div>
             <p className="text-xs text-muted-foreground">lucro na temporada</p>
           </CardContent>
@@ -159,9 +187,10 @@ const Financial = () => {
                 {
                   type: 'bar',
                   x: wagesSeasons,
-                  y: weeklyWages.map(v => v / 1_000_000),
+                  y: weeklyWagesMillions,
                   name: 'Folha Semanal (€M)',
-                  marker: { color: '#4ECDC4' }
+                  marker: { color: '#4ECDC4' },
+                  hovertemplate: '€%{y:.1f}M<extra></extra>'
                 }
               ]}
               layout={{
@@ -172,6 +201,8 @@ const Financial = () => {
                 xaxis: { title: 'Temporada' },
                 margin: { t: 30, r: 20, l: 40, b: 40 }
               }}
+              config={{ displaylogo: false, responsive: true }}
+              useResizeHandler
               style={{ width: '100%' }}
             />
           </CardContent>
@@ -190,14 +221,16 @@ const Financial = () => {
                   x: transferSeasons,
                   y: totalReceived,
                   name: 'Receitas (Vendas)',
-                  marker: { color: '#4CAF50' }
+                  marker: { color: '#4CAF50' },
+                  hovertemplate: '€%{y:.1f}M<extra></extra>'
                 },
                 {
                   type: 'bar',
                   x: transferSeasons,
                   y: totalInvested,
                   name: 'Despesas (Compras)',
-                  marker: { color: '#F44336' }
+                  marker: { color: '#F44336' },
+                  hovertemplate: '€%{y:.1f}M<extra></extra>'
                 }
               ]}
               layout={{
@@ -210,6 +243,8 @@ const Financial = () => {
                 xaxis: { title: 'Temporada' },
                 margin: { t: 30, r: 20, l: 40, b: 40 }
               }}
+              config={{ displaylogo: false, responsive: true }}
+              useResizeHandler
               style={{ width: '100%' }}
             />
           </CardContent>
@@ -330,6 +365,8 @@ const Financial = () => {
               }
             ]}
             layout={{ height: 400, autosize: true }}
+            config={{ displaylogo: false, responsive: true }}
+            useResizeHandler
             style={{ width: '100%' }}
           />
         </CardContent>
@@ -338,4 +375,4 @@ const Financial = () => {
   );
 };
 
-export default Financial;
+export default FinancesPage;
