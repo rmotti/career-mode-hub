@@ -4,12 +4,24 @@ import {
   transferHistory,
   transfersBySeasonData,
   squadPlayers2024_25,
-  squadPlayers2025_26
+  squadPlayers2025_26,
+  squadPlayers2026_27
 } from '@/data';
 import { calculateSalary, parseCurrency, formatCurrency } from '@/utils/finances/financialUtils';
 
 export function useFinancialData() {
-  /* ---------------------------- 0️⃣ MOCK DINÂMICO ---------------------------- */
+  /* ---------------------------- ⚙️ Normalizador de histórico ---------------------------- */
+  // Garante que o estado inicial de transferências seja um ARRAY (flatten),
+  // mesmo que transferHistory seja um objeto { "YYYY/YY": [...] }.
+  const initialTransfers = useMemo(() => {
+    if (Array.isArray(transferHistory)) return transferHistory;
+    if (transferHistory && typeof transferHistory === 'object') {
+      return Object.values(transferHistory).flat();
+    }
+    return [];
+  }, []);
+
+  /* ---------------------------- 0️⃣ MOCK DINÂMICO (SALÁRIOS) ---------------------------- */
   const weeklyWagesBySeasonData = useMemo(
     () => [
       {
@@ -27,13 +39,32 @@ export function useFinancialData() {
           (sum, p) => sum + parseCurrency(p.salary, 'weekly'),
           0
         )
+      },
+      {
+        season: '2026/27',
+        players: squadPlayers2026_27,
+        weeklyExpense: squadPlayers2026_27.reduce(
+          (sum, p) => sum + parseCurrency(p.salary, 'weekly'),
+          0
+        )
       }
     ],
     []
   );
 
   /* ---------------------------- 1️⃣ ESTADO DE TRANSFERÊNCIAS ---------------------------- */
-  const [transfers, setTransfers] = useLocalStorage('fc-bayer-transfers', transferHistory || []);
+  // Usa initialTransfers (array) como default do localStorage.
+  const [transfers, setTransfers] = useLocalStorage('fc-bayer-transfers', initialTransfers);
+
+  // Migração/robustez: se o localStorage tiver objeto por temporada, flattens em runtime.
+  const safeTransfers = useMemo(() => {
+    if (Array.isArray(transfers)) return transfers;
+    if (transfers && typeof transfers === 'object') {
+      return Object.values(transfers).flat();
+    }
+    return [];
+  }, [transfers]);
+
   const [searchTerm, setSearchTerm] = useState('');
   const [typeFilter, setTypeFilter] = useState('all');
   const [seasonFilter, setSeasonFilter] = useState('all');
@@ -71,7 +102,7 @@ export function useFinancialData() {
 
   /* 🔹 Lista filtrada */
   const filteredTransfers = useMemo(() => {
-    return (transfers || [])
+    return safeTransfers
       .filter((transfer) => {
         const search = searchTerm.toLowerCase();
         const matchesSearch =
@@ -85,11 +116,11 @@ export function useFinancialData() {
         return matchesSearch && matchesType && matchesSeason;
       })
       .sort((a, b) => new Date(b.date) - new Date(a.date));
-  }, [transfers, searchTerm, typeFilter, seasonFilter]);
+  }, [safeTransfers, searchTerm, typeFilter, seasonFilter]);
 
   /* 🔹 Estatísticas da temporada selecionada */
   const financialStatsTransfers = useMemo(() => {
-    const currentSeasonTransfers = (transfers || []).filter(
+    const currentSeasonTransfers = safeTransfers.filter(
       (t) => t.season === selectedSeason
     );
 
@@ -99,6 +130,7 @@ export function useFinancialData() {
     currentSeasonTransfers.forEach((transfer) => {
       const fee = transfer.fee;
       if (fee && fee !== 'Livre' && fee !== 'Empréstimo') {
+        // Nota: se possível, prefira um helper parseFeeToNumber aqui.
         const value = parseFloat(fee.replace('€', '').replace('M', ''));
         if (!isNaN(value)) {
           if (['Entrada', 'Empréstimo (Entrada)'].includes(transfer.type)) {
@@ -116,13 +148,13 @@ export function useFinancialData() {
       netBalance: totalReceived - totalInvested,
       totalTransfers: currentSeasonTransfers.length
     };
-  }, [transfers, selectedSeason]);
+  }, [safeTransfers, selectedSeason]);
 
-  /* ✅ NOVA FUNÇÃO: Estatísticas de TODAS as temporadas para gráfico Receitas x Despesas */
+  /* ✅ Estatísticas por temporada (gráfico Receitas x Despesas) */
   const getFinancialStatsBySeason = () => {
     return (transfersBySeasonData || []).map((seasonData) => {
       const season = seasonData.season;
-      const seasonTransfers = (transfers || []).filter(t => t.season === season);
+      const seasonTransfers = safeTransfers.filter(t => t.season === season);
 
       let totalInvested = 0;
       let totalReceived = 0;

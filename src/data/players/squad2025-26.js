@@ -36,7 +36,7 @@ export const squadPlayers2025_26 = [
     salary: "€100,000",
     marketValue: "€31M",
     contract: "2028",
-    stats: { appearances: 7, goals: 0, assists: 1, cleanSheets: 1, rating: 7.54 }
+    stats: { appearances: 35, goals: 0, assists: 1, cleanSheets:9, rating: 7.13 }
   },
   {
     id: 2,
@@ -50,7 +50,7 @@ export const squadPlayers2025_26 = [
     salary: "€65,000",
     marketValue: "€5M",
     contract: "2026",
-    stats: { appearances: 5, goals: 0, assists: 0, cleanSheets: 1, rating: 7.38 }
+    stats: { appearances: 14, goals: 0, assists: 0, cleanSheets: 5, rating: 7.49 }
   },
   {
     id: 3,
@@ -64,7 +64,7 @@ export const squadPlayers2025_26 = [
     salary: "€24,500",
     marketValue: "€0.45M",
     contract: "2027",
-    stats: { appearances: 1, goals: 0, assists: 0, cleanSheets: 0, rating: 6.9 }
+    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
   },
 
   // ==================== ZAGUEIROS ====================
@@ -80,7 +80,7 @@ export const squadPlayers2025_26 = [
     salary: "€49,000",
     marketValue: "€20.5M",
     contract: "2026",
-    stats: { appearances: 5, goals: 0, assists: 0, cleanSheets: 0, rating: 6.56 }
+    stats: { appearances: 12, goals: 0, assists: 0, cleanSheets: 2, rating: 6.54}
   },
   {
     id: 7,
@@ -94,7 +94,7 @@ export const squadPlayers2025_26 = [
     salary: "€130,000",
     marketValue: "€66.5M",
     contract: "2027",
-    stats: { appearances: 12, goals: 0, assists: 0, cleanSheets: 2, rating: 7.13 }
+    stats: { appearances: 46, goals: 0, assists: 0, cleanSheets: 7, rating: 6.64 }
   },
   {
     id: 9,
@@ -108,7 +108,7 @@ export const squadPlayers2025_26 = [
     salary: "€82,000",
     marketValue: "€31.5M",
     contract: "2028",
-    stats: { appearances: 5, goals: 0, assists: 0, cleanSheets: 0, rating: 6.9 }
+    stats: { appearances: 20, goals: 0, assists: 0, cleanSheets: 4, rating: 6.61 }
   },
    {
     id: 10,
@@ -122,21 +122,7 @@ export const squadPlayers2025_26 = [
     salary: "€81,000",
     marketValue: "€39.0M",
     contract: "2029",
-    stats: { appearances: 12, goals: 0, assists: 0, cleanSheets: 2, rating: 6.86 }
-  },
-   {
-    id: 11,
-    name: "Jeanuel Belocian",
-    position: "CB",
-    function: "Promessa",
-    age: 20,
-    nationality: "França",
-    overall: 70,
-    potential: 82,
-    salary: "€27,000",
-    marketValue: "€2.2M",
-    contract: "2029",
-    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+    stats: { appearances: 43, goals: 1, assists: 0, cleanSheets: 10, rating: 6.75 }
   },
  {
     id: 35,
@@ -150,7 +136,35 @@ export const squadPlayers2025_26 = [
     salary: "€80,000",
     marketValue: "€41.5M",
     contract: "2026",
-    stats: { appearances: 13, goals: 0, assists: 0, cleanSheets: 1, rating: 6.88 }
+    stats: { appearances: 44, goals: 1, assists: 0, cleanSheets: 8, rating: 6.7 }
+  },
+    {
+    id: 5,
+    name: "Ben Hawighorst",
+    position: "CB",
+    function: "Promessa",
+    age: 18,
+    nationality: "Alemanha",
+    overall: 61,
+    potential: 81,
+    salary: "€12,500",
+    marketValue: "€0.75M",
+    contract: "2027",
+    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
+  },
+  {
+    id: 6,
+    name: "Andrea Natali",
+    position: "CB",
+    function: "Promessa",
+    age: 18,
+    nationality: "Itália",
+    overall: 63,
+    potential: 83,
+    salary: "€12,500",
+    marketValue: "€1.1M",
+    contract: "2027",
+    stats: { appearances: 0, goals: 0, assists: 0, cleanSheets: 0, rating: 0 }
   },
   
   // ==================== LATERAIS ====================
@@ -166,7 +180,7 @@ export const squadPlayers2025_26 = [
     salary: "€31,000",
     marketValue: "€3M",
     contract: "2028",
-    stats: { appearances: 3, goals: 0, assists: 0, cleanSheets: 0, rating: 6.6 }
+    stats: { appearances: 4, goals: 1, assists: 1, cleanSheets: 1, rating: 7.23 }
   },
   {
     id: 15,
@@ -180,7 +194,7 @@ export const squadPlayers2025_26 = [
     salary: "€120,000",
     marketValue: "€52M",
     contract: "2027",
-    stats: { appearances: 13, goals: 3, assists: 2, cleanSheets: 2, rating: 7.62 }
+    stats: { appearances: 44, goals: 9, assists: 6, cleanSheets: 9, rating: 7.15 }
   },
     {
     id: 16,
@@ -194,7 +208,7 @@ export const squadPlayers2025_26 = [
     salary: "€120,000",
     marketValue: "€52M",
     contract: "2028",
-    stats: { appearances: 12, goals: 4, assists: 6, cleanSheets: 2, rating: 7.74 }
+    stats: { appearances: 43, goals: 9, assists: 12, cleanSheets: 9, rating: 7.08 }
   },
 
   // ==================== VOLANTES E MEIAS ====================
@@ -210,7 +224,7 @@ export const squadPlayers2025_26 = [
     salary: "€130,000",
     marketValue: "€42.0M",
     contract: "2028",
-    stats: { appearances: 12, goals: 2, assists: 3, cleanSheets: 2, rating: 7.61 }
+    stats: { appearances: 43, goals: 6, assists: 4, cleanSheets: 10, rating: 7.12 }
   },
   {
     id: 18,
@@ -224,7 +238,7 @@ export const squadPlayers2025_26 = [
     salary: "€98,000",
     marketValue: "€25M",
     contract: "2028",
-    stats: { appearances: 8, goals: 1, assists: 0, cleanSheets: 1, rating: 7.1 }
+    stats: { appearances: 28, goals: 2, assists: 1, cleanSheets: 7, rating: 6.8 }
   },
   {
     id: 36,
@@ -238,7 +252,7 @@ export const squadPlayers2025_26 = [
     salary: "€80,000",
     marketValue: "€30.5M",
     contract: "2030",
-    stats: { appearances: 9, goals: 1, assists: 3, cleanSheets: 1, rating: 7.31 }
+    stats: { appearances: 41, goals: 6, assists: 9, cleanSheets: 11, rating: 7.22 }
   },
   {
     id: 37,
@@ -252,7 +266,7 @@ export const squadPlayers2025_26 = [
     salary: "€45,000",
     marketValue: "€13M",
     contract: "2028",
-    stats: { appearances: 7, goals: 0, assists: 1, cleanSheets: 0, rating: 6.77 }
+    stats: { appearances: 16, goals: 0, assists: 2, cleanSheets: 3, rating: 6.75 }
   },
   {
     id: 38,
@@ -266,7 +280,7 @@ export const squadPlayers2025_26 = [
     salary: "€28,000",
     marketValue: "€3.7M",
     contract: "2029",
-    stats: { appearances: 2, goals: 0, assists: 0, cleanSheets: 0, rating: 6.75 }
+    stats: { appearances: 9, goals: 1, assists: 0, cleanSheets: 3, rating: 6.85 }
   },
   {
     id: 22,
@@ -280,7 +294,7 @@ export const squadPlayers2025_26 = [
     salary: "€78,000",
     marketValue: "€10M",
     contract: "2027",
-    stats: { appearances: 7, goals: 4, assists: 1, cleanSheets: 0, rating: 7.9 }
+    stats: { appearances: 15, goals: 1, assists: 2, cleanSheets: 2, rating: 6.86 }
   },
   {
     id: 23,
@@ -294,7 +308,7 @@ export const squadPlayers2025_26 = [
     salary: "€150,000",
     marketValue: "€141M",
     contract: "2029",
-    stats: { appearances: 12, goals: 11, assists: 11, cleanSheets: 1, rating: 8.87 }
+    stats: { appearances: 33, goals: 18, assists: 13, cleanSheets: 5, rating: 7.66 }
   },
   {
     id: 39,
@@ -308,7 +322,7 @@ export const squadPlayers2025_26 = [
     salary: "€80,000",
     marketValue: "€46.5M",
     contract: "2029",
-    stats: { appearances: 12, goals: 3, assists: 2, cleanSheets: 3, rating: 7.61 }
+    stats: { appearances: 44, goals: 16, assists: 6, cleanSheets: 11, rating: 7.48 }
   },
 
   // ==================== EXTREMOS ====================
@@ -324,7 +338,21 @@ export const squadPlayers2025_26 = [
     salary: "€58,000",
     marketValue: "€16.5M",
     contract: "2028",
-    stats: { appearances: 8, goals: 0, assists: 1, cleanSheets: 0, rating: 6.5 }
+    stats: { appearances: 33, goals: 5, assists: 5, cleanSheets: 6, rating: 6.74 }
+  },
+   {
+    id: 42,
+    name: "Kevin",
+    position: "LW",
+    function: "Esporádico",
+    age: 23,
+    nationality: "Brasil",
+    overall: 77,
+    potential: 84,
+    salary: "€47,000",
+    marketValue: "€21.5M",
+    contract: "2029",
+    stats: { appearances: 6, goals: 0, assists: 0, cleanSheets: 4, rating: 6.72 }
   },
   // ==================== ATACANTES ====================
   {
@@ -339,7 +367,7 @@ export const squadPlayers2025_26 = [
     salary: "€71,500",
     marketValue: "€56.5M",
     contract: "2029",
-    stats: { appearances: 10, goals: 9, assists: 4, cleanSheets: 2, rating: 8.72 }
+    stats: { appearances: 40, goals: 30, assists: 11, cleanSheets: 10, rating: 8.15 }
   },
   {
     id: 41,
@@ -353,7 +381,7 @@ export const squadPlayers2025_26 = [
     salary: "€65,000",
     marketValue: "€26M",
     contract: "2026",
-    stats: { appearances: 11, goals: 7, assists: 4, cleanSheets: 0, rating: 7.66 }
+    stats: { appearances: 37, goals: 12, assists: 5, cleanSheets: 9, rating: 7.2 }
   },
   {
     id: 30,
@@ -367,6 +395,6 @@ export const squadPlayers2025_26 = [
     salary: "€79,000",
     marketValue: "€18M",
     contract: "2029",
-    stats: { appearances: 5, goals: 3, assists: 2, cleanSheets: 0, rating: 7.74 }
+    stats: { appearances: 17, goals: 3, assists: 2, cleanSheets: 0, rating: 7 }
   }
 ]

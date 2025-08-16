@@ -20,6 +20,8 @@
 
 import { squadPlayers2024_25 } from '../players/squad2024-25';
 import { squadPlayers2025_26 } from '../players/squad2025-26';
+import { squadPlayers2026_27 } from '../players/squad2026-27';
+
 import { transferHistory } from '../transfers/transferHistory';
 
 export const seasonStats = [
@@ -42,34 +44,34 @@ export const seasonStats = [
   },
   {
     season: "2025/26",
-    matches: 8,
-    wins: 6,
-    draws: 1,
-    losses: 1,
-    goalsFor: 24,
-    goalsAgainst: 11,
-    points: 19,
-    position: 3,
+    matches: 51,
+    wins: 38,
+    draws: 4,
+    losses: 9,
+    goalsFor: 132,
+    goalsAgainst: 60,
+    points: 83,
+    position: 1,
 
     // 🔹 Jogadores desta temporada
     players: squadPlayers2025_26,
 
     // 🔹 Transferências desta temporada
     transfers: transferHistory["2025/26"] || []
-  }
+  },
 
   // Para adicionar nova temporada:
-  // {
-  //   season: "2026/27",
-  //   matches: 0,
-  //   wins: 0,
-  //   draws: 0,
-  //   losses: 0,
-  //   goalsFor: 0,
-  //   goalsAgainst: 0,
-  //   points: 0,
-  //   position: 0,
-  //   players: squadPlayers2026_27,
-  //   transfers: transferHistory["2026/27"] || []
-  // }
+   {
+     season: "2026/27",
+     matches: 24,
+     wins: 15,
+     draws: 6,
+     losses: 3,
+     goalsFor: 56,
+     goalsAgainst: 29,
+     points: 36,
+     position: 0,
+     players: squadPlayers2026_27,
+     transfers: transferHistory["2026/27"] || []
+   }
 ];

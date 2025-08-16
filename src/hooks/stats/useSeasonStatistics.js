@@ -8,9 +8,9 @@ import {
 } from '@/data';
 
 export const useSeasonStatistics = () => {
-  const currentSeason = seasonStats[1]; // Temporada atual
+  const currentSeason = seasonStats[2]; // Temporada atual
   const players = squadPlayers;
-  const currentSeasonPlayers = getPlayersBySeason('2025/26');
+  const currentSeasonPlayers = getPlayersBySeason('2026/27');
 
   const winPercentage = currentSeason
     ? ((currentSeason.wins / currentSeason.matches) * 100).toFixed(1)

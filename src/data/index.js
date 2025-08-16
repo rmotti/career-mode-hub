@@ -18,7 +18,7 @@
 // Players
 import { squadPlayers2024_25 } from './players/squad2024-25.js';
 import { squadPlayers2025_26 } from './players/squad2025-26.js';
-
+import { squadPlayers2026_27 } from './players/squad2026-27.js';
 // Temporadas e transferências
 import { seasonStats } from './seasons/seasonStats.js';
 import { transferHistory } from './transfers/transferHistory.js';
@@ -44,10 +44,10 @@ import {
 // ==================== EXPORTAÇÕES PRINCIPAIS ====================
 
 // Dados dos jogadores por temporada
-export { squadPlayers2024_25, squadPlayers2025_26 };
+export { squadPlayers2024_25, squadPlayers2025_26, squadPlayers2026_27 };
 
 // Elenco atual (temporada vigente - 2025/26)
-export const squadPlayers = squadPlayers2025_26;
+export const squadPlayers = squadPlayers2026_27;
 
 // Dados das temporadas
 export { seasonStats };
@@ -110,6 +110,8 @@ export const getPlayersBySeason = (season) => {
       return squadPlayers2024_25;
     case '2025/26':
       return squadPlayers2025_26;
+    case '2026/27':
+      return squadPlayers2026_27;
     default:
       return squadPlayers; // Temporada atual
   }
